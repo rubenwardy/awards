@@ -14,8 +14,12 @@ awards.onTick={}
 minetest.register_on_dignode(function(pos, oldnode, digger)
 	local nodedug = string.split(oldnode.name, ":")
 
-	local mod=nodedug[0]
-	local item=nodedug[1]
+	local mod=nodedug[1]
+	local item=nodedug[2]
+
+
+	print (mod)
+	print (item)
 
 	local player = digger:get_player_name()
 
@@ -39,6 +43,8 @@ minetest.register_on_dignode(function(pos, oldnode, digger)
 	        end
 
 		player_data[player]['count'][mod][item]=player_data[player]['count'][mod][item]+1
+		
+		print(mod..":"..item.." 's count is now "..(player_data[player]['count'][mod][item]))
 	else
 		print(player.."'s dig event has been skipped")
 	end
