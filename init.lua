@@ -65,9 +65,8 @@ minetest.register_chatcommand("list_awards", {
 	func = function(name, param)
 		minetest.chat_send_player(name, "Your awards:");
 
-		for i=1,# player_data[name]['unlocked'] do
-			print(player_data[name]['unlocked'][i])
-			minetest.chat_send_player(name, ">> "..player_data[name]['unlocked'][i]);
+		for _, str in pairs(player_data[name].unlocked) do
+			minetest.chat_send_player(name, str);
 		end
 	end,
 })
