@@ -25,6 +25,20 @@ function awards.register_onDig(func)
 	table.insert(awards.onDig,func);
 end
 
+-- List a player's achievements
+minetest.register_chatcommand("list_awards", {
+	params = "",
+	description = "list_awards: list your awards",
+	func = function(name, param)
+		minetest.chat_send_player(name, "Your awards:");
+
+		for i=1,# player_data[name]['unlocked'] do
+			print(player_data[name]['unlocked'][i])
+			minetest.chat_send_player(name, ">> "..player_data[name]['unlocked'][i]);
+		end
+	end,
+})
+
 
 -- Example Achievements
 awards.register_achievement("award_mesefind",{
