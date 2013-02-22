@@ -21,6 +21,7 @@ The API
 	* award
 	* func
 		* return true if the medal should be rewarded
+		* there will be built in versions of this function
 
 
 Player Data
