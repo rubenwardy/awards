@@ -17,43 +17,59 @@ minetest.register_on_dignode(function(pos, oldnode, digger)
 	local mod=nodedug[1]
 	local item=nodedug[2]
 
+	local playern = digger:get_player_name()
 
-	print (mod)
-	print (item)
-
-	local player = digger:get_player_name()
-
-	print("Awards [Event] - "..player.." has dug a node")
-
-	if (player~=nil and nodedug~=nil and mod~=nil and item~=nil) then
-		if not player_data[player] then
-        		player_data[player]={}
-			player_data[player]['count']={}
-			player_data[player]['count']['default']={}
-			player_data[player]['count']['default']['dirt']=0
-			player_data[player]['name']=player
+	if (playern~=nil and nodedug~=nil and mod~=nil and item~=nil) then
+		--check the player's directory
+		if not player_data[playern] then
+        		player_data[playern]={}
+			player_data[playern]['count']={}
+			player_data[playern]['count']['default']={}
+			player_data[playern]['count']['default']['dirt']=0
+			player_data[playern]['name']=playern
 	        end
 
-		if not player_data[player]['count'][mod] then
-        		player_data[player]['count'][mod]={}
+                --check player.count.mod
+		if not player_data[playern]['count'][mod] then
+        		player_data[playern]['count'][mod]={}
 	        end
 
-	        if not player_data[player]['count'][mod][item] then
-        		player_data[player]['count'][mod][item]=0
+		--check player.count.mod.item
+	        if not player_data[playern]['count'][mod][item] then
+        		player_data[playern]['count'][mod][item]=0
 	        end
 
-		player_data[player]['count'][mod][item]=player_data[player]['count'][mod][item]+1
+		player_data[playern]['count'][mod][item]=player_data[playern]['count'][mod][item]+1
+
+		print(" - "..mod..":"..item.." 's count is now "..(player_data[playern]['count'][mod][item]))
 		
-		print(mod..":"..item.." 's count is now "..(player_data[player]['count'][mod][item]))
-	else
-		print(player.."'s dig event has been skipped")
+		-- Roll through the onDig functions
+		local player=digger
+		local data=player_data[playern]
+
+		for i=1,# awards.onDig do
+			local res=awards.onDig[i](player,data)
+			
+			if not data['unlocked'] then
+				data['unlocked']={}
+			end
+
+			if res~=nil and (not data['unlocked'][res] or data['unlocked'][res]==false) then
+				data['unlocked'][res]=true
+				minetest.chat_send_player(playern, "Achievement Unlocked: "..res)
+			end
+		end
 	end
 end)
 
 minetest.register_on_newplayer(function(player)
+	--Player data root
 	player_data[player:get_player_name()]={}
-	player_data[player:get_player_name()]['count']={}
-	player_data[player:get_player_name()]['count']['default']={}
-	player_data[player:get_player_name()]['count']['default']['dirt']=0
 	player_data[player:get_player_name()]['name']=player:get_player_name()
+	
+	--The player counter
+	player_data[player:get_player_name()]['count']={}
+
+	--Table to contain achievement records
+	player_data[player:get_player_name()]['unlocked']={}
 end)

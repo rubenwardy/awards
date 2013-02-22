@@ -21,12 +21,8 @@ function awards.register_achievement(name,data_table)
 	table.insert(awards.def,data_table);
 end
 
-function awards.register_onDig(data)
-	table.insert(awards.onDig,data);
-end
-
-function awards:getNodeCount(nodeName)
-	return self.count[nodeName]
+function awards.register_onDig(func)
+	table.insert(awards.onDig,func);
 end
 
 
@@ -36,9 +32,12 @@ awards.register_achievement("award_mesefind",{
 	description = "Found some Mese!",
 })
 
-awards.register_onDig({
-	award="",
-	func=function(player)
-
+awards.register_onDig(function(player,data)
+	if not data['count']['default'] or not data['count']['default']['mese'] then
+		return
 	end
-})
+
+	if data['count']['default']['mese'] > 0 then
+		return "award_mesefind"
+	end
+end)
