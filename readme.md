@@ -17,8 +17,13 @@ The API
 	* sound [optional]
 	* image [optional]
 	* func [optional] - see below
+* awards.give_achievement(name,award)
+	* -- gives an award to a player
 * awards.register_onDig(func)
-	* -- return true if the medal should be rewarded
+	* -- return award name or null
+	* -- there will be built in versions of this function
+* awards.register_onPlace(func)
+	* -- return award name or null
 	* -- there will be built in versions of this function
 
 
@@ -29,6 +34,9 @@ A list of data referenced/hashed by the player's name.
 
 * name [string]
 * getNodeCount('node_name') [function]
-* count [table]
+* count [table] - dig counter
 	* modname [table]
-		*itemname [int]
+		* itemname [int]
+* place [table] - place counter
+	* modname [table]
+		* itemname [int]
