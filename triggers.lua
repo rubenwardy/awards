@@ -68,3 +68,7 @@ minetest.register_on_newplayer(function(player)
 	--Table to contain achievement records
 	player_data[player:get_player_name()]['unlocked']={}
 end)
+
+minetest.register_on_shutdown(function()
+    save_playerD()
+end)

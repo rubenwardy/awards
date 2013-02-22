@@ -4,27 +4,17 @@
 -- this is the api definition file for the awards mod
 -------------------------------------------------------
 
--- The global award namespace
-awards={}
-player_data={}
-
--- A table of award definitions
-awards.def={}
-
--- Load files
-dofile(minetest.get_modpath("awards").."/triggers.lua")
-
 -- Table Save Load Functions
-local function save(table, file)
-	local file = io:open(file, "w")
+local function save_playerD()
+	local file = io.open(minetest.get_worldpath().."/awards.txt", "w")
 	if file then
-		file:write(minetest.serialize(table))
+		file:write(minetest.serialize(player_data))
 		file:close()
 	end
 end
- 
-local function load(file)
-	local file = io:open(file, "r")
+
+local function load_playerD()
+	local file = io.open(minetest.get_worldpath().."/awards.txt", "r")
 	if file then
 		local table = minetest.deserialize(file:read("*all"))
 		if type(table) == "table" then
@@ -34,6 +24,15 @@ local function load(file)
 	return {}
 end
 
+-- The global award namespace
+awards={}
+player_data=load_playerD()
+
+-- A table of award definitions
+awards.def={}
+
+-- Load files
+dofile(minetest.get_modpath("awards").."/triggers.lua")
 
 -- API Functions
 function awards.register_achievement(name,data_table)
@@ -55,6 +54,8 @@ function awards.give_achievement(name,award)
 	if not data['unlocked'][award] or data['unlocked'][award]~=award then
 		data['unlocked'][award]=award
 		minetest.chat_send_player(name, "Achievement Unlocked: "..award)
+		
+		save_playerD()
 	end
 end
 
