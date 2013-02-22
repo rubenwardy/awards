@@ -36,12 +36,15 @@ dofile(minetest.get_modpath("awards").."/triggers.lua")
 
 -- API Functions
 function awards.register_achievement(name,data_table)
-	data_table["name"] = name
-	table.insert(awards.def,data_table);
+	awards['def'][name] = data_table
 end
 
 function awards.register_onDig(func)
 	table.insert(awards.onDig,func);
+end
+
+function awards.register_onPlace(func)
+	table.insert(awards.onPlace,func);
 end
 
 function awards.give_achievement(name,award)
@@ -52,9 +55,31 @@ function awards.give_achievement(name,award)
 	end
 	
 	if not data['unlocked'][award] or data['unlocked'][award]~=award then
+		-- set player_data table
 		data['unlocked'][award]=award
-		minetest.chat_send_player(name, "Achievement Unlocked: "..award)
+
+		-- define local award data
+		local title = award
+		local desc = ""
+
+		-- check definition table
+		if awards['def'][award] and awards['def'][award]['title'] then
+			title=awards['def'][award]['title']
+		end
 		
+		if awards['def'][award] and awards['def'][award]['description'] then
+			desc=awards['def'][award]['description']
+		end
+
+		-- send award header
+		minetest.chat_send_player(name, "Achievement Unlocked: "..title)
+		
+		-- send award content
+		if desc~="" then
+			minetest.chat_send_player(name, desc)
+		end
+		
+		-- save player_data table
 		save_playerD()
 	end
 end
@@ -86,5 +111,15 @@ awards.register_onDig(function(player,data)
 
 	if data['count']['default']['mese'] > 0 then
 		return "award_mesefind"
+	end
+end)
+
+awards.register_onPlace(function(player,data)
+	if not data['place']['default'] or not data['place']['default']['mese'] then
+		return
+	end
+
+	if data['place']['default']['mese'] > 0 then
+		return "award_meseplace"
 	end
 end)
