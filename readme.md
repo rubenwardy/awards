@@ -17,11 +17,9 @@ The API
 	* sound [optional]
 	* image [optional]
 	* func [optional] - see below
-* awards.register_onDig(data_table)
-	* award
-	* func
-		* return true if the medal should be rewarded
-		* there will be built in versions of this function
+* awards.register_onDig(func)
+	* -- return true if the medal should be rewarded
+	* -- there will be built in versions of this function
 
 
 Player Data
