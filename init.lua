@@ -30,7 +30,7 @@ awards.register_achievement("award_woodplace",{
 })
 
 awards.register_onPlace(function(player,data)
-	if not data['place']['default'] or not data['place']['default']['mese'] then
+	if not data['place']['default'] or not data['place']['default']['wood'] then
 		return
 	end
 
