@@ -54,7 +54,7 @@ minetest.register_on_dignode(function(pos, oldnode, digger)
 				data['unlocked']={}
 			end
 
-			if res~=nil and (not data['unlocked'][res] or data['unlocked'][res]==res) then
+			if res~=nil and (not data['unlocked'][res] or data['unlocked'][res]~=res) then
 				data['unlocked'][res]=res
 				minetest.chat_send_player(playern, "Achievement Unlocked: "..res)
 			end
