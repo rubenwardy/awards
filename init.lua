@@ -14,6 +14,26 @@ awards.def={}
 -- Load files
 dofile(minetest.get_modpath("awards").."/triggers.lua")
 
+-- Table Save Load Functions
+local function save(table, file)
+	local file = io:open(file, "w")
+	if file then
+		file:write(minetest.serialize(table))
+		file:close()
+	end
+end
+ 
+local function load(file)
+	local file = io:open(file, "r")
+	if file then
+		local table = minetest.deserialize(file:read("*all"))
+		if type(table) == "table" then
+			return table
+		end
+	end
+	return {}
+end
+
 
 -- API Functions
 function awards.register_achievement(name,data_table)
@@ -23,6 +43,19 @@ end
 
 function awards.register_onDig(func)
 	table.insert(awards.onDig,func);
+end
+
+function awards.give_achievement(name,award)
+	local data=player_data[name]
+
+	if not data['unlocked'] then
+		data['unlocked']={}
+	end
+	
+	if not data['unlocked'][award] or data['unlocked'][award]~=award then
+		data['unlocked'][award]=award
+		minetest.chat_send_player(name, "Achievement Unlocked: "..award)
+	end
 end
 
 -- List a player's achievements
