@@ -24,17 +24,17 @@ end)
 
 
 -- First Wood Placed!
-awards.register_achievement("award_woodplace",{
+awards.register_achievement("award_foundations",{
 	title = "Foundations",
-	description = "First Wood Placed!",
+	description = "Every house starts from its foundations!",
 })
 
 awards.register_onPlace(function(player,data)
-	if not data['place']['default'] or not data['place']['default']['wood'] then
+	if not data['place']['default'] or not data['place']['default']['brick'] then
 		return
 	end
 
-	if data['place']['default']['wood'] > 0 then
-		return "award_woodplace"
+	if data['place']['default']['brick'] > 0 then
+		return "award_foundations"
 	end
 end)
