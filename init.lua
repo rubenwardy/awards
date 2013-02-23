@@ -12,7 +12,7 @@ awards.register_achievement("award_lightitup",{
 	description = "You have placed 100 torches",
 	trigger={
 		type="dig",
-		node="default:tree",
+		node="default:torch",
 		target=100,
 	},
 })
@@ -23,7 +23,7 @@ awards.register_achievement("award_lumberjack",{
 	description = "You have dug 100 tree blocks",
 	trigger={
 		type="dig",
-		node="default:torch",
+		node="default:tree",
 		target=100,
 	},
 })
