@@ -39,6 +39,17 @@ awards.register_achievement("award_mesefind",{
 	},
 })
 
+-- Found a Nyan cat!
+awards.register_achievement("award_nyanfind",{
+	title = "OMG, Nyan Cat!",
+	description = "Find a nyan cat",
+	trigger={
+		type="dig",
+		node="default:nyancat",
+		target=1,
+	},
+})
+
 -- Just entered the mine
 awards.register_achievement("award_mine1",{
 	title = "Just Entered the mine",
