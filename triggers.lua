@@ -4,10 +4,11 @@
 -- this is the trigger handler file for the awards mod
 -------------------------------------------------------
 
--- Function for Triggers
+-- Function and table holders for Triggers
 awards.onDig={}
 awards.onPlace={}
 awards.onTick={}
+awards.onDeath={}
 
 -- Player functions
 
@@ -116,7 +117,7 @@ minetest.register_on_placenode(function(pos, newnode, placer)
 
 		for i=1,# awards.onPlace do
 			local res=nil
-			
+
 			if type(awards.onPlace[i]) == "function" then
 				-- run the function
 				print(i.." is a function")
