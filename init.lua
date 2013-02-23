@@ -92,3 +92,20 @@ awards.register_achievement("award_death1",{
 		target=1,
 	},
 })
+
+-- Burned to death
+awards.register_achievement("award_burn",{
+	title = "you're a witch!",
+	description = "Burn to death in a fire",
+})
+
+awards.register_onDeath(function(player,data)
+	print ("running on death function")
+	local pos=player:getpos()
+
+	if pos and minetest.env:find_node_near(pos, 1, "fire:basic_flame")~=nil then
+		return "award_burn"
+	end
+	
+	return nil
+end)
