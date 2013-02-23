@@ -31,6 +31,24 @@ dofile(minetest.get_modpath("awards").."/triggers.lua")
 
 -- API Functions
 function awards.register_achievement(name,data_table)
+	if data_table['trigger'] and data_table['trigger']['type'] then
+		if data_table['trigger']['type']=="dig" then
+			local tmp={
+				award=name,
+			 	node=data_table['trigger']['node'],
+			 	target=data_table['trigger']['target'],
+			}
+			table.insert(awards.onDig,tmp)
+		elseif data_table['trigger']['type']=="place" then
+			local tmp={
+				award=name,
+			 	node=data_table['trigger']['node'],
+			 	target=data_table['trigger']['target'],
+			}
+			table.insert(awards.onPlace,tmp)
+		end
+	end
+
 	awards['def'][name] = data_table
 end
 
@@ -84,7 +102,7 @@ minetest.register_chatcommand("list_awards", {
 	params = "",
 	description = "list_awards: list your awards",
 	func = function(name, param)
-		minetest.chat_send_player(name, "Your awards:");
+		minetest.chat_send_player(name, name.."'s awards:");
 
 		for _, str in pairs(player_data[name].unlocked) do
 			minetest.chat_send_player(name, str);

@@ -16,27 +16,27 @@ The API
 	* desciption
 	* sound [optional]
 	* image [optional]
-	* func [optional] - see below
+	* trigger [optional] [table]
+		* type - "dig" or "place"
+		* (for dig/place type) node - the nodes name
+		* (for dig/place type) target - how many to dig / place
 * awards.give_achievement(name,award)
 	* -- gives an award to a player
-* awards.register_onDig(func)
+* awards.register_onDig(func(player,data))
 	* -- return award name or null
-	* -- there will be built in versions of this function
-* awards.register_onPlace(func)
+* awards.register_onPlace(func(player,data))
 	* -- return award name or null
-	* -- there will be built in versions of this function
 
 
 Player Data
 ===========
 
 A list of data referenced/hashed by the player's name.
-
-* name [string]
-* getNodeCount('node_name') [function]
-* count [table] - dig counter
-	* modname [table]
-		* itemname [int]
-* place [table] - place counter
-	* modname [table]
-		* itemname [int]
+* player name
+	* name [string]
+	* count [table] - dig counter
+		* modname [table]
+			* itemname [int]
+	* place [table] - place counter
+		* modname [table]
+			* itemname [int]

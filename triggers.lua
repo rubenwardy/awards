@@ -47,7 +47,31 @@ minetest.register_on_dignode(function(pos, oldnode, digger)
 		local data=player_data[playern]
 
 		for i=1,# awards.onDig do
-			local res=awards.onDig[i](player,data)
+			local res=nil
+			
+			if type(awards.onDig[i]) == "function" then
+				-- run the function
+				print(i.." is a function")
+				res=awards.onDig[i](player,data)
+			elseif type(awards.onDig[i]) == "table" then
+				-- handle table here
+				print(i.." is a table")
+				if not awards.onDig[i]['node'] or not awards.onDig[i]['target'] or not awards.onDig[i]['award'] then
+					-- table running failed!
+				else
+					-- run the table
+					local tnodedug = string.split(awards.onDig[i]['node'], ":")
+
+					local tmod=tnodedug[1]
+					local titem=tnodedug[2]
+
+					if tmod==nil or titem==nil or not data['count'][tmod] or not data['count'][tmod][titem] then
+						-- table running failed!
+					elseif data['count'][tmod][titem] > awards.onDig[i]['target']-1 then
+						res=awards.onDig[i]['award']
+					end
+				end
+			end
 
 			if res~=nil then
 				awards.give_achievement(playern,res)
@@ -91,7 +115,31 @@ minetest.register_on_placenode(function(pos, newnode, placer)
 		local data=player_data[playern]
 
 		for i=1,# awards.onPlace do
-			local res=awards.onPlace[i](player,data)
+			local res=nil
+			
+			if type(awards.onPlace[i]) == "function" then
+				-- run the function
+				print(i.." is a function")
+				res=awards.onPlace[i](player,data)
+			elseif type(awards.onPlace[i]) == "table" then
+				-- handle table here
+				print(i.." is a table")
+				if not awards.onPlace[i]['node'] or not awards.onPlace[i]['target'] or not awards.onPlace[i]['award'] then
+					-- table running failed!
+				else
+					-- run the table
+					local tnodedug = string.split(awards.onPlace[i]['node'], ":")
+
+					local tmod=tnodedug[1]
+					local titem=tnodedug[2]
+
+					if tmod==nil or titem==nil or not data['place'][tmod] or not data['place'][tmod][titem] then
+						-- table running failed!
+					elseif data['place'][tmod][titem] > awards.onPlace[i]['target']-1 then
+						res=awards.onPlace[i]['award']
+					end
+				end
+			end
 
 			if res~=nil then
 				awards.give_achievement(playern,res)
@@ -102,7 +150,7 @@ end)
 
 minetest.register_on_newplayer(function(player)
 	minetest.chat_send_player(player:get_player_name(),"[Awards] Registering you now...")
-	
+
 	--Player data root
 	player_data[player:get_player_name()]={}
 	player_data[player:get_player_name()]['name']=player:get_player_name()
