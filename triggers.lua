@@ -149,12 +149,47 @@ minetest.register_on_placenode(function(pos, newnode, placer)
 	end
 end)
 
-minetest.register_on_newplayer(function(player)
-	minetest.chat_send_player(player:get_player_name(),"[Awards] Registering you now...")
+minetest.register_on_dieplayer(function(player)
+        player_data[player:get_player_name()]['deaths']=player_data[player:get_player_name()]['deaths']+1
+	
+	-- Set up the variables
+	local playern=player:get_player_name()
+	local data=player_data[playern]
+	
+	-- Roll through the onDeath functions
+	for i=1,# awards.onDeath do
+		local res=nil
+		if type(awards.onDeath[i]) == "function" then
+			-- run the function
+			print(i.." is a function")
+			res=awards.onDeath[i](player,data)
+		elseif type(awards.onDeath[i]) == "table" then
+			-- handle table here
+			print(i.." is a table")
+			if not awards.onDeath[i]['target'] or not awards.onDeath[i]['award'] then
+				-- table running failed!
+			else
+				-- run the table
 
+				if not data['deaths'] then
+					-- table running failed!
+				elseif data['deaths'] > awards.onDeath[i]['target']-1 then
+					res=awards.onDeath[i]['award']
+				end
+			end
+		end
+
+		if res~=nil then
+			awards.give_achievement(playern,res)
+		end
+	end
+end)
+
+minetest.register_on_newplayer(function(player)
 	--Player data root
 	player_data[player:get_player_name()]={}
 	player_data[player:get_player_name()]['name']=player:get_player_name()
+	player_data[player:get_player_name()]['deaths']=0
 	
 	--The player counter
 	player_data[player:get_player_name()]['count']={}

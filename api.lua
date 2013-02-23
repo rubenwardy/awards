@@ -46,6 +46,12 @@ function awards.register_achievement(name,data_table)
 			 	target=data_table['trigger']['target'],
 			}
 			table.insert(awards.onPlace,tmp)
+		elseif data_table['trigger']['type']=="death" then
+			local tmp={
+				award=name,
+			 	target=data_table['trigger']['target'],
+			}
+			table.insert(awards.onDeath,tmp)
 		end
 	end
 
@@ -58,6 +64,10 @@ end
 
 function awards.register_onPlace(func)
 	table.insert(awards.onPlace,func);
+end
+
+function awards.register_onDeath(func)
+	table.insert(awards.onDeath,func);
 end
 
 function awards.give_achievement(name,award)

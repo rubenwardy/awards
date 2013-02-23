@@ -82,3 +82,13 @@ awards.register_achievement("award_mine4",{
 		target=10000,
 	},
 })
+
+-- First Death
+awards.register_achievement("award_death1",{
+	title = "First Death",
+	description = "Oh well, it does not matter you have more lives than a cat",
+	trigger={
+		type="death",
+		target=1,
+	},
+})

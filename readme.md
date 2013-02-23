@@ -19,12 +19,14 @@ The API
 	* trigger [optional] [table]
 		* type - "dig" or "place"
 		* (for dig/place type) node - the nodes name
-		* (for dig/place type) target - how many to dig / place
+		* (for all types) target - how many to dig / place
 * awards.give_achievement(name,award)
 	* -- gives an award to a player
 * awards.register_onDig(func(player,data))
 	* -- return award name or null
 * awards.register_onPlace(func(player,data))
+	* -- return award name or null
+* awards.register_onDeath(func(player,data))
 	* -- return award name or null
 
 
