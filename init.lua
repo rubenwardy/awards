@@ -23,7 +23,7 @@ awards.register_onDig(function(player,data)
 end)
 
 
--- First Wood Placed!
+-- First Brick Placed!
 awards.register_achievement("award_foundations",{
 	title = "Foundations",
 	description = "Every house starts from its foundations!",
