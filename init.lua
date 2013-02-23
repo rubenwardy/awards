@@ -11,7 +11,7 @@ awards.register_achievement("award_lightitup",{
 	title = "Light It Up",
 	description = "You have placed 100 torches",
 	trigger={
-		type="dig",
+		type="place",
 		node="default:torch",
 		target=100,
 	},
