@@ -1,6 +1,6 @@
 
 -- Table Save Load Functions
-local function save_playerD()
+function save_playerD()
 	local file = io.open(minetest.get_worldpath().."/awards.txt", "w")
 	if file then
 		file:write(minetest.serialize(player_data))
@@ -28,6 +28,7 @@ awards.def={}
 
 -- Load files
 dofile(minetest.get_modpath("awards").."/triggers.lua")
+dofile(minetest.get_modpath("awards").."/config.txt")
 
 -- API Functions
 function awards.register_achievement(name,data_table)
@@ -53,8 +54,17 @@ function awards.register_achievement(name,data_table)
 			}
 			table.insert(awards.onDeath,tmp)
 		end
-	end
+		if data_table['icon'] == nil or data_table['icon'] == "" then
+			data_table['icon'] = "unknown.png"
+		end
+		if data_table['background'] == nil or data_table['background'] == "" then
+			data_table['background'] = "bg_default.png"
+		end
+		if data_table['custom_announce'] == nil or data_table['custom_announce'] == "" then
+			data_table['custom_announce'] = "Achievement Unlocked:"
+		end
 
+	end
 	awards['def'][name] = data_table
 end
 
@@ -86,8 +96,11 @@ function awards.give_achievement(name,award)
 		local desc = ""
 
 		-- check definition table
-		if awards['def'][award] and awards['def'][award]['title'] then
+		if awards['def'][award] and awards['def'][award]['title'] and awards['def'][award]['description'] and awards['def'][award]['icon'] then
 			title=awards['def'][award]['title']
+			background=awards['def'][award]['background']
+			icon=awards['def'][award]['icon']
+			custom_announce=awards['def'][award]['custom_announce']
 		end
 		
 		if awards['def'][award] and awards['def'][award]['description'] then
@@ -95,13 +108,19 @@ function awards.give_achievement(name,award)
 		end
 
 		-- send award header
+		if Use_Formspec == true then
+		minetest.show_formspec(name, "achievements:unlocked", "size[4,2]"..
+					"image_button_exit[0,0;4,2;"..background..";close1; ]"..
+					"image_button_exit[0.2,0.8;1,1;"..icon..";close2; ]"..
+					"label[1.1,1;"..title.."]"..
+					"label[0.3,0.1;"..custom_announce.."]")
+		else
 		minetest.chat_send_player(name, "Achievement Unlocked: "..title)
-		
-		-- send award content
-		if desc~="" then
-			minetest.chat_send_player(name, desc)
+			if desc~="" then
+				minetest.chat_send_player(name, desc)
+			end
 		end
-		
+		print(name.." Has unlocked"..title..".")
 		-- save playertable
 		save_playerD()
 	end
