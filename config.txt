@@ -1,0 +1,8 @@
+--	AWARDS
+--	   by Rubenwardy, CC-BY-SA
+-------------------------------------------------------
+-- this is the configuration file for the awards mod
+-------------------------------------------------------
+
+Use_Formspec = true
+--Use a graphical display for unlocking achievements. (Possible values: true | false)

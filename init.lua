@@ -10,6 +10,7 @@ dofile(minetest.get_modpath("awards").."/api.lua")
 awards.register_achievement("award_lightitup",{
 	title = "Light It Up",
 	description = "You have placed 100 torches",
+	icon = "novicebuilder.png",
 	trigger={
 		type="place",
 		node="default:torch",
@@ -32,10 +33,12 @@ awards.register_achievement("award_lumberjack",{
 awards.register_achievement("award_mesefind",{
 	title = "First Mese Find",
 	description = "Found some Mese!",
+	icon = "mese.png",
+	background = "bg_mining.png",
 	trigger={
 		type="dig",
-		node="default:mese",
-		target=1,
+		node="default:stone_with_mese",
+		target=100,
 	},
 })
 
@@ -52,8 +55,10 @@ awards.register_achievement("award_nyanfind",{
 
 -- Just entered the mine
 awards.register_achievement("award_mine1",{
-	title = "Just Entered the mine",
+	title = "Entering the mine",
 	description = "You have dug 10 stone blocks",
+	icon = "miniminer.png",
+	background = "bg_mining.png",
 	trigger={
 		type="dig",
 		node="default:stone",
@@ -65,6 +70,8 @@ awards.register_achievement("award_mine1",{
 awards.register_achievement("award_mine2",{
 	title = "Mini Miner",
 	description = "You have dug 100 stone blocks",
+	icon = "miniminer.png",
+	background = "bg_mining.png",
 	trigger={
 		type="dig",
 		node="default:stone",
@@ -76,6 +83,8 @@ awards.register_achievement("award_mine2",{
 awards.register_achievement("award_mine3",{
 	title = "Hardened Miner",
 	description = "You have dug 1000 stone blocks",
+	icon = "miniminer.png",
+	background = "bg_mining.png",
 	trigger={
 		type="dig",
 		node="default:stone",
@@ -87,6 +96,8 @@ awards.register_achievement("award_mine3",{
 awards.register_achievement("award_mine4",{
 	title = "Master Miner",
 	description = "You have dug 10000 stone blocks",
+	icon = "miniminer.png",
+	background = "bg_mining.png",
 	trigger={
 		type="dig",
 		node="default:stone",
