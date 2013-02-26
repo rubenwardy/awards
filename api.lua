@@ -1,4 +1,3 @@
-
 -- Table Save Load Functions
 function save_playerD()
 	local file = io.open(minetest.get_worldpath().."/awards.txt", "w")
@@ -54,17 +53,18 @@ function awards.register_achievement(name,data_table)
 			}
 			table.insert(awards.onDeath,tmp)
 		end
-		if data_table['icon'] == nil or data_table['icon'] == "" then
-			data_table['icon'] = "unknown.png"
-		end
-		if data_table['background'] == nil or data_table['background'] == "" then
-			data_table['background'] = "bg_default.png"
-		end
-		if data_table['custom_announce'] == nil or data_table['custom_announce'] == "" then
-			data_table['custom_announce'] = "Achievement Unlocked:"
-		end
-
 	end
+
+	if data_table['icon'] == nil or data_table['icon'] == "" then
+		data_table['icon'] = "unknown.png"
+	end
+	if data_table['background'] == nil or data_table['background'] == "" then
+		data_table['background'] = "bg_default.png"
+	end
+	if data_table['custom_announce'] == nil or data_table['custom_announce'] == "" then
+		data_table['custom_announce'] = "Achievement Unlocked:"
+	end
+	
 	awards['def'][name] = data_table
 end
 
