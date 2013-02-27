@@ -1,3 +1,9 @@
+-- AWARDS
+-- by Rubenwardy, CC-BY-SA
+-------------------------------------------------------
+-- this is api function file
+-------------------------------------------------------
+
 -- Table Save Load Functions
 function save_playerD()
 	local file = io.open(minetest.get_worldpath().."/awards.txt", "w")
