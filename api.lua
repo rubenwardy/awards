@@ -31,6 +31,7 @@ dofile(minetest.get_modpath("awards").."/config.txt")
 
 -- API Functions
 function awards.register_achievement(name,data_table)
+	-- see if a trigger is defined in the achievement definition
 	if data_table['trigger'] and data_table['trigger']['type'] then
 		if data_table['trigger']['type']=="dig" then
 			local tmp={
@@ -55,6 +56,7 @@ function awards.register_achievement(name,data_table)
 		end
 	end
 
+	-- check icon, background and custom_announce data
 	if data_table['icon'] == nil or data_table['icon'] == "" then
 		data_table['icon'] = "unknown.png"
 	end
@@ -65,62 +67,82 @@ function awards.register_achievement(name,data_table)
 		data_table['custom_announce'] = "Achievement Unlocked:"
 	end
 	
+	-- add the achievement to the definition table
 	awards['def'][name] = data_table
 end
 
+-- this function adds a trigger function or table to the ondig table
 function awards.register_onDig(func)
 	table.insert(awards.onDig,func);
 end
 
+-- this function adds a trigger function or table to the ondig table
 function awards.register_onPlace(func)
 	table.insert(awards.onPlace,func);
 end
 
+-- this function adds a trigger function or table to the ondeath table
 function awards.register_onDeath(func)
 	table.insert(awards.onDeath,func);
 end
 
+-- This function is called whenever a target condition is met.
+-- It checks if a player already has that achievement, and if they do not,
+-- it gives it to them
+----------------------------------------------
+--awards.give_achievement(name,award)
+-- name - the name of the player
+-- award - the name of the award to give
 function awards.give_achievement(name,award)
+	-- load the player's data table
 	local data=player_data[name]
 
+	-- check if the table that holds a player's achievements exists
 	if not data['unlocked'] then
 		data['unlocked']={}
 	end
 	
+	-- check to see if the player does not already have that achievement
 	if not data['unlocked'][award] or data['unlocked'][award]~=award then
-		-- set player_data table
+		-- save the achievement to the player_data table
 		data['unlocked'][award]=award
 
-		-- define local award data
+		-- define local variables, so award data can be saved
 		local title = award
 		local desc = ""
 
-		-- check definition table
-		if awards['def'][award] and awards['def'][award]['title'] and awards['def'][award]['description'] and awards['def'][award]['icon'] then
+		-- check definition table to get values
+		if awards['def'][award] and awards['def'][award]['title'] and awards['def'][award]['custom_announce'] and awards['def'][award]['background'] and awards['def'][award]['icon'] then
 			title=awards['def'][award]['title']
 			background=awards['def'][award]['background']
 			icon=awards['def'][award]['icon']
 			custom_announce=awards['def'][award]['custom_announce']
 		end
 		
+		-- check definition table to get description
 		if awards['def'][award] and awards['def'][award]['description'] then
 			desc=awards['def'][award]['description']
 		end
 
-		-- send award header
+		-- send the won award message to the player
 		if Use_Formspec == true then
-		minetest.show_formspec(name, "achievements:unlocked", "size[4,2]"..
+			-- use a formspec to send it
+			minetest.show_formspec(name, "achievements:unlocked", "size[4,2]"..
 					"image_button_exit[0,0;4,2;"..background..";close1; ]"..
 					"image_button_exit[0.2,0.8;1,1;"..icon..";close2; ]"..
 					"label[1.1,1;"..title.."]"..
 					"label[0.3,0.1;"..custom_announce.."]")
 		else
-		minetest.chat_send_player(name, "Achievement Unlocked: "..title)
+			-- use the chat console to send it
+			minetest.chat_send_player(name, "Achievement Unlocked: "..title)
 			if desc~="" then
 				minetest.chat_send_player(name, desc)
 			end
 		end
+	
+		-- record this in the log	
 		print(name.." Has unlocked"..title..".")
+		
 		-- save playertable
 		save_playerD()
 	end
