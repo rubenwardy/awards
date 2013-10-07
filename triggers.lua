@@ -25,12 +25,14 @@ minetest.register_on_dignode(function(pos, oldnode, digger)
 		--check the player's directory
 		if not player_data[playern] then
         		player_data[playern]={}
-			player_data[playern]['count']={}
 			player_data[playern]['name']=playern
 	        end
+	        if not player_data[playern]['count'] then
+	        	player_data[playern]['count']={}
+		end
 
                 --check player.count.mod
-		if not player_data[playern]['count'][mod] then
+		if not player_data[playern].count[mod] then
         		player_data[playern]['count'][mod]={}
 	        end
 
@@ -93,23 +95,25 @@ minetest.register_on_placenode(function(pos, newnode, placer)
 		--check the player's directory
 		if not player_data[playern] then
         		player_data[playern]={}
-			player_data[playern]['place']={}
-			player_data[playern]['name']=playern
+			player_data[playern].place=playern
 	        end
+	        if not player_data[playern].place then
+	        	player_data[playern]['place']={}
+		end
 
                 --check player.count.mod
-		if not player_data[playern]['place'][mod] then
-        		player_data[playern]['place'][mod]={}
+		if not player_data[playern].place[mod] then
+        		player_data[playern].place[mod]={}
 	        end
 
 		--check player.count.mod.item
-	        if not player_data[playern]['place'][mod][item] then
-        		player_data[playern]['place'][mod][item]=0
+	        if not player_data[playern].place[mod][item] then
+        		player_data[playern].place[mod][item]=0
 	        end
 
-		player_data[playern]['place'][mod][item]=player_data[playern]['place'][mod][item]+1
+		player_data[playern].place[mod][item]=player_data[playern].place[mod][item]+1
 
-		print(" - "..mod..":"..item.." 's place is now "..(player_data[playern]['place'][mod][item]))
+		print(" - "..mod..":"..item.." 's place is now "..(player_data[playern].place[mod][item]))
 		
 		-- Roll through the onDig functions
 		local player=placer
@@ -125,7 +129,7 @@ minetest.register_on_placenode(function(pos, newnode, placer)
 			elseif type(awards.onPlace[i]) == "table" then
 				-- handle table here
 				print(i.." is a table")
-				if not awards.onPlace[i]['node'] or not awards.onPlace[i]['target'] or not awards.onPlace[i]['award'] then
+				if not awards.onPlace[i]['node'] or not awards.onPlace[i].target or not awards.onPlace[i].award then
 					-- table running failed!
 				else
 					-- run the table
@@ -134,7 +138,7 @@ minetest.register_on_placenode(function(pos, newnode, placer)
 					local tmod=tnodedug[1]
 					local titem=tnodedug[2]
 
-					if tmod==nil or titem==nil or not data['place'][tmod] or not data['place'][tmod][titem] then
+					if tmod==nil or titem==nil or not data.place[tmod] or not data.place[tmod][titem] then
 						-- table running failed!
 					elseif data['place'][tmod][titem] > awards.onPlace[i]['target']-1 then
 						res=awards.onPlace[i]['award']
