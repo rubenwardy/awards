@@ -4,8 +4,11 @@
 -- this is api function file
 -------------------------------------------------------
 
+-- The global award namespace
+awards = {}
+
 -- Table Save Load Functions
-function save_playerD()
+function awards.save()
 	local file = io.open(minetest.get_worldpath().."/awards.txt", "w")
 	if file then
 		file:write(minetest.serialize(awards.players))
@@ -13,7 +16,7 @@ function save_playerD()
 	end
 end
 
-local function load_playerD()
+function awards.load()
 	local file = io.open(minetest.get_worldpath().."/awards.txt", "r")
 	if file then
 		local table = minetest.deserialize(file:read("*all"))
@@ -24,15 +27,13 @@ local function load_playerD()
 	return {}
 end
 
--- The global award namespace
-awards={}
-awards.players=load_playerD()
+awards.players = awards.load()
 function awards.player(name)
 	return awards.players[player]
 end
 
 -- A table of award definitions
-awards.def={}
+awards.def = {}
 
 function awards.tbv(tb,value,default)
 	if not default then
@@ -175,7 +176,7 @@ function awards.give_achievement(name,award)
 		print(name.." Has unlocked"..title..".")
 		
 		-- save playertable
-		save_playerD()
+		awards.save()
 	end
 end
 

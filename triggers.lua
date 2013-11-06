@@ -188,5 +188,5 @@ minetest.register_on_newplayer(function(player)
 end)
 
 minetest.register_on_shutdown(function()
-    save_playerD()
+    awards.save()
 end)
