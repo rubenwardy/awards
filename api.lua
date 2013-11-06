@@ -8,7 +8,7 @@
 function save_playerD()
 	local file = io.open(minetest.get_worldpath().."/awards.txt", "w")
 	if file then
-		file:write(minetest.serialize(player_data))
+		file:write(minetest.serialize(awards.players))
 		file:close()
 	end
 end
@@ -26,7 +26,10 @@ end
 
 -- The global award namespace
 awards={}
-player_data=load_playerD()
+awards.players=load_playerD()
+function awards.player(name)
+	return awards.players[player]
+end
 
 -- A table of award definitions
 awards.def={}
@@ -114,7 +117,7 @@ end
 -- award - the name of the award to give
 function awards.give_achievement(name,award)
 	-- Access Player Data
-	local data=player_data[name]
+	local data=awards.players[name]
 	
 	-- Perform checks
 	if not data then
@@ -181,13 +184,13 @@ minetest.register_chatcommand("list_awards", {
 	params = "",
 	description = "list_awards: list your awards",
 	func = function(name, param)
-		if not player_data[name] then
+		if not awards.players[name] then
 			minetest.chat_send_player(name, "Unable to find your award listings!")
 		end
 
 		minetest.chat_send_player(name, name.."'s awards:")
 
-		for _, str in pairs(player_data[name].unlocked) do
+		for _, str in pairs(awards.players[name].unlocked) do
 			minetest.chat_send_player(name, str);
 		end
 	end,

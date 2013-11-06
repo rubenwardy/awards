@@ -29,19 +29,19 @@ minetest.register_on_dignode(function(pos, oldnode, digger)
 	end
 
 	-- Run checks
-	awards.tbv(player_data,				playern			)
-	awards.tbv(player_data[playern],		"count"			)
-	awards.tbv(player_data[playern],		"name",		playern	)
-	awards.tbv(player_data[playern].count,		mod)
-	awards.tbv(player_data[playern].count[mod],	item,		0	)
+	awards.tbv(awards.players,				playern			)
+	awards.tbv(awards.players[playern],		"count"			)
+	awards.tbv(awards.players[playern],		"name",		playern	)
+	awards.tbv(awards.players[playern].count,		mod)
+	awards.tbv(awards.players[playern].count[mod],	item,		0	)
 
 	-- Increment counder
-	player_data[playern].count[mod][item]=player_data[playern].count[mod][item]+1
-	print(" - "..mod..":"..item.." 's count is now "..(player_data[playern].count[mod][item]))
+	awards.players[playern].count[mod][item]=awards.players[playern].count[mod][item]+1
+	print(" - "..mod..":"..item.." 's count is now "..(awards.players[playern].count[mod][item]))
 
 	-- Run callbacks and triggers
 	local player=digger
-	local data=player_data[playern]
+	local data=awards.players[playern]
 
 	for i=1,# awards.onDig do
 		local res = nil
@@ -91,19 +91,19 @@ minetest.register_on_placenode(function(pos,node,digger)
 	if (not playern or not nodedug or not mod or not item) then
 		return
 	end
-	awards.tbv(player_data,				playern			)
-	awards.tbv(player_data[playern],		"place"			)
-	awards.tbv(player_data[playern],		"name",		playern	)
-	awards.tbv(player_data[playern].place,		mod)
-	awards.tbv(player_data[playern].place[mod],	item,		0	)
+	awards.tbv(awards.players,				playern			)
+	awards.tbv(awards.players[playern],		"place"			)
+	awards.tbv(awards.players[playern],		"name",		playern	)
+	awards.tbv(awards.players[playern].place,		mod)
+	awards.tbv(awards.players[playern].place[mod],	item,		0	)
 
 	-- Increment counder
-	player_data[playern].place[mod][item] = player_data[playern].place[mod][item]+1
-	print(" - "..mod..":"..item.." 's count is now "..(player_data[playern].place[mod][item]))
+	awards.players[playern].place[mod][item] = awards.players[playern].place[mod][item]+1
+	print(" - "..mod..":"..item.." 's count is now "..(awards.players[playern].place[mod][item]))
 
 	-- Run callbacks and triggers
 	local player = digger
-	local data = player_data[playern]
+	local data = awards.players[playern]
 	for i=1,# awards.onPlace do
 		local res = nil
 		if type(awards.onPlace[i]) == "function" then
@@ -140,16 +140,16 @@ minetest.register_on_dieplayer(function(player)
 	if not player or not player:get_player_name() or player:get_player_name()=="" then
 		return
 	end
-	awards.tbv(player_data,				playern			)
-	awards.tbv(player_data[playern],		"name",		playern	)
-	awards.tbv(player_data[playern],		"deaths",	0	)
+	awards.tbv(awards.players,				playern			)
+	awards.tbv(awards.players[playern],		"name",		playern	)
+	awards.tbv(awards.players[playern],		"deaths",	0	)
 
 	-- Increment counter
-        player_data[player:get_player_name()].deaths = player_data[player:get_player_name()].deaths + 1
+        awards.players[player:get_player_name()].deaths = awards.players[player:get_player_name()].deaths + 1
 	
 	-- Run callbacks and triggers
 	local playern=player:get_player_name()
-	local data=player_data[playern]
+	local data=awards.players[playern]
 	for i=1,# awards.onDeath do
 		local res=nil
 		if type(awards.onDeath[i]) == "function" then
@@ -179,12 +179,12 @@ minetest.register_on_dieplayer(function(player)
 end)
 
 minetest.register_on_newplayer(function(player)
-	awards.tbv(player_data, player:get_player_name())
-	awards.tbv(player_data[playern], "name", player:get_player_name())
-	awards.tbv(player_data[playern], "unlocked")
-	awards.tbv(player_data[playern], "place")
-	awards.tbv(player_data[playern], "count")
-	awards.tbv(player_data[playern], "deaths", 0)
+	awards.tbv(awards.players, player:get_player_name())
+	awards.tbv(awards.players[playern], "name", player:get_player_name())
+	awards.tbv(awards.players[playern], "unlocked")
+	awards.tbv(awards.players[playern], "place")
+	awards.tbv(awards.players[playern], "count")
+	awards.tbv(awards.players[playern], "deaths", 0)
 end)
 
 minetest.register_on_shutdown(function()
