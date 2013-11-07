@@ -40,7 +40,10 @@ function awards.tbv(tb,value,default)
 		default = {}
 	end
 	if not tb or type(tb) ~= "table" then
-		print("Table is null, or not a table!")
+		if not value then
+			value = "[NULL]"
+		end
+		print("Table '"..value.."' is null, or not a table!")
 		return
 	end
 	if not tb[value] then
