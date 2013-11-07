@@ -39,8 +39,8 @@ function awards.tbv(tb,value,default)
 	if not default then
 		default = {}
 	end
-	if not tb then
-		print("Table not defined!")
+	if not tb or type(tb) ~= "table" then
+		print("Table is null, or not a table!")
 		return
 	end
 	if not tb[value] then
