@@ -43,7 +43,7 @@ function awards.tbv(tb,value,default)
 		if not value then
 			value = "[NULL]"
 		end
-		print("Table '"..value.."' is null, or not a table!")
+		print("Table '"..value.."' is null, or not a table! Dump: "..dump(tb))
 		return
 	end
 	if not tb[value] then
