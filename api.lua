@@ -185,8 +185,9 @@ minetest.register_chatcommand("list_awards", {
 	params = "",
 	description = "list_awards: list your awards",
 	func = function(name, param)
-		if not awards.players[name] then
-			minetest.chat_send_player(name, "Unable to find your award listings!")
+		if not awards.players[name] or not awards.players[name].unlocked  then
+			minetest.chat_send_player(name, "You do not have any awards")
+			return
 		end
 
 		minetest.chat_send_player(name, name.."'s awards:")
