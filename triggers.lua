@@ -27,13 +27,9 @@ minetest.register_on_dignode(function(pos, oldnode, digger)
 	if (not playern or not nodedug or not mod or not item) then
 		return
 	end
-
-	-- Run checks
-	awards.tbv(awards.players,				playern			)
-	awards.tbv(awards.players[playern],		"count"			)
-	awards.tbv(awards.players[playern],		"name",		playern	)
-	awards.tbv(awards.players[playern].count,		mod)
-	awards.tbv(awards.players[playern].count[mod],	item,		0	)
+	awards.assertPlayer(playern)
+	awards.tbv(awards.players[playern].count,                mod)
+        awards.tbv(awards.players[playern].count[mod],        item,                0        )
 
 	-- Increment counder
 	awards.players[playern].count[mod][item]=awards.players[playern].count[mod][item]+1
@@ -47,14 +43,12 @@ minetest.register_on_dignode(function(pos, oldnode, digger)
 		local res = nil
 		if type(awards.onDig[i]) == "function" then
 			-- Run trigger callback
-			print(i.." is a function")
 			res = awards.onDig[i](player,data)
 		elseif type(awards.onDig[i]) == "table" then
 			-- Handle table trigger
-			print(i.." is a table")
 			if not awards.onDig[i].node or not awards.onDig[i].target or not awards.onDig[i].award then
 				-- table running failed!
-				print("onDig trigger "..i.." is invalid!")
+				print("[ERROR] awards - onDig trigger "..i.." is invalid!")
 			else
 				-- run the table
 				local tnodedug = string.split(awards.onDig[i].node, ":")
@@ -91,15 +85,13 @@ minetest.register_on_placenode(function(pos,node,digger)
 	if (not playern or not nodedug or not mod or not item) then
 		return
 	end
-	awards.tbv(awards.players,				playern			)
-	awards.tbv(awards.players[playern],		"place"			)
-	awards.tbv(awards.players[playern],		"name",		playern	)
-	awards.tbv(awards.players[playern].place,		mod)
-	awards.tbv(awards.players[playern].place[mod],	item,		0	)
+	awards.assertPlayer(playern)
+	awards.tbv(awards.players[playern].place,                mod)
+        awards.tbv(awards.players[playern].place[mod],        item,                0        )
 
 	-- Increment counder
 	awards.players[playern].place[mod][item] = awards.players[playern].place[mod][item]+1
-	print(" - "..mod..":"..item.." 's count is now "..(awards.players[playern].place[mod][item]))
+	print(" - "..mod..":"..item.." 's place count is now "..(awards.players[playern].place[mod][item]))
 
 	-- Run callbacks and triggers
 	local player = digger
@@ -108,14 +100,12 @@ minetest.register_on_placenode(function(pos,node,digger)
 		local res = nil
 		if type(awards.onPlace[i]) == "function" then
 			-- Run trigger callback
-			print(i.." is a function")
 			res = awards.onPlace[i](player,data)
 		elseif type(awards.onPlace[i]) == "table" then
 			-- Handle table trigger
-			print(i.." is a table")
 			if not awards.onPlace[i].node or not awards.onPlace[i].target or not awards.onPlace[i].award then
 				-- table running failed!
-				print("onPlace trigger "..i.." is invalid!")
+				print("[ERROR] awards - onPlace trigger "..i.." is invalid!")
 			else
 				-- run the table
 				local tnodedug = string.split(awards.onPlace[i].node, ":")
@@ -141,9 +131,8 @@ minetest.register_on_dieplayer(function(player)
 		return
 	end
 	local playern = player:get_player_name()
-	awards.tbv(awards.players,				playern			)
-	awards.tbv(awards.players[playern],		"name",		playern	)
-	awards.tbv(awards.players[playern],		"deaths",	0	)
+	awards.assertPlayer(playern)
+
 
 	-- Increment counter
         awards.players[player:get_player_name()].deaths = awards.players[player:get_player_name()].deaths + 1
@@ -154,14 +143,12 @@ minetest.register_on_dieplayer(function(player)
 		local res=nil
 		if type(awards.onDeath[i]) == "function" then
 			-- Run trigger callback
-			print(i.." is a function")
 			res=awards.onDeath[i](player,data)
 		elseif type(awards.onDeath[i]) == "table" then
 			-- handle table here
-			print(i.." is a table")
 			if not awards.onDeath[i].target or not awards.onDeath[i].award then
 				-- table running failed!
-				print("onDeath trigger "..i.." is invalid!")
+				print("[ERROR] awards - onDeath trigger "..i.." is invalid!")
 			else
 				-- run the table
 				if not data.deaths then
@@ -180,12 +167,7 @@ end)
 
 minetest.register_on_newplayer(function(player)
 	local playern = player:get_player_name()
-	awards.tbv(awards.players, playern)
-	awards.tbv(awards.players[playern], "name", playern)
-	awards.tbv(awards.players[playern], "unlocked")
-	awards.tbv(awards.players[playern], "place")
-	awards.tbv(awards.players[playern], "count")
-	awards.tbv(awards.players[playern], "deaths", 0)
+	awards.assertPlayer(playern)
 end)
 
 minetest.register_on_shutdown(function()

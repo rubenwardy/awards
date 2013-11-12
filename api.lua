@@ -35,11 +35,10 @@ end
 -- A table of award definitions
 awards.def = {}
 
-function awards.tbv(tb,value)
-	awards.tbv_default(tb,value,{})
-end
-
-function awards.tbv_default(tb,value,default)
+function awards.tbv(tb,value,default)
+	if not default then
+		default = {}
+	end
 	if not tb or type(tb) ~= "table" then
 		if not value then
 			value = "[NULL]"
@@ -56,6 +55,15 @@ function awards.tbv_default(tb,value,default)
 	if not tb[value] then
 		tb[value] = default
 	end
+end
+
+function awards.assertPlayer(playern)
+	awards.tbv(awards.players, playern)
+	awards.tbv(awards.players[playern], "name", playern)
+	awards.tbv(awards.players[playern], "unlocked")
+	awards.tbv(awards.players[playern], "place")
+	awards.tbv(awards.players[playern], "count")
+	awards.tbv(awards.players[playern], "deaths", 0)
 end
 
 -- Load files
