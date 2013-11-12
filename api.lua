@@ -35,10 +35,11 @@ end
 -- A table of award definitions
 awards.def = {}
 
-function awards.tbv(tb,value,default)
-	if not default then
-		default = {}
-	end
+function awards.tbv(tb,value)
+	awards.tbv_default(tb,value,{})
+end
+
+function awards.tbv_default(tb,value,default)
 	if not tb or type(tb) ~= "table" then
 		if not value then
 			value = "[NULL]"

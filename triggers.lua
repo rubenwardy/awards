@@ -140,6 +140,7 @@ minetest.register_on_dieplayer(function(player)
 	if not player or not player:get_player_name() or player:get_player_name()=="" then
 		return
 	end
+	local playern = player:get_player_name()
 	awards.tbv(awards.players,				playern			)
 	awards.tbv(awards.players[playern],		"name",		playern	)
 	awards.tbv(awards.players[playern],		"deaths",	0	)
@@ -148,7 +149,6 @@ minetest.register_on_dieplayer(function(player)
         awards.players[player:get_player_name()].deaths = awards.players[player:get_player_name()].deaths + 1
 	
 	-- Run callbacks and triggers
-	local playern=player:get_player_name()
 	local data=awards.players[playern]
 	for i=1,# awards.onDeath do
 		local res=nil
@@ -179,8 +179,9 @@ minetest.register_on_dieplayer(function(player)
 end)
 
 minetest.register_on_newplayer(function(player)
-	awards.tbv(awards.players, player:get_player_name())
-	awards.tbv(awards.players[playern], "name", player:get_player_name())
+	local playern = player:get_player_name()
+	awards.tbv(awards.players, playern)
+	awards.tbv(awards.players[playern], "name", playern)
 	awards.tbv(awards.players[playern], "unlocked")
 	awards.tbv(awards.players[playern], "place")
 	awards.tbv(awards.players[playern], "count")
