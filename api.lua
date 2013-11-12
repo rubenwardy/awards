@@ -43,7 +43,13 @@ function awards.tbv(tb,value,default)
 		if not value then
 			value = "[NULL]"
 		end
-		print("Table '"..value.."' is null, or not a table! Dump: "..dump(tb))
+		print("[ERROR] awards.tbv - table '"..value.."' is null, or not a table! Dump: "..dump(tb))
+		return
+	end
+	if not value then
+		print("[ERROR] awards.tbv was not used correctly!")
+		print("Value: '"..dump(value).."'")
+		print("Dump:"..dump(tb))
 		return
 	end
 	if not tb[value] then
