@@ -43,7 +43,7 @@ function awards.tbv(tb,value,default)
 		if not value then
 			value = "[NULL]"
 		end
-		minetest.log("error", "awards.tbv - table '"..value.."' is null, or not a table! Dump: "..dump(tb))
+		minetest.log("error", "awards.tbv - table "..dump(value).." is null, or not a table! Dump: "..dump(tb))
 		return
 	end
 	if not value then
@@ -74,26 +74,32 @@ dofile(minetest.get_modpath("awards").."/config.txt")
 function awards.register_achievement(name,data_table)
 	-- see if a trigger is defined in the achievement definition
 	if data_table.trigger and data_table.trigger.type then
-		if data_table.trigger.type=="dig" then
-			local tmp={
-				award=name,
-			 	node=data_table.trigger.node,
-			 	target=data_table.trigger.target,
+		if data_table.trigger.type == "dig" then
+			local tmp = {
+				award = name,
+			 	node = data_table.trigger.node,
+			 	target = data_table.trigger.target,
 			}
 			table.insert(awards.onDig,tmp)
-		elseif data_table.trigger.type=="place" then
-			local tmp={
-				award=name,
-			 	node=data_table.trigger.node,
-			 	target=data_table.trigger.target,
+		elseif data_table.trigger.type == "place" then
+			local tmp = {
+				award = name,
+			 	node = data_table.trigger.node,
+			 	target = data_table.trigger.target,
 			}
 			table.insert(awards.onPlace,tmp)
-		elseif data_table.trigger.type=="death" then
-			local tmp={
-				award=name,
-			 	target=data_table.trigger.target,
+		elseif data_table.trigger.type == "death" then
+			local tmp = {
+				award = name,
+			 	target = data_table.trigger.target,
 			}
 			table.insert(awards.onDeath,tmp)
+		elseif data_table.trigger.type == "chat" then
+			local tmp = {
+				award = name,
+			 	target = data_table.trigger.target,
+			}
+			table.insert(awards.onChat,tmp)
 		end
 	end
 
@@ -113,19 +119,24 @@ function awards.register_achievement(name,data_table)
 	awards.def[name] = data_table
 end
 
--- this function adds a trigger function or table to the ondig table
+-- run a function when a node is dug
 function awards.register_onDig(func)
 	table.insert(awards.onDig,func)
 end
 
--- this function adds a trigger function or table to the ondig table
+-- run a function when a node is placed
 function awards.register_onPlace(func)
 	table.insert(awards.onPlace,func)
 end
 
--- this function adds a trigger function or table to the ondeath table
+-- run a function when a player dies
 function awards.register_onDeath(func)
 	table.insert(awards.onDeath,func)
+end
+
+-- run a function when a player chats
+function awards.register_onChat(func)
+	table.insert(awards.onChat,func)
 end
 
 -- This function is called whenever a target condition is met.

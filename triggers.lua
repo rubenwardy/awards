@@ -8,6 +8,7 @@
 awards.onDig = {}
 awards.onPlace = {}
 awards.onTick = {}
+awards.onChat = {}
 awards.onDeath = {}
 
 -- Trigger Handles
@@ -32,7 +33,7 @@ minetest.register_on_dignode(function(pos, oldnode, digger)
 	awards.tbv(awards.players[playern].count[mod], item, 0)
 
 	-- Increment counter
-	awards.players[playern].count[mod][item]=awards.players[playern].count[mod][item]+1
+	awards.players[playern].count[mod][item]=awards.players[playern].count[mod][item] + 1
 
 	-- Run callbacks and triggers
 	local player=digger
@@ -88,7 +89,7 @@ minetest.register_on_placenode(function(pos,node,digger)
 	awards.tbv(awards.players[playern].place[mod], item, 0)
 
 	-- Increment counter
-	awards.players[playern].place[mod][item] = awards.players[playern].place[mod][item]+1
+	awards.players[playern].place[mod][item] = awards.players[playern].place[mod][item] + 1
 
 	-- Run callbacks and triggers
 	local player = digger
@@ -126,37 +127,61 @@ minetest.register_on_dieplayer(function(player)
 	if not player or not player:get_player_name() or player:get_player_name()=="" then
 		return
 	end
-	local playern = player:get_player_name()
+	
+	-- Get player
+	local name = player:get_player_name()
 	awards.assertPlayer(playern)
-
+	local data = awards.players[name]
 
 	-- Increment counter
-	awards.players[player:get_player_name()].deaths = awards.players[player:get_player_name()].deaths + 1
+	data.deaths = data.deaths + 1
 	
 	-- Run callbacks and triggers
-	local data=awards.players[playern]
-	for i=1,# awards.onDeath do
-		local res=nil
-		if type(awards.onDeath[i]) == "function" then
-			-- Run trigger callback
-			res=awards.onDeath[i](player,data)
-		elseif type(awards.onDeath[i]) == "table" then
-			-- handle table here
-			if not awards.onDeath[i].target or not awards.onDeath[i].award then
-				-- table running failed!
-				print("[ERROR] awards - onDeath trigger "..i.." is invalid!")
-			else
-				-- run the table
-				if not data.deaths then
-					-- table running failed!
-				elseif data.deaths > awards.onDeath[i].target-1 then
-					res=awards.onDeath[i].award
+	for _,trigger in pairs(awards.onDeath) do
+		local res = nil
+		if type(trigger) == "function" then
+			res = trigger(player,data)
+		elseif type(trigger) == "table" then
+			if trigger.target and trigger.award then
+				if data.deaths and data.deaths >= trigger.target then
+					res = trigger.award
 				end
 			end
 		end
+		if res ~= nil then
+			awards.give_achievement(name,res)
+		end
+	end
+end)
 
-		if res~=nil then
-			awards.give_achievement(playern,res)
+minetest.register_on_chat_message(function(name, message)
+	-- Run checks
+	if not name then
+		return
+	end
+
+	-- Get player
+	awards.assertPlayer(name)
+	local data = awards.players[name]
+	local player = minetest.get_player_by_name(name)
+	
+	-- Increment counter
+	data.chats = data.chats + 1
+	
+	-- Run callbacks and triggers	
+	for _,trigger in pairs(awards.onChat) do
+		local res = nil
+		if type(trigger) == "function" then
+			res = trigger(player,data)
+		elseif type(trigger) == "table" then
+			if trigger.target and trigger.award then
+				if data.chats and data.chats >= trigger.target then
+					res = trigger.award
+				end
+			end
+		end
+		if res ~= nil then
+			awards.give_achievement(name,res)
 		end
 	end
 end)
