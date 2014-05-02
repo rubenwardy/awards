@@ -1,14 +1,14 @@
 --	AWARDS
---	   by Rubenwardy, CC-BY-SA
+--		by Rubenwardy, CC-BY-SA
 -------------------------------------------------------
 -- this is the trigger handler file for the awards mod
 -------------------------------------------------------
 
 -- Function and table holders for Triggers
-awards.onDig={}
-awards.onPlace={}
-awards.onTick={}
-awards.onDeath={}
+awards.onDig = {}
+awards.onPlace = {}
+awards.onTick = {}
+awards.onDeath = {}
 
 -- Trigger Handles
 minetest.register_on_dignode(function(pos, oldnode, digger)
@@ -17,28 +17,26 @@ minetest.register_on_dignode(function(pos, oldnode, digger)
 	end
 	local nodedug = string.split(oldnode.name, ":")
 	if #nodedug ~= 2 then
-		print(oldnode.name.." is in wrong format!")
+		minetest.log("error","Awards mod: "..oldnode.name.." is in wrong format!")
 		return
 	end
-	local mod=nodedug[1]
-	local item=nodedug[2]
+	local mod = nodedug[1]
+	local item = nodedug[2]
 	local playern = digger:get_player_name()
 
 	if (not playern or not nodedug or not mod or not item) then
 		return
 	end
 	awards.assertPlayer(playern)
-	awards.tbv(awards.players[playern].count,                mod)
-        awards.tbv(awards.players[playern].count[mod],        item,                0        )
+	awards.tbv(awards.players[playern].count, mod)
+	awards.tbv(awards.players[playern].count[mod], item, 0)
 
-	-- Increment counder
+	-- Increment counter
 	awards.players[playern].count[mod][item]=awards.players[playern].count[mod][item]+1
-	print(" - "..mod..":"..item.." 's count is now "..(awards.players[playern].count[mod][item]))
 
 	-- Run callbacks and triggers
 	local player=digger
 	local data=awards.players[playern]
-
 	for i=1,# awards.onDig do
 		local res = nil
 		if type(awards.onDig[i]) == "function" then
@@ -74,7 +72,7 @@ minetest.register_on_placenode(function(pos,node,digger)
 	end
 	local nodedug = string.split(node.name, ":")
 	if #nodedug ~= 2 then
-		print(oldnode.name.." is in wrong format!")
+		minetest.log("error","Awards mod: "..node.name.." is in wrong format!")
 		return
 	end
 	local mod=nodedug[1]
@@ -86,12 +84,11 @@ minetest.register_on_placenode(function(pos,node,digger)
 		return
 	end
 	awards.assertPlayer(playern)
-	awards.tbv(awards.players[playern].place,                mod)
-        awards.tbv(awards.players[playern].place[mod],        item,                0        )
+	awards.tbv(awards.players[playern].place, mod)
+	awards.tbv(awards.players[playern].place[mod], item, 0)
 
-	-- Increment counder
+	-- Increment counter
 	awards.players[playern].place[mod][item] = awards.players[playern].place[mod][item]+1
-	print(" - "..mod..":"..item.." 's place count is now "..(awards.players[playern].place[mod][item]))
 
 	-- Run callbacks and triggers
 	local player = digger
@@ -104,7 +101,6 @@ minetest.register_on_placenode(function(pos,node,digger)
 		elseif type(awards.onPlace[i]) == "table" then
 			-- Handle table trigger
 			if not awards.onPlace[i].node or not awards.onPlace[i].target or not awards.onPlace[i].award then
-				-- table running failed!
 				print("[ERROR] awards - onPlace trigger "..i.." is invalid!")
 			else
 				-- run the table
@@ -135,7 +131,7 @@ minetest.register_on_dieplayer(function(player)
 
 
 	-- Increment counter
-        awards.players[player:get_player_name()].deaths = awards.players[player:get_player_name()].deaths + 1
+	awards.players[player:get_player_name()].deaths = awards.players[player:get_player_name()].deaths + 1
 	
 	-- Run callbacks and triggers
 	local data=awards.players[playern]
@@ -171,5 +167,5 @@ minetest.register_on_newplayer(function(player)
 end)
 
 minetest.register_on_shutdown(function()
-    awards.save()
+	awards.save()
 end)

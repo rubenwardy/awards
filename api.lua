@@ -1,5 +1,5 @@
--- AWARDS
--- by Rubenwardy, CC-BY-SA
+--	AWARDS
+--		by Rubenwardy, CC-BY-SA
 -------------------------------------------------------
 -- this is api function file
 -------------------------------------------------------

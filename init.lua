@@ -1,5 +1,5 @@
 --	AWARDS
---	   by Rubenwardy, CC-BY-SA
+--		by Rubenwardy, CC-BY-SA
 -------------------------------------------------------
 -- this is the init file for the award mod
 -------------------------------------------------------
