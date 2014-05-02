@@ -7,9 +7,9 @@
 -- Function and table holders for Triggers
 awards.onDig = {}
 awards.onPlace = {}
-awards.onTick = {}
 awards.onChat = {}
 awards.onDeath = {}
+awards.onJoin = {}
 
 -- Trigger Handles
 minetest.register_on_dignode(function(pos, oldnode, digger)
@@ -144,6 +144,38 @@ minetest.register_on_dieplayer(function(player)
 		elseif type(trigger) == "table" then
 			if trigger.target and trigger.award then
 				if data.deaths and data.deaths >= trigger.target then
+					res = trigger.award
+				end
+			end
+		end
+		if res ~= nil then
+			awards.give_achievement(name,res)
+		end
+	end
+end)
+
+minetest.register_on_joinplayer(function(player)
+	-- Run checks
+	local name = player:get_player_name()
+	if not player or not name or name=="" then
+		return
+	end
+	
+	-- Get player	
+	awards.assertPlayer(name)
+	local data = awards.players[name]
+
+	-- Increment counter
+	data.joins = data.joins + 1
+	
+	-- Run callbacks and triggers
+	for _,trigger in pairs(awards.onJoin) do
+		local res = nil
+		if type(trigger) == "function" then
+			res = trigger(player,data)
+		elseif type(trigger) == "table" then
+			if trigger.target and trigger.award then
+				if data.joins and data.joins >= trigger.target then
 					res = trigger.award
 				end
 			end

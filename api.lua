@@ -64,6 +64,7 @@ function awards.assertPlayer(playern)
 	awards.tbv(awards.players[playern], "place")
 	awards.tbv(awards.players[playern], "count")
 	awards.tbv(awards.players[playern], "deaths", 0)
+	awards.tbv(awards.players[playern], "joins", 0)
 	awards.tbv(awards.players[playern], "chats", 0)
 end
 
@@ -72,6 +73,32 @@ dofile(minetest.get_modpath("awards").."/triggers.lua")
 dofile(minetest.get_modpath("awards").."/config.txt")
 
 -- API Functions
+function awards._additional_triggers(name, data_table)
+	-- To add triggers in another mod, you should override this function
+	-- If the code can't handle the trigger passed, then call the last value of _additional_triggers
+	--[[
+		local add_trig = awards._additional_triggers
+		awards._additional_triggers = function(name, data_table)
+			if data_table.trigger.type == "trigger" then
+				local tmp = {
+					award = name,
+					node = data_table.trigger.node,
+					target = data_table.trigger.target,
+				}
+				table.insert(awards.onTrigger,tmp)
+			elseif data_table.trigger.type == "trigger2" then
+				local tmp = {
+					award = name,
+					node = data_table.trigger.node,
+					target = data_table.trigger.target,
+				}
+				table.insert(awards.onTrigger2,tmp)
+			else
+				add_trig(name, data_table)
+			end
+		end
+	]]--
+end
 function awards.register_achievement(name,data_table)
 	-- see if a trigger is defined in the achievement definition
 	if data_table.trigger and data_table.trigger.type then
@@ -101,6 +128,14 @@ function awards.register_achievement(name,data_table)
 			 	target = data_table.trigger.target,
 			}
 			table.insert(awards.onChat,tmp)
+		elseif data_table.trigger.type == "join" then
+			local tmp = {
+				award = name,
+			 	target = data_table.trigger.target,
+			}
+			table.insert(awards.onJoin,tmp)
+		else
+			awards._additional_triggers(name, data_table)
 		end
 	end
 
@@ -138,6 +173,11 @@ end
 -- run a function when a player chats
 function awards.register_onChat(func)
 	table.insert(awards.onChat,func)
+end
+
+-- run a function when a player joins
+function awards.register_onJoin(func)
+	table.insert(awards.onJoin,func)
 end
 
 -- This function is called whenever a target condition is met.
