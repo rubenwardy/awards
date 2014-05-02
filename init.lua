@@ -11,10 +11,10 @@ awards.register_achievement("award_lightitup",{
 	title = "Light It Up",
 	description = "You have placed 100 torches",
 	icon = "novicebuilder.png",
-	trigger={
-		type="place",
-		node="default:torch",
-		target=100,
+	trigger = {
+		type = "place",
+		node = "default:torch",
+		target = 100,
 	},
 })
 
@@ -22,10 +22,10 @@ awards.register_achievement("award_lightitup",{
 awards.register_achievement("award_lumberjack",{
 	title = "Lumber Jack",
 	description = "You have dug 100 tree blocks",
-	trigger={
-		type="dig",
-		node="default:tree",
-		target=100,
+	trigger = {
+		type = "dig",
+		node = "default:tree",
+		target = 100,
 	},
 })
 
@@ -35,10 +35,10 @@ awards.register_achievement("award_mesefind",{
 	description = "Found some Mese!",
 	icon = "mese.png",
 	background = "bg_mining.png",
-	trigger={
-		type="dig",
-		node="default:stone_with_mese",
-		target=100,
+	trigger = {
+		type = "dig",
+		node = "default:stone_with_mese",
+		target = 100,
 	},
 })
 
@@ -46,10 +46,10 @@ awards.register_achievement("award_mesefind",{
 awards.register_achievement("award_nyanfind",{
 	title = "OMG, Nyan Cat!",
 	description = "Find a nyan cat",
-	trigger={
-		type="dig",
-		node="default:nyancat",
-		target=1,
+	trigger = {
+		type = "dig",
+		node = "default:nyancat",
+		target = 1,
 	},
 })
 
@@ -59,10 +59,10 @@ awards.register_achievement("award_mine1",{
 	description = "You have dug 10 stone blocks",
 	icon = "miniminer.png",
 	background = "bg_mining.png",
-	trigger={
-		type="dig",
-		node="default:stone",
-		target=10,
+	trigger = {
+		type = "dig",
+		node = "default:stone",
+		target = 10,
 	},
 })
 
@@ -72,10 +72,10 @@ awards.register_achievement("award_mine2",{
 	description = "You have dug 100 stone blocks",
 	icon = "miniminer.png",
 	background = "bg_mining.png",
-	trigger={
-		type="dig",
-		node="default:stone",
-		target=100,
+	trigger = {
+		type = "dig",
+		node = "default:stone",
+		target = 100,
 	},
 })
 
@@ -85,10 +85,10 @@ awards.register_achievement("award_mine3",{
 	description = "You have dug 1000 stone blocks",
 	icon = "miniminer.png",
 	background = "bg_mining.png",
-	trigger={
-		type="dig",
-		node="default:stone",
-		target=1000,
+	trigger = {
+		type = "dig",
+		node = "default:stone",
+		target = 1000,
 	},
 })
 
@@ -98,10 +98,10 @@ awards.register_achievement("award_mine4",{
 	description = "You have dug 10000 stone blocks",
 	icon = "miniminer.png",
 	background = "bg_mining.png",
-	trigger={
-		type="dig",
-		node="default:stone",
-		target=10000,
+	trigger = {
+		type = "dig",
+		node = "default:stone",
+		target = 10000,
 	},
 })
 
@@ -109,9 +109,9 @@ awards.register_achievement("award_mine4",{
 awards.register_achievement("award_death1",{
 	title = "First Death",
 	description = "Oh well, it does not matter\nyou have more lives than a cat",
-	trigger={
-		type="death",
-		target=1,
+	trigger = {
+		type = "death",
+		target = 1,
 	},
 })
 
@@ -122,12 +122,9 @@ awards.register_achievement("award_burn",{
 })
 
 awards.register_onDeath(function(player,data)
-	print ("running on death function")
-	local pos=player:getpos()
-
-	if pos and minetest.env:find_node_near(pos, 1, "fire:basic_flame")~=nil then
+	local pos = player:getpos()
+	if pos and minetest.find_node_near(pos, 1, "fire:basic_flame") ~= nil then
 		return "award_burn"
-	end
-	
+	end	
 	return nil
 end)
