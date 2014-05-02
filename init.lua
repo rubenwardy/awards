@@ -117,7 +117,7 @@ awards.register_achievement("award_death1",{
 
 -- Burned to death
 awards.register_achievement("award_burn",{
-	title = "you're a witch!",
+	title = "You're a witch!",
 	description = "Burn to death in a fire",
 })
 
