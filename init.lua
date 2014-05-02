@@ -149,6 +149,15 @@ awards.register_achievement("award_join1",{
 		target = 1
 	}
 })
+awards.register_achievement("award_join2",{
+	title = S("Frequent Visitor"),
+	description = S("Connect to the server 50 times"),
+	trigger = {
+		type = "join",
+		target = 50
+	},
+	secret = true
+})
 
 awards.register_onDeath(function(player,data)
 	local pos = player:getpos()
