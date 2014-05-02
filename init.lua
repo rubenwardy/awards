@@ -15,7 +15,7 @@ awards.register_achievement("award_lightitup",{
 		type = "place",
 		node = "default:torch",
 		target = 100,
-	},
+	}
 })
 
 -- Lumber Jack
@@ -26,7 +26,7 @@ awards.register_achievement("award_lumberjack",{
 		type = "dig",
 		node = "default:tree",
 		target = 100,
-	},
+	}
 })
 
 -- Found some Mese!
@@ -39,7 +39,7 @@ awards.register_achievement("award_mesefind",{
 		type = "dig",
 		node = "default:stone_with_mese",
 		target = 100,
-	},
+	}
 })
 
 -- Found a Nyan cat!
@@ -50,7 +50,7 @@ awards.register_achievement("award_nyanfind",{
 		type = "dig",
 		node = "default:nyancat",
 		target = 1,
-	},
+	}
 })
 
 -- Just entered the mine
@@ -63,7 +63,7 @@ awards.register_achievement("award_mine1",{
 		type = "dig",
 		node = "default:stone",
 		target = 10,
-	},
+	}
 })
 
 -- Mini Miner
@@ -76,7 +76,7 @@ awards.register_achievement("award_mine2",{
 		type = "dig",
 		node = "default:stone",
 		target = 100,
-	},
+	}
 })
 
 -- Hardened Miner
@@ -89,7 +89,7 @@ awards.register_achievement("award_mine3",{
 		type = "dig",
 		node = "default:stone",
 		target = 1000,
-	},
+	}
 })
 
 -- Master Miner
@@ -102,7 +102,7 @@ awards.register_achievement("award_mine4",{
 		type = "dig",
 		node = "default:stone",
 		target = 10000,
-	},
+	}
 })
 
 -- First Death
@@ -112,13 +112,23 @@ awards.register_achievement("award_death1",{
 	trigger = {
 		type = "death",
 		target = 1,
-	},
+	}
 })
 
 -- Burned to death
 awards.register_achievement("award_burn",{
 	title = "You're a witch!",
 	description = "Burn to death in a fire",
+})
+
+-- 1 sentence
+awards.register_achievement("award_chat1",{
+	title = "First Word",
+	description = "Use the chat to talk to players",
+	trigger = {
+		type = "chat",
+		target = 1,
+	},
 })
 
 awards.register_onDeath(function(player,data)

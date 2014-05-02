@@ -124,13 +124,13 @@ end)
 
 minetest.register_on_dieplayer(function(player)
 	-- Run checks
-	if not player or not player:get_player_name() or player:get_player_name()=="" then
+	local name = player:get_player_name()
+	if not player or not name or name=="" then
 		return
 	end
 	
-	-- Get player
-	local name = player:get_player_name()
-	awards.assertPlayer(playern)
+	-- Get player	
+	awards.assertPlayer(name)
 	local data = awards.players[name]
 
 	-- Increment counter
@@ -156,7 +156,8 @@ end)
 
 minetest.register_on_chat_message(function(name, message)
 	-- Run checks
-	if not name then
+	local idx = string.find(message,"/")
+	if not name or (idx ~= nil and idx <= 1)  then
 		return
 	end
 

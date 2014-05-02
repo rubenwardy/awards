@@ -64,6 +64,7 @@ function awards.assertPlayer(playern)
 	awards.tbv(awards.players[playern], "place")
 	awards.tbv(awards.players[playern], "count")
 	awards.tbv(awards.players[playern], "deaths", 0)
+	awards.tbv(awards.players[playern], "chats", 0)
 end
 
 -- Load files
@@ -148,7 +149,7 @@ end
 -- award - the name of the award to give
 function awards.give_achievement(name,award)
 	-- Access Player Data
-	local data=awards.players[name]
+	local data = awards.players[name]
 	
 	-- Perform checks
 	if not data then
