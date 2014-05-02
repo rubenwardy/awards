@@ -126,7 +126,7 @@ awards.register_achievement("award_death1",{
 -- Burned to death
 awards.register_achievement("award_burn",{
 	title = S("You're a witch!"),
-	description = S("Burn to death in a fire"),
+	description = S("Burn to death in a fire")
 })
 
 -- 1 sentence

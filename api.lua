@@ -261,15 +261,15 @@ minetest.register_chatcommand("list_awards", {
 	end
 })
 minetest.register_chatcommand("awards", {
-	params = "Empty params for your awards, player name for someone else's awards",
+	params = "",
 	description = "awards: list awards",
 	func = function(name, param)
 		awards.showto(name, name, nil, false)
 	end
 })
 minetest.register_chatcommand("cawards", {
-	params = "Empty params for your awards, player name for someone else's awards",
-	description = "awards: list awards",
+	params = "",
+	description = "awards: list awards in chat",
 	func = function(name, param)
 		awards.showto(name, name, nil, true)
 	end
@@ -313,15 +313,27 @@ function awards._order_awards(name)
 end
 
 function awards.showto(name, to, sid, text)
+	if name == "" or name == nil then
+		name = to
+	end
 	if text then
 		if not awards.players[name] or not awards.players[name].unlocked  then
-			minetest.chat_send_player(name, "You do not have any awards")
+			minetest.chat_send_player(to, "You have not unlocked any awards")
 			return
 		end
 		minetest.chat_send_player(to, name.."'s awards:")
 
 		for _, str in pairs(awards.players[name].unlocked) do
-			minetest.chat_send_player(to, str)
+			local def = awards.def[str]
+			if def and def.title then
+				if def.description then				
+					minetest.chat_send_player(to, def.title..": "..def.description)
+				else
+					minetest.chat_send_player(to, def.title)
+				end
+			else
+				minetest.chat_send_player(to, str)
+			end
 		end
 	else
 		if sid == nil or sid < 1 then
@@ -334,21 +346,29 @@ function awards.showto(name, to, sid, text)
 		if sid then
 			local item = listofawards[sid+0]
 			local def = awards.def[item.name]
-			local title = item.name
-			if def and def.title then
-				title = def.title
-			end
-			local status = ""
-			if item.got then
-				status = " (got)"
-			end
-			if def and def.icon then
-				icon = def.icon
-			end
-			formspec = formspec .. "label[1,2.75;"..title..status.."]"..
-								"image[1,0;3,3;"..icon.."]"
-			if def and def.description then
-				formspec = formspec	.. "label[0,3.25;"..def.description.."]"				
+			if def and def.secret and not item.got then
+				formspec = formspec .. "label[1,2.75;Secret Award]"..
+									"image[1,0;3,3;unknown.png]"
+				if def and def.description then
+					formspec = formspec	.. "label[0,3.25;Unlock this award to find out what it is]"				
+				end
+			else
+				local title = item.name
+				if def and def.title then
+					title = def.title
+				end
+				local status = ""
+				if item.got then
+					status = " (got)"
+				end
+				if def and def.icon then
+					icon = def.icon
+				end
+				formspec = formspec .. "label[1,2.75;"..title..status.."]"..
+									"image[1,0;3,3;"..icon.."]"
+				if def and def.description then
+					formspec = formspec	.. "label[0,3.25;"..def.description.."]"				
+				end
 			end
 		end
 		
@@ -361,16 +381,19 @@ function awards.showto(name, to, sid, text)
 			end
 			first = false
 			local def = awards.def[award.name]
-			local title = award.name
 			
-			if def and def.title then
-				title = def.title
-			end
-			
-			if award.got then
-				formspec = formspec .. minetest.formspec_escape(title)
+			if def and def.secret and not award.got then
+				formspec = formspec .. "#ACACACSecret Award"
 			else
-				formspec = formspec .. "#ACACAC".. minetest.formspec_escape(title)
+				local title = award.name			
+				if def and def.title then
+					title = def.title
+				end			
+				if award.got then
+					formspec = formspec .. minetest.formspec_escape(title)
+				else
+					formspec = formspec .. "#ACACAC".. minetest.formspec_escape(title)
+				end
 			end
 		end		
 		formspec = formspec .. ";"..sid.."]"
