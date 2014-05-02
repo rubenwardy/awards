@@ -22,7 +22,7 @@ awards.register_achievement("award_lightitup",{
 	trigger = {
 		type = "place",
 		node = "default:torch",
-		target = 100,
+		target = 100
 	}
 })
 
@@ -33,7 +33,7 @@ awards.register_achievement("award_lumberjack",{
 	trigger = {
 		type = "dig",
 		node = "default:tree",
-		target = 100,
+		target = 100
 	}
 })
 
@@ -45,8 +45,8 @@ awards.register_achievement("award_mesefind",{
 	background = "bg_mining.png",
 	trigger = {
 		type = "dig",
-		node = "default:stone_with_mese",
-		target = 1,
+		node = "default:mese",
+		target = 1
 	}
 })
 
@@ -57,7 +57,7 @@ awards.register_achievement("award_nyanfind",{
 	trigger = {
 		type = "dig",
 		node = "default:nyancat",
-		target = 1,
+		target = 1
 	}
 })
 
@@ -70,7 +70,7 @@ awards.register_achievement("award_mine1",{
 	trigger = {
 		type = "dig",
 		node = "default:stone",
-		target = 10,
+		target = 10
 	}
 })
 
@@ -83,7 +83,7 @@ awards.register_achievement("award_mine2",{
 	trigger = {
 		type = "dig",
 		node = "default:stone",
-		target = 100,
+		target = 100
 	}
 })
 
@@ -96,7 +96,7 @@ awards.register_achievement("award_mine3",{
 	trigger = {
 		type = "dig",
 		node = "default:stone",
-		target = 1000,
+		target = 1000
 	}
 })
 
@@ -109,7 +109,7 @@ awards.register_achievement("award_mine4",{
 	trigger = {
 		type = "dig",
 		node = "default:stone",
-		target = 10000,
+		target = 10000
 	}
 })
 
@@ -119,7 +119,7 @@ awards.register_achievement("award_death1",{
 	description = S("You have more lives than a cat!"),
 	trigger = {
 		type = "death",
-		target = 1,
+		target = 1
 	}
 })
 
@@ -135,7 +135,7 @@ awards.register_achievement("award_chat1",{
 	description = S("Use the chat to talk to players"),
 	trigger = {
 		type = "chat",
-		target = 1,
+		target = 1
 	}
 })
 
@@ -146,7 +146,7 @@ awards.register_achievement("award_join1",{
 	description = S("Connect to the server"),
 	trigger = {
 		type = "join",
-		target = 1,
+		target = 1
 	}
 })
 

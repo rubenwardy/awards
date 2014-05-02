@@ -244,7 +244,7 @@ function awards.give_achievement(name,award)
 		end
 	
 		-- record this in the log	
-		minetest.log("action", name.." has unlocked award "..title..".")
+		minetest.log("action", name.." has unlocked award "..title)
 		
 		-- save playertable
 		awards.save()
