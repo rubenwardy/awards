@@ -43,13 +43,13 @@ function awards.tbv(tb,value,default)
 		if not value then
 			value = "[NULL]"
 		end
-		print("[ERROR] awards.tbv - table '"..value.."' is null, or not a table! Dump: "..dump(tb))
+		minetest.log("error", "awards.tbv - table '"..value.."' is null, or not a table! Dump: "..dump(tb))
 		return
 	end
 	if not value then
-		print("[ERROR] awards.tbv was not used correctly!")
-		print("Value: '"..dump(value).."'")
-		print("Dump:"..dump(tb))
+		error("[ERROR] awards.tbv was not used correctly!\n"..
+			"Value: '"..dump(value).."'\n"..
+			"Dump:"..dump(tb))
 		return
 	end
 	if not tb[value] then
@@ -192,7 +192,7 @@ function awards.give_achievement(name,award)
 		end
 	
 		-- record this in the log	
-		print(name.." Has unlocked"..title..".")
+		minetest.log("action", name.." has unlocked award "..title..".")
 		
 		-- save playertable
 		awards.save()
@@ -215,6 +215,13 @@ minetest.register_chatcommand("awards", {
 		awards.showto(name, name, nil, false)
 	end
 })
+minetest.register_chatcommand("cawards", {
+	params = "Empty params for your awards, player name for someone else's awards",
+	description = "awards: list awards",
+	func = function(name, param)
+		awards.showto(name, name, nil, true)
+	end
+})
 minetest.register_chatcommand("awd", {
 	params = "award name",
 	description = "awd: Details of awd gotten",
@@ -227,13 +234,13 @@ minetest.register_chatcommand("awd", {
 		end
 	end
 })
-minetest.register_chatcommand("gawd", {
+--[[minetest.register_chatcommand("gawd", {
 	params = "award name",
 	description = "gawd: give award to self",
 	func = function(name, param)
 		awards.give_achievement(name,param)
 	end
-})
+})]]--
 
 function awards._order_awards(name)
 	local done = {}
@@ -246,7 +253,6 @@ function awards._order_awards(name)
 		end
 	end
 	for _,def in pairs(awards.def) do
-		print("Award "..def.name)
 		if not done[def.name] then
 			table.insert(retval,{name=def.name,got=false})
 		end
@@ -260,17 +266,16 @@ function awards.showto(name, to, sid, text)
 			minetest.chat_send_player(name, "You do not have any awards")
 			return
 		end
-		minetest.chat_send_player(name, name.."'s awards:")
+		minetest.chat_send_player(to, name.."'s awards:")
 
 		for _, str in pairs(awards.players[name].unlocked) do
-			minetest.chat_send_player(name, str)
+			minetest.chat_send_player(to, str)
 		end
 	else
 		if sid == nil or sid < 1 then
 			sid = 1
 		end
-		print("SID: "..dump(sid))
-		local formspec = "size[9,5]"			
+		local formspec = "size[11,5]"			
 		local listofawards = awards._order_awards(name)
 		
 		-- Sidebar
@@ -288,17 +293,15 @@ function awards.showto(name, to, sid, text)
 			if def and def.icon then
 				icon = def.icon
 			end
-			formspec = formspec .. "label[0,2.75;"..title..status.."]"..
-								"image[0,0;3,3;"..icon.."]"
+			formspec = formspec .. "label[1,2.75;"..title..status.."]"..
+								"image[1,0;3,3;"..icon.."]"
 			if def and def.description then
-				formspec = formspec	.. "label[0,3.25;/awd "..item.name.."\nfor more info]"
-				--formspec = formspec	.. "label[0,3.25;"..def.description.."]"
-				--formspec = formspec	.. "textarea[0.25,3.25;2.5,2;name;;"..def.description.."]"				
+				formspec = formspec	.. "label[0,3.25;"..def.description.."]"				
 			end
 		end
 		
 		-- Create list box
-		formspec = formspec .. "textlist[2.75,0;6,5;awards;"		
+		formspec = formspec .. "textlist[4.75,0;6,5;awards;"		
 		local first = true
 		for _,award in pairs(listofawards) do
 			if not first then
@@ -318,9 +321,10 @@ function awards.showto(name, to, sid, text)
 				formspec = formspec .. "#ACACAC".. minetest.formspec_escape(title)
 			end
 		end		
-		formspec = formspec .. "]"
-		
-		minetest.show_formspec(name,"awards:awards",formspec)
+		formspec = formspec .. ";"..sid.."]"
+
+		-- Show formspec to user
+		minetest.show_formspec(to,"awards:awards",formspec)
 	end
 end
 
