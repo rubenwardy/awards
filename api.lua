@@ -29,7 +29,7 @@ end
 
 awards.players = awards.load()
 function awards.player(name)
-	return awards.players[player]
+	return awards.players[name]
 end
 
 -- A table of award definitions
@@ -109,22 +109,23 @@ function awards.register_achievement(name,data_table)
 	end
 	
 	-- add the achievement to the definition table
+	data_table.name = name
 	awards.def[name] = data_table
 end
 
 -- this function adds a trigger function or table to the ondig table
 function awards.register_onDig(func)
-	table.insert(awards.onDig,func);
+	table.insert(awards.onDig,func)
 end
 
 -- this function adds a trigger function or table to the ondig table
 function awards.register_onPlace(func)
-	table.insert(awards.onPlace,func);
+	table.insert(awards.onPlace,func)
 end
 
 -- this function adds a trigger function or table to the ondeath table
 function awards.register_onDeath(func)
-	table.insert(awards.onDeath,func);
+	table.insert(awards.onDeath,func)
 end
 
 -- This function is called whenever a target condition is met.
@@ -200,19 +201,144 @@ end
 
 -- List a player's achievements
 minetest.register_chatcommand("list_awards", {
-	params = "",
-	description = "list_awards: list your awards",
+	params = "obsolete",
+	description = "list_awards: obsolete. Use /awards",
 	func = function(name, param)
+		minetest.chat_send_player(name, "This command has been made obsolete. Use /awards instead.")
+		awards.showto(name, name, nil, false)
+	end
+})
+minetest.register_chatcommand("awards", {
+	params = "Empty params for your awards, player name for someone else's awards",
+	description = "awards: list awards",
+	func = function(name, param)
+		awards.showto(name, name, nil, false)
+	end
+})
+minetest.register_chatcommand("awd", {
+	params = "award name",
+	description = "awd: Details of awd gotten",
+	func = function(name, param)
+		local def = awards.def[param]
+		if def then
+			minetest.chat_send_player(name,def.title..": "..def.description)
+		else
+			minetest.chat_send_player(name,"Award not found.")
+		end
+	end
+})
+minetest.register_chatcommand("gawd", {
+	params = "award name",
+	description = "gawd: give award to self",
+	func = function(name, param)
+		awards.give_achievement(name,param)
+	end
+})
+
+function awards._order_awards(name)
+	local done = {}
+	local retval = {}
+	local player = awards.player(name)
+	if player and player.unlocked then
+		for _,got in pairs(player.unlocked) do
+			done[got] = true
+			table.insert(retval,{name=got,got=true})
+		end
+	end
+	for _,def in pairs(awards.def) do
+		print("Award "..def.name)
+		if not done[def.name] then
+			table.insert(retval,{name=def.name,got=false})
+		end
+	end
+	return retval
+end
+
+function awards.showto(name, to, sid, text)
+	if text then
 		if not awards.players[name] or not awards.players[name].unlocked  then
 			minetest.chat_send_player(name, "You do not have any awards")
 			return
 		end
-
 		minetest.chat_send_player(name, name.."'s awards:")
 
 		for _, str in pairs(awards.players[name].unlocked) do
-			minetest.chat_send_player(name, str);
+			minetest.chat_send_player(name, str)
 		end
-	end,
-})
+	else
+		if sid == nil or sid < 1 then
+			sid = 1
+		end
+		print("SID: "..dump(sid))
+		local formspec = "size[9,5]"			
+		local listofawards = awards._order_awards(name)
+		
+		-- Sidebar
+		if sid then
+			local item = listofawards[sid+0]
+			local def = awards.def[item.name]
+			local title = item.name
+			if def and def.title then
+				title = def.title
+			end
+			local status = ""
+			if item.got then
+				status = " (got)"
+			end
+			if def and def.icon then
+				icon = def.icon
+			end
+			formspec = formspec .. "label[0,2.75;"..title..status.."]"..
+								"image[0,0;3,3;"..icon.."]"
+			if def and def.description then
+				formspec = formspec	.. "label[0,3.25;/awd "..item.name.."\nfor more info]"
+				--formspec = formspec	.. "label[0,3.25;"..def.description.."]"
+				--formspec = formspec	.. "textarea[0.25,3.25;2.5,2;name;;"..def.description.."]"				
+			end
+		end
+		
+		-- Create list box
+		formspec = formspec .. "textlist[2.75,0;6,5;awards;"		
+		local first = true
+		for _,award in pairs(listofawards) do
+			if not first then
+				formspec = formspec .. ","
+			end
+			first = false
+			local def = awards.def[award.name]
+			local title = award.name
+			
+			if def and def.title then
+				title = def.title
+			end
+			
+			if award.got then
+				formspec = formspec .. minetest.formspec_escape(title)
+			else
+				formspec = formspec .. "#ACACAC".. minetest.formspec_escape(title)
+			end
+		end		
+		formspec = formspec .. "]"
+		
+		minetest.show_formspec(name,"awards:awards",formspec)
+	end
+end
+
+minetest.register_on_player_receive_fields(function(player, formname, fields)
+	if formname~="awards:awards" then
+		return false
+	end
+	if fields.quit then
+		return true
+	end
+	local name = player:get_player_name()
+	if fields.awards then
+		local event = minetest.explode_textlist_event(fields.awards)
+		if event.type == "CHG" then			
+			awards.showto(name,name,event.index,false)	
+		end		
+	end
+	
+	return true
+end)
 
