@@ -5,6 +5,9 @@ by Andrew "Rubenwardy" Ward, CC-BY-SA.
 
 This mod adds achievements to Minetest.
 
+Majority of awards are back ported from Calinou's
+old fork in Carbone, under same license.
+
 
 Code Reference
 --------------
