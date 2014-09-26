@@ -124,14 +124,15 @@ awards.register_onDeath(function(player,data)
 	return nil
 end)
 
--- 1 sentence
-awards.register_achievement("award_chat1",{
-	title = S("First Word"),
-	description = S("Use the chat to talk to players"),
+-- Chat
+awards.register_achievement("award_chat2",{
+	title = S("Chatter Box"),
+	description = S("Speak over one hundred times"),
 	trigger = {
 		type = "chat",
-		target = 1
-	}
+		target = 100
+	},
+	secret = true
 })
 
 
