@@ -1,5 +1,5 @@
---	AWARDS
---		by Rubenwardy, CC-BY-SA
+-- AWARDS
+--    by Rubenwardy
 -------------------------------------------------------
 -- this is the trigger handler file for the awards mod
 -------------------------------------------------------
