@@ -347,8 +347,10 @@ function awards._order_awards(name)
 	local player = awards.player(name)
 	if player and player.unlocked then
 		for _,got in pairs(player.unlocked) do
-			done[got] = true
-			table.insert(retval,{name=got,got=true})
+			if awards.def[got] then
+				done[got] = true
+				table.insert(retval,{name=got,got=true})
+			end
 		end
 	end
 	for _,def in pairs(awards.def) do
@@ -372,14 +374,16 @@ function awards.showto(name, to, sid, text)
 
 		for _, str in pairs(awards.players[name].unlocked) do
 			local def = awards.def[str]
-			if def and def.title then
-				if def.description then				
-					minetest.chat_send_player(to, def.title..": "..def.description)
+			if def then
+				if def.title then
+					if def.description then				
+						minetest.chat_send_player(to, def.title..": "..def.description)
+					else
+						minetest.chat_send_player(to, def.title)
+					end
 				else
-					minetest.chat_send_player(to, def.title)
+					minetest.chat_send_player(to, str)
 				end
-			else
-				minetest.chat_send_player(to, str)
 			end
 		end
 	else
@@ -408,6 +412,7 @@ function awards.showto(name, to, sid, text)
 				if item.got then
 					status = " (got)"
 				end
+				local icon = ""
 				if def and def.icon then
 					icon = def.icon
 				end
@@ -423,23 +428,25 @@ function awards.showto(name, to, sid, text)
 		formspec = formspec .. "textlist[4.75,0;6,5;awards;"		
 		local first = true
 		for _,award in pairs(listofawards) do
-			if not first then
-				formspec = formspec .. ","
-			end
-			first = false
 			local def = awards.def[award.name]
-			
-			if def and def.secret and not award.got then
-				formspec = formspec .. "#ACACACSecret Award"
-			else
-				local title = award.name			
-				if def and def.title then
-					title = def.title
-				end			
-				if award.got then
-					formspec = formspec .. minetest.formspec_escape(title)
+			if def then
+				if not first then
+					formspec = formspec .. ","
+				end
+				first = false
+				
+				if def.secret and not award.got then
+					formspec = formspec .. "#ACACACSecret Award"
 				else
-					formspec = formspec .. "#ACACAC".. minetest.formspec_escape(title)
+					local title = award.name			
+					if def and def.title then
+						title = def.title
+					end			
+					if award.got then
+						formspec = formspec .. minetest.formspec_escape(title)
+					else
+						formspec = formspec .. "#ACACAC".. minetest.formspec_escape(title)
+					end
 				end
 			end
 		end		
