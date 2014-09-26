@@ -206,6 +206,21 @@ function awards.give_achievement(name, award)
 		-- Set award flag
 		data.unlocked[award]=award
 
+		-- Give Prizes
+		if awards.def[award] and awards.def[award].prizes then
+			for i = 1, #awards.def[award].prizes do
+				local itemstack = ItemStack(awards.def[award].prizes[i])
+				if itemstack:is_empty() or not itemstack:is_known() then
+					return
+				end
+				local receiverref = core.get_player_by_name(name)
+				if receiverref == nil then
+					return
+				end
+				receiverref:get_inventory():add_item("main", itemstack)
+			end
+		end
+
 		-- Get data from definition tables
 		local title = award
 		local desc = ""
