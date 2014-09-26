@@ -54,6 +54,7 @@ awards.register_achievement("award_mesefind",{
 awards.register_achievement("award_nyanfind",{
 	title = S("OMG, Nyan Cat!"),
 	description = S("I found a nyan cat"),
+	icon = "default_nc_rb.png",
 	trigger = {
 		type = "dig",
 		node = "default:nyancat",
