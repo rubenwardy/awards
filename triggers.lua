@@ -18,7 +18,7 @@ minetest.register_on_dignode(function(pos, oldnode, digger)
 	end
 	local nodedug = string.split(oldnode.name, ":")
 	if #nodedug ~= 2 then
-		minetest.log("error","Awards mod: "..oldnode.name.." is in wrong format!")
+		--minetest.log("error","Awards mod: "..oldnode.name.." is in wrong format!")
 		return
 	end
 	local mod = nodedug[1]
@@ -73,7 +73,7 @@ minetest.register_on_placenode(function(pos,node,digger)
 	end
 	local nodedug = string.split(node.name, ":")
 	if #nodedug ~= 2 then
-		minetest.log("error","Awards mod: "..node.name.." is in wrong format!")
+		--minetest.log("error","Awards mod: "..node.name.." is in wrong format!")
 		return
 	end
 	local mod=nodedug[1]
