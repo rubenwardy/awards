@@ -5,7 +5,9 @@
 -------------------------------------------------------
 
 -- The global award namespace
-awards = {}
+awards = {
+	show_mode = "hud"
+}
 
 -- Table Save Load Functions
 function awards.save()
@@ -70,7 +72,6 @@ end
 
 -- Load files
 dofile(minetest.get_modpath("awards").."/triggers.lua")
-dofile(minetest.get_modpath("awards").."/config.txt")
 
 -- API Functions
 function awards._additional_triggers(name, data_table)
@@ -187,7 +188,7 @@ end
 --awards.give_achievement(name,award)
 -- name - the name of the player
 -- award - the name of the award to give
-function awards.give_achievement(name,award)
+function awards.give_achievement(name, award)
 	-- Access Player Data
 	local data = awards.players[name]
 	
@@ -228,19 +229,65 @@ function awards.give_achievement(name,award)
 		end
 
 		-- send the won award message to the player
-		if Use_Formspec == true then
+		if awards.show_mode == "formspec" then
 			-- use a formspec to send it
 			minetest.show_formspec(name, "achievements:unlocked", "size[4,2]"..
 					"image_button_exit[0,0;4,2;"..background..";close1; ]"..
 					"image_button_exit[0.2,0.8;1,1;"..icon..";close2; ]"..
 					"label[1.1,1;"..title.."]"..
 					"label[0.3,0.1;"..custom_announce.."]")
-		else
+		elseif awards.show_mode == "chat" then
 			-- use the chat console to send it
 			minetest.chat_send_player(name, "Achievement Unlocked: "..title)
 			if desc~="" then
 				minetest.chat_send_player(name, desc)
 			end
+		else
+			local player = minetest.get_player_by_name(name)
+			local one = player:hud_add({
+				hud_elem_type = "image",
+				name = "award_bg",
+				scale = {x = 1, y = 1},
+				text = background,
+				position = {x = 0.5, y = 0},
+				offset = {x = 0, y = 138},
+				alignment = {x = 0, y = -1}
+			})
+			local two = player:hud_add({
+				hud_elem_type = "text",
+				name = "award_au",
+				number = 0xFFFFFF,
+				scale = {x = 100, y = 20},
+				text = "Achievement Unlocked!",
+				position = {x = 0.5, y = 0},
+				offset = {x = 0, y = 40},
+				alignment = {x = 0, y = -1}
+			})			
+			local three = player:hud_add({
+				hud_elem_type = "text",
+				name = "award_title",
+				number = 0xFFFFFF,
+				scale = {x = 100, y = 20},
+				text = title,
+				position = {x = 0.5, y = 0},
+				offset = {x = 30, y = 100},
+				alignment = {x = 0, y = -1}
+			})			
+			local four = player:hud_add({
+				hud_elem_type = "image",
+				name = "award_icon",
+				scale = {x = 4, y = 4},
+				text = icon,
+				position = {x = 0.5, y = 0},
+				offset = {x = -81.5, y = 126},
+				alignment = {x = 0, y = -1}
+			})
+			minetest.after(3, function()
+				player:hud_remove(one)
+				player:hud_remove(two)
+				player:hud_remove(three)
+				player:hud_remove(four)
+			end)
 		end
 	
 		-- record this in the log	
