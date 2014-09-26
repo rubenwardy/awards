@@ -40,12 +40,12 @@ awards.register_achievement("award_lumberjack",{
 -- Found some Mese!
 awards.register_achievement("award_mesefind",{
 	title = S("First Mese Find"),
-	description = S("Found some Mese!"),
+	description = S("Found my first mese block"),
 	icon = "mese.png",
 	background = "bg_mining.png",
 	trigger = {
 		type = "dig",
-		node = "default:mese",
+		node = "default:stone_with_mese",
 		target = 1
 	}
 })
@@ -53,24 +53,11 @@ awards.register_achievement("award_mesefind",{
 -- Found a Nyan cat!
 awards.register_achievement("award_nyanfind",{
 	title = S("OMG, Nyan Cat!"),
-	description = S("Find a nyan cat"),
+	description = S("I found a nyan cat"),
 	trigger = {
 		type = "dig",
 		node = "default:nyancat",
 		target = 1
-	}
-})
-
--- Just entered the mine
-awards.register_achievement("award_mine1",{
-	title = S("Entering the mine"),
-	description = S("You have dug 10 stone blocks"),
-	icon = "miniminer.png",
-	background = "bg_mining.png",
-	trigger = {
-		type = "dig",
-		node = "default:stone",
-		target = 10
 	}
 })
 
@@ -115,11 +102,11 @@ awards.register_achievement("award_mine4",{
 
 -- First Death
 awards.register_achievement("award_death1",{
-	title = S("First Death"),
-	description = S("You have more lives than a cat!"),
+	title = S("Dies a lot"),
+	description = S("The game isn't that hard, is it?"),
 	trigger = {
 		type = "death",
-		target = 1
+		target = 100
 	}
 })
 
@@ -128,6 +115,13 @@ awards.register_achievement("award_burn",{
 	title = S("You're a witch!"),
 	description = S("Burn to death in a fire")
 })
+awards.register_onDeath(function(player,data)
+	local pos = player:getpos()
+	if pos and minetest.find_node_near(pos, 1, "fire:basic_flame") ~= nil then
+		return "award_burn"
+	end	
+	return nil
+end)
 
 -- 1 sentence
 awards.register_achievement("award_chat1",{
@@ -141,14 +135,6 @@ awards.register_achievement("award_chat1",{
 
 
 -- Join
-awards.register_achievement("award_join1",{
-	title = S("Welcome!"),
-	description = S("Connect to the server"),
-	trigger = {
-		type = "join",
-		target = 1
-	}
-})
 awards.register_achievement("award_join2",{
 	title = S("Frequent Visitor"),
 	description = S("Connect to the server 50 times"),
@@ -158,11 +144,3 @@ awards.register_achievement("award_join2",{
 	},
 	secret = true
 })
-
-awards.register_onDeath(function(player,data)
-	local pos = player:getpos()
-	if pos and minetest.find_node_near(pos, 1, "fire:basic_flame") ~= nil then
-		return "award_burn"
-	end	
-	return nil
-end)
