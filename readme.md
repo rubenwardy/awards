@@ -1,7 +1,7 @@
 Awards
 ------
 
-by Andrew "Rubenwardy" Ward, GPL 3.0 or later.
+by Andrew "Rubenwardy" Ward, LGPL 2.1 or later.
 
 This mod adds achievements to Minetest.
 
