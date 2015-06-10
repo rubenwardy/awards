@@ -25,6 +25,7 @@ end
 
 dofile(minetest.get_modpath("awards").."/api.lua")
 dofile(minetest.get_modpath("awards").."/chat_commands.lua")
+dofile(minetest.get_modpath("awards").."/triggers.lua")
 
 -- Light it up
 awards.register_achievement("award_lightitup",{
