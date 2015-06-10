@@ -14,43 +14,43 @@
 -- 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 --
 
-awards.register_trigger("dig", function(name, def)
+awards.register_trigger("dig", function(def)
 	local tmp = {
-		award  = name,
+		award  = def.name,
 		node   = def.trigger.node,
 		target = def.trigger.target
 	}
 	table.insert(awards.on.dig, tmp)
 end)
 
-awards.register_trigger("place", function(name, def)
+awards.register_trigger("place", function(def)
 	local tmp = {
-		award  = name,
+		award  = def.name,
 		node   = def.trigger.node,
 		target = def.trigger.target
 	}
 	table.insert(awards.on.place, tmp)
 end)
 
-awards.register_trigger("death", function(name, def)
+awards.register_trigger("death", function(def)
 	local tmp = {
-		award  = name,
+		award  = def.name,
 		target = def.trigger.target
 	}
 	table.insert(awards.on.death, tmp)
 end)
 
-awards.register_trigger("chat", function(name, def)
+awards.register_trigger("chat", function(def)
 	local tmp = {
-		award  = name,
+		award  = def.name,
 		target = def.trigger.target
 	}
 	table.insert(awards.on.chat, tmp)
 end)
 
-awards.register_trigger("join", function(name, def)
+awards.register_trigger("join", function(def)
 	local tmp = {
-		award  = name,
+		award  = def.name,
 		target = def.trigger.target
 	}
 	table.insert(awards.on.join, tmp)
