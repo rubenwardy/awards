@@ -33,6 +33,7 @@ function awards.init()
 	awards.def = {}
 	awards.trigger_types = {}
 	awards.on = {}
+	awards.on_unlock = {}
 end
 
 function awards.load()
@@ -56,17 +57,23 @@ function awards.register_trigger(name, func)
 	end
 end
 
+function awards.register_on_unlock(func)
+	table.insert(awards.on_unlock, func)
+end
+
 -- API Functions
 function awards._additional_triggers(name, def)
 	-- Depreciated!
 end
 function awards.register_achievement(name, def)
+	def.name = name
+
 	-- Add Triggers
 	if def.trigger and def.trigger.type then
 		local func = awards.trigger_types[def.trigger.type]
 
 		if func then
-			func(name, def)
+			func(def)
 		else
 			awards._additional_triggers(name, def)
 		end
@@ -84,7 +91,6 @@ function awards.register_achievement(name, def)
 	end
 
 	-- add the achievement to the definition table
-	def.name = name
 	awards.def[name] = def
 end
 
@@ -97,126 +103,139 @@ end
 -- award - the name of the award to give
 function awards.give_achievement(name, award)
 	-- Access Player Data
-	local data = awards.players[name]
+	local data  = awards.players[name]
+	local awdef = awards.def[award]
 
 	-- Perform checks
 	if not data then
 		return
 	end
-	if not awards.def[award] then
+	if not awdef then
 			return
 	end
 	awards.tbv(data,"unlocked")
 
-	-- check to see if the player does not already have that achievement
-	if not data.unlocked[award] or data.unlocked[award]~=award then
-		-- Set award flag
-		data.unlocked[award]=award
+	-- Don't give the achievement if it has already been given
+	if data.unlocked[award] and data.unlocked[award] == award then
+		return
+	end
 
-		-- Give Prizes
-		if awards.def[award] and awards.def[award].prizes then
-			for i = 1, #awards.def[award].prizes do
-				local itemstack = ItemStack(awards.def[award].prizes[i])
-				if itemstack:is_empty() or not itemstack:is_known() then
-					return
-				end
-				local receiverref = core.get_player_by_name(name)
-				if receiverref == nil then
-					return
-				end
-				receiverref:get_inventory():add_item("main", itemstack)
+	-- Set award flag
+	data.unlocked[award] = award
+
+	-- Give Prizes
+	if awdef and awdef.prizes then
+		for i = 1, #awdef.prizes do
+			local itemstack = ItemStack(awdef.prizes[i])
+			if itemstack:is_empty() or not itemstack:is_known() then
+				return
 			end
-		end
-
-		-- Get data from definition tables
-		local title = award
-		local desc = ""
-		local background = ""
-		local icon = ""
-		local custom_announce = ""
-		if awards.def[award].title then
-			title = awards.def[award].title
-		end
-		if awards.def[award].custom_announce then
-			custom_announce = awards.def[award].custom_announce
-		end
-		if awards.def[award].background then
-			background = awards.def[award].background
-		end
-		if awards.def[award].icon then
-			icon = awards.def[award].icon
-		end
-		if awards.def[award] and awards.def[award].description then
-			desc = awards.def[award].description
-		end
-
-		-- send the won award message to the player
-		if awards.show_mode == "formspec" then
-			-- use a formspec to send it
-			minetest.show_formspec(name, "achievements:unlocked", "size[4,2]"..
-					"image_button_exit[0,0;4,2;"..background..";close1; ]"..
-					"image_button_exit[0.2,0.8;1,1;"..icon..";close2; ]"..
-					"label[1.1,1;"..title.."]"..
-					"label[0.3,0.1;"..custom_announce.."]")
-		elseif awards.show_mode == "chat" then
-			-- use the chat console to send it
-			minetest.chat_send_player(name, "Achievement Unlocked: "..title)
-			if desc~="" then
-				minetest.chat_send_player(name, desc)
+			local receiverref = core.get_player_by_name(name)
+			if not receiverref then
+				return
 			end
-		else
-			local player = minetest.get_player_by_name(name)
-			local one = player:hud_add({
-				hud_elem_type = "image",
-				name = "award_bg",
-				scale = {x = 1, y = 1},
-				text = background,
-				position = {x = 0.5, y = 0},
-				offset = {x = 0, y = 138},
-				alignment = {x = 0, y = -1}
-			})
-			local two = player:hud_add({
-				hud_elem_type = "text",
-				name = "award_au",
-				number = 0xFFFFFF,
-				scale = {x = 100, y = 20},
-				text = "Achievement Unlocked!",
-				position = {x = 0.5, y = 0},
-				offset = {x = 0, y = 40},
-				alignment = {x = 0, y = -1}
-			})
-			local three = player:hud_add({
-				hud_elem_type = "text",
-				name = "award_title",
-				number = 0xFFFFFF,
-				scale = {x = 100, y = 20},
-				text = title,
-				position = {x = 0.5, y = 0},
-				offset = {x = 30, y = 100},
-				alignment = {x = 0, y = -1}
-			})
-			local four = player:hud_add({
-				hud_elem_type = "image",
-				name = "award_icon",
-				scale = {x = 4, y = 4},
-				text = icon,
-				position = {x = 0.5, y = 0},
-				offset = {x = -81.5, y = 126},
-				alignment = {x = 0, y = -1}
-			})
-			minetest.after(3, function()
-				player:hud_remove(one)
-				player:hud_remove(two)
-				player:hud_remove(three)
-				player:hud_remove(four)
-			end)
+			receiverref:get_inventory():add_item("main", itemstack)
 		end
+	end
 
-		-- record this in the log
-		minetest.log("action", name.." has unlocked award "..title)
+	-- Get data from definition tables
+	local title = award
+	local desc = ""
+	local background = ""
+	local icon = ""
+	local custom_announce = ""
+	if awdef.title then
+		title = awdef.title
+	end
+	if awdef.custom_announce then
+		custom_announce = awdef.custom_announce
+	end
+	if awdef.background then
+		background = awdef.background
+	end
+	if awdef.icon then
+		icon = awdef.icon
+	end
+	if awdef and awdef.description then
+		desc = awdef.description
+	end
 
-		-- save playertable
-		awards.save()
+	-- Record this in the log
+	minetest.log("action", name.." has unlocked award "..title)
+
+	-- Save playertable
+	awards.save()
+
+	-- Run callbacks
+	if awdef.on_unlock and awdef.on_unlock(name, awdef) then
+		return
+	end
+	for _, callback in pairs(awards.on_unlock) do
+		if callback(name, awdef) then
+			return
+		end
+	end
+
+	-- send the won award message to the player
+	if awards.show_mode == "formspec" then
+		-- use a formspec to send it
+		minetest.show_formspec(name, "achievements:unlocked", "size[4,2]"..
+				"image_button_exit[0,0;4,2;"..background..";close1; ]"..
+				"image_button_exit[0.2,0.8;1,1;"..icon..";close2; ]"..
+				"label[1.1,1;"..title.."]"..
+				"label[0.3,0.1;"..custom_announce.."]")
+	elseif awards.show_mode == "chat" then
+		-- use the chat console to send it
+		minetest.chat_send_player(name, "Achievement Unlocked: "..title)
+		if desc~="" then
+			minetest.chat_send_player(name, desc)
+		end
+	else
+		local player = minetest.get_player_by_name(name)
+		local one = player:hud_add({
+			hud_elem_type = "image",
+			name = "award_bg",
+			scale = {x = 1, y = 1},
+			text = background,
+			position = {x = 0.5, y = 0},
+			offset = {x = 0, y = 138},
+			alignment = {x = 0, y = -1}
+		})
+		local two = player:hud_add({
+			hud_elem_type = "text",
+			name = "award_au",
+			number = 0xFFFFFF,
+			scale = {x = 100, y = 20},
+			text = "Achievement Unlocked!",
+			position = {x = 0.5, y = 0},
+			offset = {x = 0, y = 40},
+			alignment = {x = 0, y = -1}
+		})
+		local three = player:hud_add({
+			hud_elem_type = "text",
+			name = "award_title",
+			number = 0xFFFFFF,
+			scale = {x = 100, y = 20},
+			text = title,
+			position = {x = 0.5, y = 0},
+			offset = {x = 30, y = 100},
+			alignment = {x = 0, y = -1}
+		})
+		local four = player:hud_add({
+			hud_elem_type = "image",
+			name = "award_icon",
+			scale = {x = 4, y = 4},
+			text = icon,
+			position = {x = 0.5, y = 0},
+			offset = {x = -81.5, y = 126},
+			alignment = {x = 0, y = -1}
+		})
+		minetest.after(3, function()
+			player:hud_remove(one)
+			player:hud_remove(two)
+			player:hud_remove(three)
+			player:hud_remove(four)
+		end)
 	end
 end
 
