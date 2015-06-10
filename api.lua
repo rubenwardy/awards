@@ -18,6 +18,7 @@
 awards = {
 	show_mode = "hud"
 }
+dofile(minetest.get_modpath("awards").."/helpers.lua")
 
 -- Table Save Load Functions
 function awards.save()
@@ -47,8 +48,6 @@ function awards.load()
 	return {}
 end
 
-awards.init()
-
 function awards.register_trigger(name, func)
 	awards.trigger_types[name] = func
 	awards.on[name] = {}
@@ -65,6 +64,7 @@ end
 function awards._additional_triggers(name, def)
 	-- Depreciated!
 end
+
 function awards.register_achievement(name, def)
 	def.name = name
 
@@ -98,7 +98,7 @@ end
 -- It checks if a player already has that achievement, and if they do not,
 -- it gives it to them
 ----------------------------------------------
---awards.give_achievement(name,award)
+--awards.give_achievement(name, award)
 -- name - the name of the player
 -- award - the name of the award to give
 function awards.give_achievement(name, award)
@@ -361,9 +361,4 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	return true
 end)
 
-
-
-
--- Load files
-dofile(minetest.get_modpath("awards").."/helpers.lua")
-dofile(minetest.get_modpath("awards").."/triggers.lua")
+awards.init()
