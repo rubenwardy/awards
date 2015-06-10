@@ -92,7 +92,7 @@ awards.register_achievement("award_obsessed_with_obsidian",{
 })
 
 -- On the way
-awards.register_achievement("award_on_the_way",{
+awards.register_achievement("award_on_the_way", {
 	title = S("On The Way"),
 	description = S("Place 100 rails."),
 	icon = "novicebuilder.png",
@@ -104,19 +104,19 @@ awards.register_achievement("award_on_the_way",{
 })
 
 -- Lumberjack
-awards.register_achievement("award_lumberjack",{
+awards.register_achievement("award_lumberjack", {
 	title = S("Lumberjack"),
 	description = S("Dig 100 tree blocks."),
 	icon = "default_tree.png",
 	trigger = {
 		type = "dig",
 		node = "default:tree",
-		target = 100
+		target = 1
 	}
 })
 
 -- Semi-pro Lumberjack
-awards.register_achievement("award_lumberjack_semipro",{
+awards.register_achievement("award_lumberjack_semipro", {
 	title = S("Semi-pro Lumberjack"),
 	description = S("Dig 1,000 tree blocks."),
 	icon = "default_tree.png",
@@ -128,7 +128,7 @@ awards.register_achievement("award_lumberjack_semipro",{
 })
 
 -- Professional Lumberjack
-awards.register_achievement("award_lumberjack_professional",{
+awards.register_achievement("award_lumberjack_professional", {
 	title = S("Professional Lumberjack"),
 	description = S("Dig 10,000 tree blocks."),
 	icon = "default_tree.png",
@@ -140,7 +140,7 @@ awards.register_achievement("award_lumberjack_professional",{
 })
 
 -- L33T Lumberjack
-awards.register_achievement("award_lumberjack_leet",{
+awards.register_achievement("award_lumberjack_leet", {
 	title = S("L33T Lumberjack"),
 	description = S("Dig 100,000 tree blocks."),
 	icon = "default_tree.png",
@@ -152,7 +152,7 @@ awards.register_achievement("award_lumberjack_leet",{
 })
 
 -- Junglebaby
-awards.register_achievement("award_junglebaby",{
+awards.register_achievement("award_junglebaby", {
 	title = S("Junglebaby"),
 	description = S("Dig 100 jungle tree blocks."),
 	icon = "default_jungletree.png",
@@ -164,7 +164,7 @@ awards.register_achievement("award_junglebaby",{
 })
 
 -- Jungleman
-awards.register_achievement("award_jungleman",{
+awards.register_achievement("award_jungleman", {
 	title = S("Jungleman"),
 	description = S("Dig 1,000 jungle tree blocks."),
 	icon = "default_jungletree.png",
@@ -176,7 +176,7 @@ awards.register_achievement("award_jungleman",{
 })
 
 -- Found some Mese!
-awards.register_achievement("award_mesefind",{
+awards.register_achievement("award_mesefind", {
 	title = S("First Mese Find"),
 	description = S("Find some Mese."),
 	icon = "default_mese_block.png",
@@ -189,7 +189,7 @@ awards.register_achievement("award_mesefind",{
 })
 
 -- You're a copper
-awards.register_achievement("award_youre_a_copper",{
+awards.register_achievement("award_youre_a_copper", {
 	title = S("You're a copper"),
 	description = S("Dig 1,000 copper ores."),
 	icon = "miniminer.png",
@@ -202,7 +202,7 @@ awards.register_achievement("award_youre_a_copper",{
 })
 
 -- You're winner
-awards.register_achievement("award_youre_winner",{
+awards.register_achievement("award_youre_winner", {
 	title = S("YOU'RE A WINNER!"),
 	description = S("Dig 1 mossy cobblestone."),
 	icon = "miniminer.png",
@@ -216,7 +216,7 @@ awards.register_achievement("award_youre_winner",{
 })
 
 -- Found a Nyan cat!
-awards.register_achievement("award_nyanfind",{
+awards.register_achievement("award_nyanfind", {
 	title = S("OMG, Nyan Cat!"),
 	description = S("Find a nyan cat."),
 	icon = "default_nc_rb.png",
@@ -228,7 +228,7 @@ awards.register_achievement("award_nyanfind",{
 })
 
 -- Mini Miner
-awards.register_achievement("award_mine2",{
+awards.register_achievement("award_mine2", {
 	title = S("Mini Miner"),
 	description = S("Dig 100 stone blocks."),
 	icon = "miniminer.png",
@@ -241,7 +241,7 @@ awards.register_achievement("award_mine2",{
 })
 
 -- Hardened Miner
-awards.register_achievement("award_mine3",{
+awards.register_achievement("award_mine3", {
 	title = S("Hardened Miner"),
 	description = S("Dig 1,000 stone blocks"),
 	icon = "miniminer.png",
@@ -254,7 +254,7 @@ awards.register_achievement("award_mine3",{
 })
 
 -- Master Miner
-awards.register_achievement("award_mine4",{
+awards.register_achievement("award_mine4", {
 	title = S("Master Miner"),
 	description = S("Dig 10,000 stone blocks."),
 	icon = "miniminer.png",
@@ -267,7 +267,7 @@ awards.register_achievement("award_mine4",{
 })
 
 -- Marchand de sable
-awards.register_achievement("award_marchand_de_sable",{
+awards.register_achievement("award_marchand_de_sable", {
 	title = S("Marchand De Sable"),
 	description = S("Dig 1,000 sand."),
 	background = "bg_mining.png",
@@ -279,7 +279,7 @@ awards.register_achievement("award_marchand_de_sable",{
 })
 
 -- Join
-awards.register_achievement("award_join2",{
+awards.register_achievement("award_join2", {
 	title = S("Frequent Visitor"),
 	description = S("Connect to the server 50 times."),
 	trigger = {
@@ -290,7 +290,7 @@ awards.register_achievement("award_join2",{
 })
 
 -- Dying Spree
-awards.register_achievement("award_dying_spree",{
+awards.register_achievement("award_dying_spree", {
 	title = S("Dying Spree"),
 	description = S("Die 5 times."),
 	trigger = {
@@ -300,7 +300,7 @@ awards.register_achievement("award_dying_spree",{
 })
 
 -- Bot-like
-awards.register_achievement("award_bot_like",{
+awards.register_achievement("award_bot_like", {
 	title = S("Bot-like"),
 	description = S("Die 10 times."),
 	trigger = {
@@ -310,7 +310,7 @@ awards.register_achievement("award_bot_like",{
 })
 
 -- You Suck!
-awards.register_achievement("award_you_suck",{
+awards.register_achievement("award_you_suck", {
 	title = S("You Suck!"),
 	description = S("Die 100 times."),
 	trigger = {
@@ -321,7 +321,7 @@ awards.register_achievement("award_you_suck",{
 })
 
 -- Burned to death
-awards.register_achievement("award_burn",{
+awards.register_achievement("award_burn", {
 	title = S("You're a witch!"),
 	description = S("Burn to death in a fire.")
 })
@@ -334,7 +334,7 @@ awards.register_onDeath(function(player,data)
 end)
 
 -- Died in flowing lava
-awards.register_achievement("award_in_the_flow",{
+awards.register_achievement("award_in_the_flow", {
 	title = S("In the Flow"),
 	description = S("Die in flowing lava.")
 })
@@ -347,11 +347,11 @@ awards.register_onDeath(function(player,data)
 end)
 
 -- Die near diamond ore
-awards.register_achievement("award_this_is_sad",{
+awards.register_achievement("award_this_is_sad", {
 	title = S("This is Sad"),
 	description = S("Die near diamond ore.")
 })
-awards.register_onDeath(function(player,data)
+awards.register_on_death(function(player,data)
 	local pos = player:getpos()
 	if pos and minetest.find_node_near(pos, 5, "default:stone_with_diamond") ~= nil then
 		return "award_this_is_sad"
@@ -360,11 +360,11 @@ awards.register_onDeath(function(player,data)
 end)
 
 -- Die near diamond ore
-awards.register_achievement("award_the_stack",{
+awards.register_achievement("award_the_stack", {
 	title = S("The Stack"),
 	description = S("Die near bones.")
 })
-awards.register_onDeath(function(player,data)
+awards.register_on_death(function(player,data)
 	local pos = player:getpos()
 	if pos and minetest.find_node_near(pos, 5, "bones:bones") ~= nil then
 		return "award_the_stack"

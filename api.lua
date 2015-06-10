@@ -21,6 +21,8 @@ end
 function awards.init()
 	awards.players = awards.load()
 	awards.def = {}
+	awards.trigger_types = {}
+	awards.on = {}
 end
 
 function awards.load()
@@ -36,93 +38,44 @@ end
 
 awards.init()
 
--- Load files
-dofile(minetest.get_modpath("awards").."/helpers.lua")
-dofile(minetest.get_modpath("awards").."/triggers.lua")
+function awards.register_trigger(name, func)
+	awards.trigger_types[name] = func
+	awards.on[name] = {}
+	awards['register_on_'..name] = function(func)
+		table.insert(awards.on[name], func)
+	end
+end
 
 -- API Functions
-function awards._additional_triggers(name, data_table)
+function awards._additional_triggers(name, def)
 	-- Depreciated!
 end
-function awards.register_achievement(name,data_table)
-	-- see if a trigger is defined in the achievement definition
-	if data_table.trigger and data_table.trigger.type then
-		if data_table.trigger.type == "dig" then
-			local tmp = {
-				award = name,
-			 	node = data_table.trigger.node,
-			 	target = data_table.trigger.target,
-			}
-			table.insert(awards.onDig,tmp)
-		elseif data_table.trigger.type == "place" then
-			local tmp = {
-				award = name,
-			 	node = data_table.trigger.node,
-			 	target = data_table.trigger.target,
-			}
-			table.insert(awards.onPlace,tmp)
-		elseif data_table.trigger.type == "death" then
-			local tmp = {
-				award = name,
-			 	target = data_table.trigger.target,
-			}
-			table.insert(awards.onDeath,tmp)
-		elseif data_table.trigger.type == "chat" then
-			local tmp = {
-				award = name,
-			 	target = data_table.trigger.target,
-			}
-			table.insert(awards.onChat,tmp)
-		elseif data_table.trigger.type == "join" then
-			local tmp = {
-				award = name,
-			 	target = data_table.trigger.target,
-			}
-			table.insert(awards.onJoin,tmp)
+function awards.register_achievement(name, def)
+	-- Add Triggers
+	if def.trigger and def.trigger.type then
+		local func = awards.trigger_types[def.trigger.type]
+
+		if func then
+			func(name, def)
 		else
-			awards._additional_triggers(name, data_table)
+			awards._additional_triggers(name, def)
 		end
 	end
 
 	-- check icon, background and custom_announce data
-	if data_table.icon == nil or data_table.icon == "" then
-		data_table.icon = "unknown.png"
+	if not def.icon or def.icon == "" then
+		def.icon = "unknown.png"
 	end
-	if data_table.background == nil or data_table.background == "" then
-		data_table.background = "bg_default.png"
+	if not def.background or def.background == "" then
+		def.background = "bg_default.png"
 	end
-	if data_table.custom_announce == nil or data_table.custom_announce == "" then
-		data_table.custom_announce = "Achievement Unlocked:"
+	if not def.custom_announce or def.custom_announce == "" then
+		def.custom_announce = "Achievement Unlocked:"
 	end
 
 	-- add the achievement to the definition table
-	data_table.name = name
-	awards.def[name] = data_table
-end
-
--- run a function when a node is dug
-function awards.register_onDig(func)
-	table.insert(awards.onDig,func)
-end
-
--- run a function when a node is placed
-function awards.register_onPlace(func)
-	table.insert(awards.onPlace,func)
-end
-
--- run a function when a player dies
-function awards.register_onDeath(func)
-	table.insert(awards.onDeath,func)
-end
-
--- run a function when a player chats
-function awards.register_onChat(func)
-	table.insert(awards.onChat,func)
-end
-
--- run a function when a player joins
-function awards.register_onJoin(func)
-	table.insert(awards.onJoin,func)
+	def.name = name
+	awards.def[name] = def
 end
 
 -- This function is called whenever a target condition is met.
@@ -378,3 +331,10 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 
 	return true
 end)
+
+
+
+
+-- Load files
+dofile(minetest.get_modpath("awards").."/helpers.lua")
+dofile(minetest.get_modpath("awards").."/triggers.lua")

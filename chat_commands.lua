@@ -35,3 +35,18 @@ minetest.register_chatcommand("awd", {
 		end
 	end
 })
+
+minetest.register_chatcommand("awpl", {
+	privs = {
+		server = true
+	},
+	description = "awpl: Get the statistics for the player given",
+	func = function(name, param)
+		if not param or param == "" then
+			param = name
+		end
+		minetest.chat_send_player(name, param)
+		local player = awards.player(param)
+		minetest.chat_send_player(name, dump(player))
+	end
+})
