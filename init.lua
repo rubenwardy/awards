@@ -13,6 +13,7 @@ else
 end
 
 dofile(minetest.get_modpath("awards").."/api.lua")
+dofile(minetest.get_modpath("awards").."/chat_commands.lua")
 
 -- Light it up
 awards.register_achievement("award_lightitup",{
@@ -328,7 +329,7 @@ awards.register_onDeath(function(player,data)
 	local pos = player:getpos()
 	if pos and minetest.find_node_near(pos, 2, "fire:basic_flame") ~= nil then
 		return "award_burn"
-	end	
+	end
 	return nil
 end)
 
@@ -341,7 +342,7 @@ awards.register_onDeath(function(player,data)
 	local pos = player:getpos()
 	if pos and minetest.find_node_near(pos, 2, "default:lava_flowing") ~= nil then
 		return "award_in_the_flow"
-	end	
+	end
 	return nil
 end)
 
@@ -354,7 +355,7 @@ awards.register_onDeath(function(player,data)
 	local pos = player:getpos()
 	if pos and minetest.find_node_near(pos, 5, "default:stone_with_diamond") ~= nil then
 		return "award_this_is_sad"
-	end	
+	end
 	return nil
 end)
 
@@ -367,7 +368,6 @@ awards.register_onDeath(function(player,data)
 	local pos = player:getpos()
 	if pos and minetest.find_node_near(pos, 5, "bones:bones") ~= nil then
 		return "award_the_stack"
-	end	
+	end
 	return nil
 end)
-

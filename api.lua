@@ -18,6 +18,11 @@ function awards.save()
 	end
 end
 
+function awards.init()
+	awards.players = awards.load()
+	awards.def = {}
+end
+
 function awards.load()
 	local file = io.open(minetest.get_worldpath().."/awards.txt", "r")
 	if file then
@@ -29,77 +34,15 @@ function awards.load()
 	return {}
 end
 
-awards.players = awards.load()
-function awards.player(name)
-	return awards.players[name]
-end
-
--- A table of award definitions
-awards.def = {}
-
-function awards.tbv(tb,value,default)
-	if not default then
-		default = {}
-	end
-	if not tb or type(tb) ~= "table" then
-		if not value then
-			value = "[NULL]"
-		end
-		minetest.log("error", "awards.tbv - table "..dump(value).." is null, or not a table! Dump: "..dump(tb))
-		return
-	end
-	if not value then
-		error("[ERROR] awards.tbv was not used correctly!\n"..
-			"Value: '"..dump(value).."'\n"..
-			"Dump:"..dump(tb))
-		return
-	end
-	if not tb[value] then
-		tb[value] = default
-	end
-end
-
-function awards.assertPlayer(playern)
-	awards.tbv(awards.players, playern)
-	awards.tbv(awards.players[playern], "name", playern)
-	awards.tbv(awards.players[playern], "unlocked")
-	awards.tbv(awards.players[playern], "place")
-	awards.tbv(awards.players[playern], "count")
-	awards.tbv(awards.players[playern], "craft")
-	awards.tbv(awards.players[playern], "deaths", 0)
-	awards.tbv(awards.players[playern], "joins", 0)
-	awards.tbv(awards.players[playern], "chats", 0)
-end
+awards.init()
 
 -- Load files
+dofile(minetest.get_modpath("awards").."/helpers.lua")
 dofile(minetest.get_modpath("awards").."/triggers.lua")
 
 -- API Functions
 function awards._additional_triggers(name, data_table)
-	-- To add triggers in another mod, you should override this function
-	-- If the code can't handle the trigger passed, then call the last value of _additional_triggers
-	--[[
-		local add_trig = awards._additional_triggers
-		awards._additional_triggers = function(name, data_table)
-			if data_table.trigger.type == "trigger" then
-				local tmp = {
-					award = name,
-					node = data_table.trigger.node,
-					target = data_table.trigger.target,
-				}
-				table.insert(awards.onTrigger,tmp)
-			elseif data_table.trigger.type == "trigger2" then
-				local tmp = {
-					award = name,
-					node = data_table.trigger.node,
-					target = data_table.trigger.target,
-				}
-				table.insert(awards.onTrigger2,tmp)
-			else
-				add_trig(name, data_table)
-			end
-		end
-	]]--
+	-- Depreciated!
 end
 function awards.register_achievement(name,data_table)
 	-- see if a trigger is defined in the achievement definition
@@ -158,7 +101,7 @@ function awards.register_achievement(name,data_table)
 	if data_table.custom_announce == nil or data_table.custom_announce == "" then
 		data_table.custom_announce = "Achievement Unlocked:"
 	end
-	
+
 	-- add the achievement to the definition table
 	data_table.name = name
 	awards.def[name] = data_table
@@ -204,7 +147,7 @@ end
 function awards.give_achievement(name, award)
 	-- Access Player Data
 	local data = awards.players[name]
-	
+
 	-- Perform checks
 	if not data then
 		return
@@ -290,7 +233,7 @@ function awards.give_achievement(name, award)
 				position = {x = 0.5, y = 0},
 				offset = {x = 0, y = 40},
 				alignment = {x = 0, y = -1}
-			})			
+			})
 			local three = player:hud_add({
 				hud_elem_type = "text",
 				name = "award_title",
@@ -300,7 +243,7 @@ function awards.give_achievement(name, award)
 				position = {x = 0.5, y = 0},
 				offset = {x = 30, y = 100},
 				alignment = {x = 0, y = -1}
-			})			
+			})
 			local four = player:hud_add({
 				hud_elem_type = "image",
 				name = "award_icon",
@@ -317,50 +260,15 @@ function awards.give_achievement(name, award)
 				player:hud_remove(four)
 			end)
 		end
-	
-		-- record this in the log	
+
+		-- record this in the log
 		minetest.log("action", name.." has unlocked award "..title)
-		
+
 		-- save playertable
 		awards.save()
 	end
 end
 
--- List a player's achievements
-minetest.register_chatcommand("list_awards", {
-	params = "obsolete",
-	description = "list_awards: obsolete. Use /awards",
-	func = function(name, param)
-		minetest.chat_send_player(name, "This command has been made obsolete. Use /awards instead.")
-		awards.showto(name, name, nil, false)
-	end
-})
-minetest.register_chatcommand("awards", {
-	params = "",
-	description = "awards: list awards",
-	func = function(name, param)
-		awards.showto(name, name, nil, false)
-	end
-})
-minetest.register_chatcommand("cawards", {
-	params = "",
-	description = "awards: list awards in chat",
-	func = function(name, param)
-		awards.showto(name, name, nil, true)
-	end
-})
-minetest.register_chatcommand("awd", {
-	params = "award name",
-	description = "awd: Details of awd gotten",
-	func = function(name, param)
-		local def = awards.def[param]
-		if def then
-			minetest.chat_send_player(name,def.title..": "..def.description)
-		else
-			minetest.chat_send_player(name,"Award not found.")
-		end
-	end
-})
 --[[minetest.register_chatcommand("gawd", {
 	params = "award name",
 	description = "gawd: give award to self",
@@ -368,26 +276,6 @@ minetest.register_chatcommand("awd", {
 		awards.give_achievement(name,param)
 	end
 })]]--
-
-function awards._order_awards(name)
-	local done = {}
-	local retval = {}
-	local player = awards.player(name)
-	if player and player.unlocked then
-		for _,got in pairs(player.unlocked) do
-			if awards.def[got] then
-				done[got] = true
-				table.insert(retval,{name=got,got=true})
-			end
-		end
-	end
-	for _,def in pairs(awards.def) do
-		if not done[def.name] then
-			table.insert(retval,{name=def.name,got=false})
-		end
-	end
-	return retval
-end
 
 function awards.showto(name, to, sid, text)
 	if name == "" or name == nil then
@@ -404,7 +292,7 @@ function awards.showto(name, to, sid, text)
 			local def = awards.def[str]
 			if def then
 				if def.title then
-					if def.description then				
+					if def.description then
 						minetest.chat_send_player(to, def.title..": "..def.description)
 					else
 						minetest.chat_send_player(to, def.title)
@@ -418,9 +306,9 @@ function awards.showto(name, to, sid, text)
 		if sid == nil or sid < 1 then
 			sid = 1
 		end
-		local formspec = "size[11,5]"			
+		local formspec = "size[11,5]"
 		local listofawards = awards._order_awards(name)
-		
+
 		-- Sidebar
 		if sid then
 			local item = listofawards[sid+0]
@@ -429,7 +317,7 @@ function awards.showto(name, to, sid, text)
 				formspec = formspec .. "label[1,2.75;Secret Award]"..
 									"image[1,0;3,3;unknown.png]"
 				if def and def.description then
-					formspec = formspec	.. "label[0,3.25;Unlock this award to find out what it is]"				
+					formspec = formspec	.. "label[0,3.25;Unlock this award to find out what it is]"
 				end
 			else
 				local title = item.name
@@ -447,13 +335,13 @@ function awards.showto(name, to, sid, text)
 				formspec = formspec .. "label[1,2.75;"..title..status.."]"..
 									"image[1,0;3,3;"..icon.."]"
 				if def and def.description then
-					formspec = formspec	.. "label[0,3.25;"..def.description.."]"				
+					formspec = formspec	.. "label[0,3.25;"..def.description.."]"
 				end
 			end
 		end
-		
+
 		-- Create list box
-		formspec = formspec .. "textlist[4.75,0;6,5;awards;"		
+		formspec = formspec .. "textlist[4.75,0;6,5;awards;"
 		local first = true
 		for _,award in pairs(listofawards) do
 			local def = awards.def[award.name]
@@ -462,14 +350,14 @@ function awards.showto(name, to, sid, text)
 					formspec = formspec .. ","
 				end
 				first = false
-				
+
 				if def.secret and not award.got then
 					formspec = formspec .. "#ACACACSecret Award"
 				else
-					local title = award.name			
+					local title = award.name
 					if def and def.title then
 						title = def.title
-					end			
+					end
 					if award.got then
 						formspec = formspec .. minetest.formspec_escape(title)
 					else
@@ -477,7 +365,7 @@ function awards.showto(name, to, sid, text)
 					end
 				end
 			end
-		end		
+		end
 		formspec = formspec .. ";"..sid.."]"
 
 		-- Show formspec to user
@@ -495,11 +383,10 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	local name = player:get_player_name()
 	if fields.awards then
 		local event = minetest.explode_textlist_event(fields.awards)
-		if event.type == "CHG" then			
-			awards.showto(name,name,event.index,false)	
-		end		
+		if event.type == "CHG" then
+			awards.showto(name,name,event.index,false)
+		end
 	end
-	
+
 	return true
 end)
-
