@@ -18,7 +18,7 @@
 awards = {
 	show_mode = "hud"
 }
-dofile(minetest.get_modpath("awards").."/helpers.lua")
+dofile(minetest.get_modpath("awards").."/api_helpers.lua")
 
 -- Table Save Load Functions
 function awards.save()
