@@ -28,7 +28,7 @@ old fork in Carbone, under same license.
 	* name is the player name
 	* def is the award def.
 	* return true to cancel HUD
-* awards.give_achievement(name, award)
+* awards.unlock(name, award)
 	* gives an award to a player
 	* name is the player name
 
