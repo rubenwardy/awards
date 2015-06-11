@@ -88,11 +88,29 @@ function awards.register_achievement(name, def)
 	awards.def[name] = def
 end
 
+function awards.enable(name)
+	local data = awards.player(name)
+	if data then
+		data.disabled = nil
+	end
+end
+
+function awards.disable(name)
+	local data = awards.player(name)
+	if data then
+		data.disabled = true
+	end
+end
+
+function awards.clear_player(name)
+	awards.players[name] = nil
+end
+
 -- This function is called whenever a target condition is met.
 -- It checks if a player already has that achievement, and if they do not,
 -- it gives it to them
 ----------------------------------------------
---awards.give_achievement(name, award)
+--awards.unlock(name, award)
 -- name - the name of the player
 -- award - the name of the award to give
 function awards.unlock(name, award)
@@ -105,6 +123,9 @@ function awards.unlock(name, award)
 		return
 	end
 	if not awdef then
+		return
+	end
+	if data.disabled then
 		return
 	end
 	awards.tbv(data,"unlocked")
@@ -225,9 +246,14 @@ awards.give_achievement = awards.unlock
 	end
 })]]--
 
-function awards.showto(name, to, sid, text)
+function awards.show_to(name, to, sid, text)
 	if name == "" or name == nil then
 		name = to
+	end
+	if name == to and awards.player(to).disabled then
+		minetest.chat_send_player("You've disabled awards. Type /awards" ..
+				" enable to reenable")
+		return
 	end
 	if text then
 		if not awards.players[name] or not awards.players[name].unlocked  then
@@ -320,9 +346,10 @@ function awards.showto(name, to, sid, text)
 		minetest.show_formspec(to,"awards:awards",formspec)
 	end
 end
+awards.showto = awards.show_to
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
-	if formname~="awards:awards" then
+	if formname ~= "awards:awards" then
 		return false
 	end
 	if fields.quit then
@@ -332,7 +359,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.awards then
 		local event = minetest.explode_textlist_event(fields.awards)
 		if event.type == "CHG" then
-			awards.showto(name,name,event.index,false)
+			awards.show_to(name, name, event.index, false)
 		end
 	end
 

@@ -14,20 +14,25 @@
 -- 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 --
 
-minetest.register_chatcommand("list_awards", {
-	params = "obsolete",
-	description = "list_awards: obsolete. Use /awards",
-	func = function(name, param)
-		minetest.chat_send_player(name, "This command has been made obsolete. Use /awards instead.")
-		awards.showto(name, name, nil, false)
-	end
-})
-
 minetest.register_chatcommand("awards", {
 	params = "",
 	description = "awards: list awards",
 	func = function(name, param)
-		awards.showto(name, name, nil, false)
+		if param == "clear" then
+			awards.clear_player(name)
+			minetest.chat_send_player(name, "All your awards and statistics " ..
+					" have been cleared. You can now start again.")
+		elseif param == "disable" then
+			awards.disable(name)
+			minetest.chat_send_player(name, "You have disabled awards. (only affects you)")
+		elseif param == "enable" then
+			awards.enable(name)
+			minetest.chat_send_player(name, "You have enabled awards. (only affects you)")
+		elseif param == "c" then
+			awards.show_to(name, name, nil, true)
+		else
+			awards.show_to(name, name, nil, false)
+		end
 	end
 })
 
@@ -35,7 +40,9 @@ minetest.register_chatcommand("cawards", {
 	params = "",
 	description = "awards: list awards in chat",
 	func = function(name, param)
-		awards.showto(name, name, nil, true)
+		awards.show_to(name, name, nil, true)
+		minetest.chat_send_player(name, "/cawards has been depreciated," ..
+				" use /awards c instead")
 	end
 })
 
