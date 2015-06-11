@@ -113,7 +113,7 @@ minetest.register_on_dignode(function(pos, oldnode, digger)
 		end
 
 		if res then
-			awards.give_achievement(playern,res)
+			awards.unlock(playern,res)
 		end
 	end
 end)
@@ -167,7 +167,7 @@ minetest.register_on_placenode(function(pos, node, digger)
 		end
 
 		if res then
-			awards.give_achievement(playern,res)
+			awards.unlock(playern,res)
 		end
 	end
 end)
@@ -253,7 +253,7 @@ minetest.register_on_dieplayer(function(player)
 			end
 		end
 		if res ~= nil then
-			awards.give_achievement(name,res)
+			awards.unlock(name,res)
 		end
 	end
 end)
@@ -285,7 +285,7 @@ minetest.register_on_joinplayer(function(player)
 			end
 		end
 		if res ~= nil then
-			awards.give_achievement(name,res)
+			awards.unlock(name,res)
 		end
 	end
 end)
@@ -318,7 +318,7 @@ minetest.register_on_chat_message(function(name, message)
 			end
 		end
 		if res ~= nil then
-			awards.give_achievement(name,res)
+			awards.unlock(name,res)
 		end
 	end
 end)

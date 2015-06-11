@@ -29,6 +29,11 @@ function awards.save()
 	end
 end
 
+local S = function(s) return s end
+function awards.set_intllib(locale)
+	S = locale
+end
+
 function awards.init()
 	awards.players = awards.load()
 	awards.def = {}
@@ -79,24 +84,8 @@ function awards.register_achievement(name, def)
 		end
 	end
 
-	-- check icon, background and custom_announce data
-	if not def.icon or def.icon == "" then
-		def.icon = "unknown.png"
-	end
-	if not def.background or def.background == "" then
-		def.background = "bg_default.png"
-	end
-	if not def.custom_announce or def.custom_announce == "" then
-		def.custom_announce = "Achievement Unlocked:"
-	end
-
-	-- add the achievement to the definition table
+	-- Add Award
 	awards.def[name] = def
-end
-
--- run a function when an item is crafted
-function awards.register_onCraft(func)
-	table.insert(awards.onCraft,func)
 end
 
 -- This function is called whenever a target condition is met.
@@ -106,7 +95,7 @@ end
 --awards.give_achievement(name, award)
 -- name - the name of the player
 -- award - the name of the award to give
-function awards.give_achievement(name, award)
+function awards.unlock(name, award)
 	-- Access Player Data
 	local data  = awards.players[name]
 	local awdef = awards.def[award]
@@ -116,7 +105,7 @@ function awards.give_achievement(name, award)
 		return
 	end
 	if not awdef then
-			return
+		return
 	end
 	awards.tbv(data,"unlocked")
 
@@ -125,8 +114,10 @@ function awards.give_achievement(name, award)
 		return
 	end
 
-	-- Set award flag
+	-- Unlock Award
+	minetest.log("action", name.." has unlocked award "..name)
 	data.unlocked[award] = award
+	awards.save()
 
 	-- Give Prizes
 	if awdef and awdef.prizes then
@@ -143,34 +134,6 @@ function awards.give_achievement(name, award)
 		end
 	end
 
-	-- Get data from definition tables
-	local title = award
-	local desc = ""
-	local background = ""
-	local icon = ""
-	local custom_announce = ""
-	if awdef.title then
-		title = awdef.title
-	end
-	if awdef.custom_announce then
-		custom_announce = awdef.custom_announce
-	end
-	if awdef.background then
-		background = awdef.background
-	end
-	if awdef.icon then
-		icon = awdef.icon
-	end
-	if awdef and awdef.description then
-		desc = awdef.description
-	end
-
-	-- Record this in the log
-	minetest.log("action", name.." has unlocked award "..title)
-
-	-- Save playertable
-	awards.save()
-
 	-- Run callbacks
 	if awdef.on_unlock and awdef.on_unlock(name, awdef) then
 		return
@@ -181,7 +144,14 @@ function awards.give_achievement(name, award)
 		end
 	end
 
-	-- send the won award message to the player
+	-- Get Notification Settings
+	local title = awdef.title or award
+	local desc = awdef.description or ""
+	local background = awdef.background or "bg_default.png"
+	local icon = awdef.icon or "unknown.png"
+	local custom_announce = awdef.custom_announce or S("Achievement Unlocked:")
+
+	-- Do Notification
 	if awards.show_mode == "formspec" then
 		-- use a formspec to send it
 		minetest.show_formspec(name, "achievements:unlocked", "size[4,2]"..
@@ -191,7 +161,7 @@ function awards.give_achievement(name, award)
 				"label[0.3,0.1;"..custom_announce.."]")
 	elseif awards.show_mode == "chat" then
 		-- use the chat console to send it
-		minetest.chat_send_player(name, "Achievement Unlocked: "..title)
+		minetest.chat_send_player(name, S("Achievement Unlocked:")..title)
 		if desc~="" then
 			minetest.chat_send_player(name, desc)
 		end
@@ -244,11 +214,14 @@ function awards.give_achievement(name, award)
 	end
 end
 
+-- Backwards compatibility
+awards.give_achievement = awards.unlock
+
 --[[minetest.register_chatcommand("gawd", {
 	params = "award name",
 	description = "gawd: give award to self",
 	func = function(name, param)
-		awards.give_achievement(name,param)
+		awards.unlock(name,param)
 	end
 })]]--
 

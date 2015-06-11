@@ -26,6 +26,7 @@ end
 dofile(minetest.get_modpath("awards").."/api.lua")
 dofile(minetest.get_modpath("awards").."/chat_commands.lua")
 dofile(minetest.get_modpath("awards").."/triggers.lua")
+awards.set_intllib(S)
 
 -- Light it up
 awards.register_achievement("award_lightitup",{
