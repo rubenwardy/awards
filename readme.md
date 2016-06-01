@@ -20,8 +20,9 @@ The API
 	* sound [optional]
 	* image [optional]
 	* trigger [optional] [table]
-		* type - "dig", "place", "death", "chat" or "join"
+		* type - "dig", "place", "craft", "death", "chat" or "join"
 		* (for dig/place type) node - the nodes name
+		* (for craft type) item - the items name
 		* (for all types) target - how many to dig / place
 	* secret [optional] - if true, then player needs to unlock to find out what it is.
 * awards.give_achievement(name,award)
@@ -36,6 +37,8 @@ The API
 	* -- return award name or null
 * awards.register_onJoin(func(player,data))
 	* -- return award name or null
+* awards.register_onCraft(func(player,data))
+	* -- return award name or null
 
 
 Player Data
@@ -48,6 +51,9 @@ A list of data referenced/hashed by the player's name.
 		* modname [table]
 			* itemname [int]
 	* place [table] - place counter
+		* modname [table]
+			* itemname [int]
+	* craft [table] - craft counter
 		* modname [table]
 			* itemname [int]
 	* deaths

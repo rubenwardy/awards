@@ -65,6 +65,7 @@ function awards.assertPlayer(playern)
 	awards.tbv(awards.players[playern], "unlocked")
 	awards.tbv(awards.players[playern], "place")
 	awards.tbv(awards.players[playern], "count")
+	awards.tbv(awards.players[playern], "craft")
 	awards.tbv(awards.players[playern], "deaths", 0)
 	awards.tbv(awards.players[playern], "joins", 0)
 	awards.tbv(awards.players[playern], "chats", 0)
@@ -117,6 +118,13 @@ function awards.register_achievement(name,data_table)
 			 	target = data_table.trigger.target,
 			}
 			table.insert(awards.onPlace,tmp)
+		elseif data_table.trigger.type == "craft" then
+			local tmp = {
+				award = name,
+			 	item = data_table.trigger.item,
+			 	target = data_table.trigger.target,
+			}
+			table.insert(awards.onCraft,tmp)
 		elseif data_table.trigger.type == "death" then
 			local tmp = {
 				award = name,
@@ -179,6 +187,11 @@ end
 -- run a function when a player joins
 function awards.register_onJoin(func)
 	table.insert(awards.onJoin,func)
+end
+
+-- run a function when an item is crafted
+function awards.register_onCraft(func)
+	table.insert(awards.onCraft,func)
 end
 
 -- This function is called whenever a target condition is met.

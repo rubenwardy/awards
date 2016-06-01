@@ -7,6 +7,7 @@
 -- Function and table holders for Triggers
 awards.onDig = {}
 awards.onPlace = {}
+awards.onCraft = {}
 awards.onChat = {}
 awards.onDeath = {}
 awards.onJoin = {}
@@ -112,6 +113,60 @@ minetest.register_on_placenode(function(pos,node,digger)
 					-- table running failed!
 				elseif data.place[tmod][titem] > awards.onPlace[i].target-1 then
 					res = awards.onPlace[i].award
+				end
+			end
+		end
+
+		if res then
+			awards.give_achievement(playern,res)
+		end
+	end
+end)
+
+minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
+	if not player or not itemstack then
+		return
+	end
+	local itemcrafted = string.split(itemstack:get_name(), ":")
+	if #itemcrafted ~= 2 then
+		--minetest.log("error","Awards mod: "..itemstack:get_name().." is in wrong format!")
+		return
+	end
+	local mod = itemcrafted[1]
+	local item = itemcrafted[2]
+	local playern = player:get_player_name()
+
+	if (not playern or not itemcrafted or not mod or not item) then
+		return
+	end
+	awards.assertPlayer(playern)
+	awards.tbv(awards.players[playern].craft, mod)
+	awards.tbv(awards.players[playern].craft[mod], item, 0)
+
+	-- Increment counter
+	awards.players[playern].craft[mod][item]=awards.players[playern].craft[mod][item] + 1
+
+	-- Run callbacks and triggers
+	local data=awards.players[playern]
+	for i=1,# awards.onCraft do
+		local res = nil
+		if type(awards.onCraft[i]) == "function" then
+			-- Run trigger callback
+			res = awards.onDig[i](player,data)
+		elseif type(awards.onCraft[i]) == "table" then
+			-- Handle table trigger
+			if not awards.onCraft[i].item or not awards.onCraft[i].target or not awards.onCraft[i].award then
+				-- table running failed!
+				print("[ERROR] awards - onCraft trigger "..i.." is invalid!")
+			else
+				-- run the table
+				local titemcrafted = string.split(awards.onCraft[i].item, ":")
+				local tmod=titemcrafted[1]
+				local titem=titemcrafted[2]
+				if tmod==nil or titem==nil or not data.craft[tmod] or not data.craft[tmod][titem] then
+					-- table running failed!
+				elseif data.craft[tmod][titem] > awards.onCraft[i].target-1 then
+					res=awards.onCraft[i].award
 				end
 			end
 		end
