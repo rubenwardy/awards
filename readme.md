@@ -28,6 +28,14 @@ old fork in Carbone, under same license.
 		* return true to cancel register_on_unlock callbacks and HUD
 * awards.register_trigger(name, func(awardname, def))
 	* Note: awards.on[name] is automatically created for triggers
+* awards.run_trigger_callbacks(player, data, trigger, table_func(entry))
+	* Goes through and checks all triggers registered to a trigger type,
+	  unlocking the award if conditions are met.
+	* data is the player's award data, ie: awards.players[player_name]
+	* trigger is the name of the trigger type. Ie: awards.on[trigger]
+	* table_func is called if the trigger is a table - simply return an
+	  award name to unlock it
+	* See triggers.lua for examples
 * awards.register_on_unlock(func(name, def))
 	* name is the player name
 	* def is the award def.

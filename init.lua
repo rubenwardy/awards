@@ -36,7 +36,7 @@ awards.register_achievement("award_lightitup",{
 	trigger = {
 		type = "place",
 		node = "default:torch",
-		target = 500
+		target = 100
 	}
 })
 
@@ -100,7 +100,7 @@ awards.register_achievement("award_obsessed_with_obsidian",{
 	trigger = {
 		type = "dig",
 		node = "default:obsidian",
-		target = 1
+		target = 50
 	}
 })
 
@@ -124,7 +124,7 @@ awards.register_achievement("award_lumberjack", {
 	trigger = {
 		type = "dig",
 		node = "default:tree",
-		target = 1
+		target = 100
 	}
 })
 

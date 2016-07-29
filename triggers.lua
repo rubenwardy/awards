@@ -73,6 +73,22 @@ awards.register_onChat  = awards.register_on_chat
 awards.register_onJoin  = awards.register_on_join
 awards.register_onCraft = awards.register_on_craft
 
+function awards.run_trigger_callbacks(player, data, trigger, table_func)
+	for i = 1, #awards.on[trigger] do
+		local res = nil
+		local entry = awards.on[trigger][i]
+		if type(entry) == "function" then
+			res = entry(player, data)
+		elseif type(entry) == "table" and entry.award then
+			res = table_func(entry)
+		end
+
+		if res then
+			awards.unlock(player:get_player_name(), res)
+		end
+	end
+end
+
 -- Trigger Handles
 minetest.register_on_dignode(function(pos, oldnode, digger)
 	if not digger or not pos or not oldnode then
@@ -97,35 +113,19 @@ minetest.register_on_dignode(function(pos, oldnode, digger)
 	awards.players[playern].count[mod][item]=awards.players[playern].count[mod][item] + 1
 
 	-- Run callbacks and triggers
-	local player = digger
 	local data = awards.players[playern]
-	for i=1, #awards.on.dig do
-		local res = nil
-		if type(awards.on.dig[i]) == "function" then
-			-- Run trigger callback
-			res = awards.on.dig[i](player,data)
-		elseif type(awards.on.dig[i]) == "table" then
-			-- Handle table trigger
-			if not awards.on.dig[i].node or not awards.on.dig[i].target or not awards.on.dig[i].award then
+	awards.run_trigger_callbacks(digger, data, "dig", function(entry)
+		if entry.node and entry.target then
+			local tnodedug = string.split(entry.node, ":")
+			local tmod = tnodedug[1]
+			local titem = tnodedug[2]
+			if not tmod or not titem or not data.count[tmod] or not data.count[tmod][titem] then
 				-- table running failed!
-				print("[ERROR] awards - on.dig trigger "..i.." is invalid!")
-			else
-				-- run the table
-				local tnodedug = string.split(awards.on.dig[i].node, ":")
-				local tmod=tnodedug[1]
-				local titem=tnodedug[2]
-				if tmod==nil or titem==nil or not data.count[tmod] or not data.count[tmod][titem] then
-					-- table running failed!
-				elseif data.count[tmod][titem] > awards.on.dig[i].target-1 then
-					res=awards.on.dig[i].award
-				end
+			elseif data.count[tmod][titem] > entry.target-1 then
+				return entry.award
 			end
 		end
-
-		if res then
-			awards.unlock(playern,res)
-		end
-	end
+	end)
 end)
 
 minetest.register_on_placenode(function(pos, node, digger)
@@ -152,34 +152,19 @@ minetest.register_on_placenode(function(pos, node, digger)
 	awards.players[playern].place[mod][item] = awards.players[playern].place[mod][item] + 1
 
 	-- Run callbacks and triggers
-	local player = digger
 	local data = awards.players[playern]
-	for i=1,# awards.on.place do
-		local res = nil
-		if type(awards.on.place[i]) == "function" then
-			-- Run trigger callback
-			res = awards.on.place[i](player,data)
-		elseif type(awards.on.place[i]) == "table" then
-			-- Handle table trigger
-			if not awards.on.place[i].node or not awards.on.place[i].target or not awards.on.place[i].award then
-				print("[ERROR] awards - on.place trigger "..i.." is invalid!")
-			else
-				-- run the table
-				local tnodedug = string.split(awards.on.place[i].node, ":")
-				local tmod = tnodedug[1]
-				local titem = tnodedug[2]
-				if tmod==nil or titem==nil or not data.place[tmod] or not data.place[tmod][titem] then
-					-- table running failed!
-				elseif data.place[tmod][titem] > awards.on.place[i].target-1 then
-					res = awards.on.place[i].award
-				end
+	awards.run_trigger_callbacks(digger, data, "place", function(entry)
+		if entry.node and entry.target then
+			local tnodedug = string.split(entry.node, ":")
+			local tmod = tnodedug[1]
+			local titem = tnodedug[2]
+			if not tmod or not titem or not data.place[tmod] or not data.place[tmod][titem] then
+				-- table running failed!
+			elseif data.place[tmod][titem] > entry.target-1 then
+				return entry.award
 			end
 		end
-
-		if res then
-			awards.unlock(playern,res)
-		end
-	end
+	end)
 end)
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
@@ -199,6 +184,7 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 		return
 	end
 	awards.assertPlayer(playern)
+	awards.tbv(awards.players[playern], "craft")
 	awards.tbv(awards.players[playern].craft, mod)
 	awards.tbv(awards.players[playern].craft[mod], item, 0)
 
@@ -207,34 +193,18 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 
 	-- Run callbacks and triggers
 	local data = awards.players[playern]
-	for i=1, #awards.on.craft do
-		local res = nil
-		local entry = awards.on.craft[i]
-		if type(entry) == "function" then
-			-- Run trigger callback
-			res = entry(player,data)
-		elseif type(entry) == "table" then
-			-- Handle table trigger
-			if not entry.item or not entry.target or not entry.award then
+	awards.run_trigger_callbacks(player, data, "craft", function(entry)
+		if entry.item and entry.target then
+			local titemcrafted = string.split(entry.item, ":")
+			local tmod = titemcrafted[1]
+			local titem = titemcrafted[2]
+			if not tmod or not titem or not data.craft[tmod] or not data.craft[tmod][titem] then
 				-- table running failed!
-				print("[ERROR] awards - onCraft trigger "..i.." is invalid!")
-			else
-				-- run the table
-				local titemcrafted = string.split(entry.item, ":")
-				local tmod=titemcrafted[1]
-				local titem=titemcrafted[2]
-				if not tmod==nil or not titem or not data.craft[tmod] or not data.craft[tmod][titem] then
-					-- table running failed!
-				elseif data.craft[tmod][titem] > entry.target-1 then
-					res=awards.on.craft[i].award
-				end
+			elseif data.craft[tmod][titem] > entry.target-1 then
+				return entry.award
 			end
 		end
-
-		if res then
-			awards.give_achievement(playern,res)
-		end
-	end
+	end)
 end)
 
 minetest.register_on_dieplayer(function(player)
@@ -251,22 +221,12 @@ minetest.register_on_dieplayer(function(player)
 	-- Increment counter
 	data.deaths = data.deaths + 1
 
-	-- Run callbacks and triggers
-	for _,trigger in pairs(awards.on.death) do
-		local res = nil
-		if type(trigger) == "function" then
-			res = trigger(player,data)
-		elseif type(trigger) == "table" then
-			if trigger.target and trigger.award then
-				if data.deaths and data.deaths >= trigger.target then
-					res = trigger.award
-				end
-			end
+	awards.run_trigger_callbacks(player, data, "death", function(entry)
+		if entry.target and entry.award and data.deaths and
+				data.deaths >= entry.target then
+			return entry.award
 		end
-		if res ~= nil then
-			awards.unlock(name,res)
-		end
-	end
+	end)
 end)
 
 minetest.register_on_joinplayer(function(player)
@@ -283,22 +243,12 @@ minetest.register_on_joinplayer(function(player)
 	-- Increment counter
 	data.joins = data.joins + 1
 
-	-- Run callbacks and triggers
-	for _, trigger in pairs(awards.on.join) do
-		local res = nil
-		if type(trigger) == "function" then
-			res = trigger(player,data)
-		elseif type(trigger) == "table" then
-			if trigger.target and trigger.award then
-				if data.joins and data.joins >= trigger.target then
-					res = trigger.award
-				end
-			end
+	awards.run_trigger_callbacks(player, data, "join", function(entry)
+		if entry.target and entry.award and data.joins and
+				data.joins >= entry.target then
+			return entry.award
 		end
-		if res ~= nil then
-			awards.unlock(name,res)
-		end
-	end
+	end)
 end)
 
 minetest.register_on_chat_message(function(name, message)
@@ -316,22 +266,12 @@ minetest.register_on_chat_message(function(name, message)
 	-- Increment counter
 	data.chats = data.chats + 1
 
-	-- Run callbacks and triggers
-	for _,trigger in pairs(awards.on.chat) do
-		local res = nil
-		if type(trigger) == "function" then
-			res = trigger(player,data)
-		elseif type(trigger) == "table" then
-			if trigger.target and trigger.award then
-				if data.chats and data.chats >= trigger.target then
-					res = trigger.award
-				end
-			end
+	awards.run_trigger_callbacks(player, data, "chat", function(entry)
+		if entry.target and entry.award and data.chats and
+				data.chats >= entry.target then
+			return entry.award
 		end
-		if res ~= nil then
-			awards.unlock(name,res)
-		end
-	end
+	end)
 end)
 
 minetest.register_on_newplayer(function(player)
