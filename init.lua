@@ -36,13 +36,13 @@ awards.register_achievement("award_lightitup",{
 	trigger = {
 		type = "place",
 		node = "default:torch",
-		target = 1
+		target = 500
 	}
 })
 
 -- Light ALL the things!
-awards.register_achievement("award_light_all_the_things",{
-	title = S("Light ALL The Things!"),
+awards.register_achievement("award_well_lit",{
+	title = S("Well Lit"),
 	description = S("Place 1,000 torches."),
 	icon = "novicebuilder.png",
 	trigger = {
@@ -214,20 +214,6 @@ awards.register_achievement("award_youre_a_copper", {
 	}
 })
 
--- You're winner
-awards.register_achievement("award_youre_winner", {
-	title = S("YOU'RE A WINNER!"),
-	description = S("Dig 1 mossy cobblestone."),
-	icon = "miniminer.png",
-	background = "bg_mining.png",
-	trigger = {
-		type = "dig",
-		node = "default:mossycobble",
-		target = 1
-	},
-	secret = true,
-})
-
 -- Found a Nyan cat!
 awards.register_achievement("award_nyanfind", {
 	title = S("OMG, Nyan Cat!"),
@@ -391,6 +377,34 @@ awards.register_on_death(function(player,data)
 	local pos = player:getpos()
 	if pos and minetest.find_node_near(pos, 5, "bones:bones") ~= nil then
 		return "award_the_stack"
+	end
+	return nil
+end)
+
+-- Die near diamond ore
+awards.register_achievement("award_deep_down", {
+	title = S("Deep Down"),
+	description = S("Die below -10000"),
+	secret = true
+})
+awards.register_on_death(function(player,data)
+	local pos = player:getpos()
+	if pos and pos.y < -10000 then
+		return "award_deep_down"
+	end
+	return nil
+end)
+
+-- Die near diamond ore
+awards.register_achievement("award_no_screen", {
+	title = S("In space, no one can hear you scream"),
+	description = S("Die above 10000"),
+	secret = true
+})
+awards.register_on_death(function(player,data)
+	local pos = player:getpos()
+	if pos and pos.y > 10000 then
+		return "award_no_screen"
 	end
 	return nil
 end)
