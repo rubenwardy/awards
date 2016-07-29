@@ -77,6 +77,27 @@ function awards.run_trigger_callbacks(player, data, trigger, table_func)
 	end
 end
 
+function awards.increment_item_counter(data, field, itemname)
+	local name_split = string.split(itemname, ":")
+	if #name_split ~= 2 then
+		return false
+	end
+	local mod = name_split[1]
+	local item = name_split[2]
+
+	if data and field and mod and item then
+		awards.assertPlayer(data)
+		awards.tbv(data, field)
+		awards.tbv(data[field], mod)
+		awards.tbv(data[field][mod], item, 0)
+
+		data[field][mod][item] = data[field][mod][item] + 1
+		return true
+	else
+		return false
+	end
+end
+
 function awards.register_on_unlock(func)
 	table.insert(awards.on_unlock, func)
 end

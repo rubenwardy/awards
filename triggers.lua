@@ -78,26 +78,10 @@ minetest.register_on_dignode(function(pos, oldnode, digger)
 	if not digger or not pos or not oldnode then
 		return
 	end
-	local nodedug = string.split(oldnode.name, ":")
-	if #nodedug ~= 2 then
-		return
-	end
-	local mod = nodedug[1]
-	local item = nodedug[2]
-	local playern = digger:get_player_name()
-
-	if (not playern or not nodedug or not mod or not item) then
-		return
-	end
-	awards.assertPlayer(playern)
-	awards.tbv(awards.players[playern].count, mod)
-	awards.tbv(awards.players[playern].count[mod], item, 0)
-
-	-- Increment counter
-	awards.players[playern].count[mod][item]=awards.players[playern].count[mod][item] + 1
-
-	-- Run callbacks and triggers
 	local data = awards.players[playern]
+	if not awards.increment_item_counter(data, "count", oldnode.name) then
+		return
+	end
 	awards.run_trigger_callbacks(digger, data, "dig", function(entry)
 		if entry.node and entry.target then
 			local tnodedug = string.split(entry.node, ":")
@@ -116,27 +100,11 @@ minetest.register_on_placenode(function(pos, node, digger)
 	if not digger or not pos or not node or not digger:get_player_name() or digger:get_player_name()=="" then
 		return
 	end
-	local nodedug = string.split(node.name, ":")
-	if #nodedug ~= 2 then
-		return
-	end
-	local mod=nodedug[1]
-	local item=nodedug[2]
-	local playern = digger:get_player_name()
-
-	-- Run checks
-	if (not playern or not nodedug or not mod or not item) then
-		return
-	end
-	awards.assertPlayer(playern)
-	awards.tbv(awards.players[playern].place, mod)
-	awards.tbv(awards.players[playern].place[mod], item, 0)
-
-	-- Increment counter
-	awards.players[playern].place[mod][item] = awards.players[playern].place[mod][item] + 1
-
-	-- Run callbacks and triggers
 	local data = awards.players[playern]
+	if not awards.increment_item_counter(data, "place", node.name) then
+		return
+	end
+
 	awards.run_trigger_callbacks(digger, data, "place", function(entry)
 		if entry.node and entry.target then
 			local tnodedug = string.split(entry.node, ":")
@@ -155,27 +123,12 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 	if not player or not itemstack then
 		return
 	end
-	local itemcrafted = string.split(itemstack:get_name(), ":")
-	if #itemcrafted ~= 2 then
-		--minetest.log("error","Awards mod: "..itemstack:get_name().." is in wrong format!")
-		return
-	end
-	local mod = itemcrafted[1]
-	local item = itemcrafted[2]
-	local playern = player:get_player_name()
 
-	if (not playern or not itemcrafted or not mod or not item) then
-		return
-	end
-	awards.assertPlayer(playern)
-	awards.tbv(awards.players[playern].craft, mod)
-	awards.tbv(awards.players[playern].craft[mod], item, 0)
-
-	-- Increment counter
-	awards.players[playern].craft[mod][item] = awards.players[playern].craft[mod][item] + 1
-
-	-- Run callbacks and triggers
 	local data = awards.players[playern]
+	if not awards.increment_item_counter(data, "craft", itemstack:get_name()) then
+		return
+	end
+
 	awards.run_trigger_callbacks(player, data, "craft", function(entry)
 		if entry.item and entry.target then
 			local titemcrafted = string.split(entry.item, ":")

@@ -36,6 +36,12 @@ old fork in Carbone, under same license.
 	* table_func is called if the trigger is a table - simply return an
 	  award name to unlock it
 	* See triggers.lua for examples
+* awards.increment_item_counter(data, field, itemname)
+	* add to an item's statistic count
+	* for example, (data, "place", "default:stone") will add 1 to the number of
+	  times default:stone has been placed.
+	* data is the player's award data, ie: awards.players[player_name]
+	* returns true on success, false on failure (eg: cannot get modname and item from itemname)
 * awards.register_on_unlock(func(name, def))
 	* name is the player name
 	* def is the award def.
