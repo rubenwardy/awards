@@ -36,7 +36,7 @@ awards.register_achievement("award_lightitup",{
 	trigger = {
 		type = "place",
 		node = "default:torch",
-		target = 100
+		target = 1
 	}
 })
 
@@ -100,7 +100,7 @@ awards.register_achievement("award_obsessed_with_obsidian",{
 	trigger = {
 		type = "dig",
 		node = "default:obsidian",
-		target = 50
+		target = 1
 	}
 })
 
@@ -288,6 +288,16 @@ awards.register_achievement("award_marchand_de_sable", {
 		type = "dig",
 		node = "default:sand",
 		target = 1000
+	}
+})
+
+awards.register_achievement("awards_crafter_of_sticks", {
+	title = S("Crafter of Sticks"),
+	description = S("Create 100 Sticks"),
+	trigger = {
+		type = "craft",
+		item = "default:stick",
+		target = 100
 	}
 })
 

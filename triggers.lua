@@ -56,12 +56,22 @@ awards.register_trigger("join", function(def)
 	table.insert(awards.on.join, tmp)
 end)
 
+awards.register_trigger("craft", function(def)
+	local tmp = {
+		award  = def.name,
+		item   = def.trigger.item,
+		target = def.trigger.target
+	}
+	table.insert(awards.on.craft, tmp)
+end)
+
 -- Backwards compatibility
 awards.register_onDig   = awards.register_on_dig
 awards.register_onPlace = awards.register_on_place
 awards.register_onDeath = awards.register_on_death
 awards.register_onChat  = awards.register_on_chat
 awards.register_onJoin  = awards.register_on_join
+awards.register_onCraft = awards.register_on_craft
 
 -- Trigger Handles
 minetest.register_on_dignode(function(pos, oldnode, digger)
@@ -193,29 +203,30 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 	awards.tbv(awards.players[playern].craft[mod], item, 0)
 
 	-- Increment counter
-	awards.players[playern].craft[mod][item]=awards.players[playern].craft[mod][item] + 1
+	awards.players[playern].craft[mod][item] = awards.players[playern].craft[mod][item] + 1
 
 	-- Run callbacks and triggers
-	local data=awards.players[playern]
-	for i=1,# awards.onCraft do
+	local data = awards.players[playern]
+	for i=1, #awards.on.craft do
 		local res = nil
-		if type(awards.onCraft[i]) == "function" then
+		local entry = awards.on.craft[i]
+		if type(entry) == "function" then
 			-- Run trigger callback
-			res = awards.onDig[i](player,data)
-		elseif type(awards.onCraft[i]) == "table" then
+			res = entry(player,data)
+		elseif type(entry) == "table" then
 			-- Handle table trigger
-			if not awards.onCraft[i].item or not awards.onCraft[i].target or not awards.onCraft[i].award then
+			if not entry.item or not entry.target or not entry.award then
 				-- table running failed!
 				print("[ERROR] awards - onCraft trigger "..i.." is invalid!")
 			else
 				-- run the table
-				local titemcrafted = string.split(awards.onCraft[i].item, ":")
+				local titemcrafted = string.split(entry.item, ":")
 				local tmod=titemcrafted[1]
 				local titem=titemcrafted[2]
-				if tmod==nil or titem==nil or not data.craft[tmod] or not data.craft[tmod][titem] then
+				if not tmod==nil or not titem or not data.craft[tmod] or not data.craft[tmod][titem] then
 					-- table running failed!
-				elseif data.craft[tmod][titem] > awards.onCraft[i].target-1 then
-					res=awards.onCraft[i].award
+				elseif data.craft[tmod][titem] > entry.target-1 then
+					res=awards.on.craft[i].award
 				end
 			end
 		end
