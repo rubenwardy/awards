@@ -61,6 +61,22 @@ function awards.register_trigger(name, func)
 	end
 end
 
+function awards.run_trigger_callbacks(player, data, trigger, table_func)
+	for i = 1, #awards.on[trigger] do
+		local res = nil
+		local entry = awards.on[trigger][i]
+		if type(entry) == "function" then
+			res = entry(player, data)
+		elseif type(entry) == "table" and entry.award then
+			res = table_func(entry)
+		end
+
+		if res then
+			awards.unlock(player:get_player_name(), res)
+		end
+	end
+end
+
 function awards.register_on_unlock(func)
 	table.insert(awards.on_unlock, func)
 end
@@ -367,3 +383,12 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 end)
 
 awards.init()
+
+minetest.register_on_newplayer(function(player)
+	local playern = player:get_player_name()
+	awards.assertPlayer(playern)
+end)
+
+minetest.register_on_shutdown(function()
+	awards.save()
+end)

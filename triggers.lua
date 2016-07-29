@@ -73,22 +73,6 @@ awards.register_onChat  = awards.register_on_chat
 awards.register_onJoin  = awards.register_on_join
 awards.register_onCraft = awards.register_on_craft
 
-function awards.run_trigger_callbacks(player, data, trigger, table_func)
-	for i = 1, #awards.on[trigger] do
-		local res = nil
-		local entry = awards.on[trigger][i]
-		if type(entry) == "function" then
-			res = entry(player, data)
-		elseif type(entry) == "table" and entry.award then
-			res = table_func(entry)
-		end
-
-		if res then
-			awards.unlock(player:get_player_name(), res)
-		end
-	end
-end
-
 -- Trigger Handles
 minetest.register_on_dignode(function(pos, oldnode, digger)
 	if not digger or not pos or not oldnode then
@@ -184,7 +168,6 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 		return
 	end
 	awards.assertPlayer(playern)
-	awards.tbv(awards.players[playern], "craft")
 	awards.tbv(awards.players[playern].craft, mod)
 	awards.tbv(awards.players[playern].craft[mod], item, 0)
 
@@ -272,13 +255,4 @@ minetest.register_on_chat_message(function(name, message)
 			return entry.award
 		end
 	end)
-end)
-
-minetest.register_on_newplayer(function(player)
-	local playern = player:get_player_name()
-	awards.assertPlayer(playern)
-end)
-
-minetest.register_on_shutdown(function()
-	awards.save()
 end)
