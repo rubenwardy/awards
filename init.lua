@@ -232,7 +232,7 @@ awards.register_achievement("award_youre_winner", {
 awards.register_achievement("award_nyanfind", {
 	title = S("OMG, Nyan Cat!"),
 	description = S("Find a nyan cat."),
-	icon = "default_nc_rb.png",
+	icon = "nyancat_front.png",
 	trigger = {
 		type = "dig",
 		node = "default:nyancat",
