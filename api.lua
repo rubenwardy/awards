@@ -246,6 +246,68 @@ awards.give_achievement = awards.unlock
 	end
 })]]--
 
+function awards.getFormspec(name, to, sid)
+	local formspec = "size[11,5]"
+	local listofawards = awards._order_awards(name)
+
+	-- Sidebar
+	if sid then
+		local item = listofawards[sid+0]
+		local def = awards.def[item.name]
+		if def and def.secret and not item.got then
+			formspec = formspec .. "label[1,2.75;Secret Award]"..
+								"image[1,0;3,3;unknown.png]"
+			if def and def.description then
+				formspec = formspec	.. "label[0,3.25;Unlock this award to find out what it is]"
+			end
+		else
+			local title = item.name
+			if def and def.title then
+				title = def.title
+			end
+			local status = ""
+			if item.got then
+				status = " (got)"
+			end
+			formspec = formspec .. "label[1,2.75;" .. title .. status .. "]"
+			if def and def.icon then
+				formspec = formspec .. "image[1,0;3,3;" .. def.icon .. "]"
+			end
+			if def and def.description then
+				formspec = formspec	.. "label[0,3.25;"..def.description.."]"
+			end
+		end
+	end
+
+	-- Create list box
+	formspec = formspec .. "textlist[4.75,0;6,5;awards;"
+	local first = true
+	for _,award in pairs(listofawards) do
+		local def = awards.def[award.name]
+		if def then
+			if not first then
+				formspec = formspec .. ","
+			end
+			first = false
+
+			if def.secret and not award.got then
+				formspec = formspec .. "#ACACACSecret Award"
+			else
+				local title = award.name
+				if def and def.title then
+					title = def.title
+				end
+				if award.got then
+					formspec = formspec .. minetest.formspec_escape(title)
+				else
+					formspec = formspec .. "#ACACAC".. minetest.formspec_escape(title)
+				end
+			end
+		end
+	end
+	return formspec .. ";"..sid.."]"
+end
+
 function awards.show_to(name, to, sid, text)
 	if name == "" or name == nil then
 		name = to
@@ -280,70 +342,8 @@ function awards.show_to(name, to, sid, text)
 		if sid == nil or sid < 1 then
 			sid = 1
 		end
-		local formspec = "size[11,5]"
-		local listofawards = awards._order_awards(name)
-
-		-- Sidebar
-		if sid then
-			local item = listofawards[sid+0]
-			local def = awards.def[item.name]
-			if def and def.secret and not item.got then
-				formspec = formspec .. "label[1,2.75;Secret Award]"..
-									"image[1,0;3,3;unknown.png]"
-				if def and def.description then
-					formspec = formspec	.. "label[0,3.25;Unlock this award to find out what it is]"
-				end
-			else
-				local title = item.name
-				if def and def.title then
-					title = def.title
-				end
-				local status = ""
-				if item.got then
-					status = " (got)"
-				end
-				local icon = ""
-				if def and def.icon then
-					icon = def.icon
-				end
-				formspec = formspec .. "label[1,2.75;"..title..status.."]"..
-									"image[1,0;3,3;"..icon.."]"
-				if def and def.description then
-					formspec = formspec	.. "label[0,3.25;"..def.description.."]"
-				end
-			end
-		end
-
-		-- Create list box
-		formspec = formspec .. "textlist[4.75,0;6,5;awards;"
-		local first = true
-		for _,award in pairs(listofawards) do
-			local def = awards.def[award.name]
-			if def then
-				if not first then
-					formspec = formspec .. ","
-				end
-				first = false
-
-				if def.secret and not award.got then
-					formspec = formspec .. "#ACACACSecret Award"
-				else
-					local title = award.name
-					if def and def.title then
-						title = def.title
-					end
-					if award.got then
-						formspec = formspec .. minetest.formspec_escape(title)
-					else
-						formspec = formspec .. "#ACACAC".. minetest.formspec_escape(title)
-					end
-				end
-			end
-		end
-		formspec = formspec .. ";"..sid.."]"
-
 		-- Show formspec to user
-		minetest.show_formspec(to,"awards:awards",formspec)
+		minetest.show_formspec(to,"awards:awards", awards.getFormspec(name, to, sid))
 	end
 end
 awards.showto = awards.show_to
