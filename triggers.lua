@@ -78,7 +78,8 @@ minetest.register_on_dignode(function(pos, oldnode, digger)
 	if not digger or not pos or not oldnode then
 		return
 	end
-	local data = awards.players[playern]
+
+	local data = awards.players[digger:get_player_name()]
 	if not awards.increment_item_counter(data, "count", oldnode.name) then
 		return
 	end
@@ -100,7 +101,7 @@ minetest.register_on_placenode(function(pos, node, digger)
 	if not digger or not pos or not node or not digger:get_player_name() or digger:get_player_name()=="" then
 		return
 	end
-	local data = awards.players[playern]
+	local data = awards.players[digger:get_player_name()]
 	if not awards.increment_item_counter(data, "place", node.name) then
 		return
 	end
@@ -124,7 +125,7 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 		return
 	end
 
-	local data = awards.players[playern]
+	local data = awards.players[player:get_player_name()]
 	if not awards.increment_item_counter(data, "craft", itemstack:get_name()) then
 		return
 	end
