@@ -91,6 +91,62 @@ if minetest.get_modpath("moreblocks") then
 	})
 end
 
+
+awards.register_achievement("awards_stonebrick", {
+	title = S("Home Improvement"),
+	description = S("Craft 200 stone bricks."),
+	icon = "default_stone_brick.png",
+	trigger = {
+		type = "craft",
+		item = "default:stonebrick",
+		target = 200
+	}
+})
+
+awards.register_achievement("awards_desert_stonebrick", {
+	title = S("Desert Dweller"),
+	description = S("Craft 400 desert stone bricks."),
+	icon = "default_desert_stone_brick.png",
+	trigger = {
+		type = "craft",
+		item = "default:desert_stonebrick",
+		target = 400
+	}
+})
+
+awards.register_achievement("awards_desertstonebrick", {
+	title = S("Pharaoh"),
+	description = S("Craft 100 sandstone bricks."),
+	icon = "default_sandstone_brick.png",
+	trigger = {
+		type = "craft",
+		item = "default:sandstonebrick",
+		target = 100
+	}
+})
+
+awards.register_achievement("awards_bookshelf", {
+	title = S("Little Library"),
+	description = S("Craft 7 bookshelves."),
+	icon = "default_bookshelf.png",
+	trigger = {
+		type = "craft",
+		item = "default:bookshelf",
+		target = 7
+	}
+})
+
+awards.register_achievement("awards_obsidian", {
+	title = S("Lava and Water"),
+	description = S("Mine your first obsidian."),
+	icon = "default_obsidian.png",
+	trigger = {
+		type = "dig",
+		node = "default:obsidian",
+		target = 1
+	}
+})
+
 -- Obsessed with Obsidian
 awards.register_achievement("award_obsessed_with_obsidian",{
 	title = S("Obsessed with Obsidian"),
@@ -191,8 +247,8 @@ awards.register_achievement("award_jungleman", {
 -- Found some Mese!
 awards.register_achievement("award_mesefind", {
 	title = S("First Mese Find"),
-	description = S("Find some Mese."),
-	icon = "default_mese_block.png",
+	description = S("Mine your first mese ore."),
+	icon = "default_stone.png^default_mineral_mese.png",
 	background = "bg_mining.png",
 	trigger = {
 		type = "dig",
@@ -200,6 +256,22 @@ awards.register_achievement("award_mesefind", {
 		target = 1
 	}
 })
+
+-- Mese Block
+awards.register_achievement("award_meseblock", {
+	secret = true,
+	title = S("Mese Mastery"),
+	description = S("Mine a mese block."),
+	icon = "default_mese_block.png",
+	background = "bg_mining.png",
+	trigger = {
+		type = "dig",
+		node = "default:mese",
+		target = 1
+	}
+})
+
+
 
 -- You're a copper
 awards.register_achievement("award_youre_a_copper", {
@@ -216,8 +288,9 @@ awards.register_achievement("award_youre_a_copper", {
 
 -- Found a Nyan cat!
 awards.register_achievement("award_nyanfind", {
-	title = S("OMG, Nyan Cat!"),
-	description = S("Find a nyan cat."),
+	secret = true,
+	title = S("A Cat in a Pop-Tart?!"),
+	description = S("Mine a nyan cat."),
 	icon = "nyancat_front.png",
 	trigger = {
 		type = "dig",
@@ -242,7 +315,7 @@ awards.register_achievement("award_mine2", {
 -- Hardened Miner
 awards.register_achievement("award_mine3", {
 	title = S("Hardened Miner"),
-	description = S("Dig 1,000 stone blocks"),
+	description = S("Dig 1,000 stone blocks."),
 	icon = "miniminer.png",
 	background = "bg_mining.png",
 	trigger = {
@@ -269,6 +342,7 @@ awards.register_achievement("award_mine4", {
 awards.register_achievement("award_marchand_de_sable", {
 	title = S("Marchand De Sable"),
 	description = S("Dig 1,000 sand."),
+	icon = "default_sand.png",
 	background = "bg_mining.png",
 	trigger = {
 		type = "dig",
@@ -279,7 +353,8 @@ awards.register_achievement("award_marchand_de_sable", {
 
 awards.register_achievement("awards_crafter_of_sticks", {
 	title = S("Crafter of Sticks"),
-	description = S("Create 100 Sticks"),
+	description = S("Craft 100 sticks."),
+	icon = "default_stick.png",
 	trigger = {
 		type = "craft",
 		item = "default:stick",
@@ -287,124 +362,145 @@ awards.register_achievement("awards_crafter_of_sticks", {
 	}
 })
 
--- Join
-awards.register_achievement("award_join2", {
-	title = S("Frequent Visitor"),
-	description = S("Connect to the server 50 times."),
+awards.register_achievement("awards_junglegrass", {
+	title = S("Jungle Discoverer"),
+	description = S("Mine your first jungle grass."),
+	icon = "default_junglegrass.png",
 	trigger = {
-		type = "join",
-		target = 50
-	},
-	secret = true
-})
-
--- Dying Spree
-awards.register_achievement("award_dying_spree", {
-	title = S("Dying Spree"),
-	description = S("Die 5 times."),
-	trigger = {
-		type = "death",
-		target = 5
+		type = "dig",
+		node = "default:junglegrass",
+		target = 1
 	}
 })
 
--- Bot-like
-awards.register_achievement("award_bot_like", {
-	title = S("Bot-like"),
-	description = S("Die 10 times."),
+awards.register_achievement("awards_grass", {
+	title = S("Grasslands Discoverer"),
+	description = S("Mine some grass."),
+	icon = "default_grass_3.png",
 	trigger = {
-		type = "death",
-		target = 10
+		type = "dig",
+		node = "default:grass_1",
+		target = 1
 	}
 })
 
--- You Suck!
-awards.register_achievement("award_you_suck", {
-	title = S("You Suck!"),
-	description = S("Die 100 times."),
+awards.register_achievement("awards_dry_grass", {
+	title = S("Savannah Discoverer"),
+	description = S("Mine some dry grass."),
+	icon = "default_dry_grass_3.png",
 	trigger = {
-		type = "death",
-		target = 100
-	},
-	secret = true
+		type = "dig",
+		node = "default:dry_grass_3",
+		target = 1
+	}
 })
 
--- Burned to death
-awards.register_achievement("award_burn", {
-	title = S("You're a witch!"),
-	description = S("Burn to death in a fire.")
+awards.register_achievement("awards_cactus", {
+	title = S("Desert Discoverer"),
+	description = S("Mine your first cactus."),
+	icon = "default_cactus_side.png",
+	trigger = {
+		type = "dig",
+		node = "default:cactus",
+		target = 1
+	}
 })
-awards.register_onDeath(function(player,data)
-	local pos = player:getpos()
-	if pos and minetest.find_node_near(pos, 2, "fire:basic_flame") ~= nil then
-		return "award_burn"
-	end
-	return nil
-end)
 
--- Died in flowing lava
-awards.register_achievement("award_in_the_flow", {
-	title = S("In the Flow"),
-	description = S("Die in flowing lava.")
+awards.register_achievement("awards_dry_shrub", {
+	title = S("Far Lands"),
+	description = S("Mine your first dry shrub."),
+	icon = "default_dry_shrub.png",
+	trigger = {
+		type = "dig",
+		node = "default:dry_shrub",
+		target = 1
+	}
 })
-awards.register_onDeath(function(player,data)
-	local pos = player:getpos()
-	if pos and minetest.find_node_near(pos, 2, "default:lava_flowing") ~= nil then
-		return "award_in_the_flow"
-	end
-	return nil
-end)
 
--- Die near diamond ore
-awards.register_achievement("award_this_is_sad", {
-	title = S("This is Sad"),
-	description = S("Die near diamond ore.")
+awards.register_achievement("awards_farmer", {
+	title = S("Farmer"),
+	description = S("Dig a fully grown wheat plant."),
+	icon = "farming_wheat_8.png",
+	trigger = {
+		type = "dig",
+		node = "farming:wheat_8",
+		target = 1
+	}
 })
-awards.register_on_death(function(player,data)
-	local pos = player:getpos()
-	if pos and minetest.find_node_near(pos, 5, "default:stone_with_diamond") ~= nil then
-		return "award_this_is_sad"
-	end
-	return nil
-end)
 
--- Die near diamond ore
-awards.register_achievement("award_the_stack", {
-	title = S("The Stack"),
-	description = S("Die near bones.")
+awards.register_achievement("awards_ice", {
+	title = S("Glacier Discoverer"),
+	description = S("Mine your first ice."),
+	icon = "default_ice.png",
+	trigger = {
+		type = "dig",
+		node = "default:ice",
+		target = 1
+	}
 })
-awards.register_on_death(function(player,data)
-	local pos = player:getpos()
-	if pos and minetest.find_node_near(pos, 5, "bones:bones") ~= nil then
-		return "award_the_stack"
-	end
-	return nil
-end)
 
--- Die near diamond ore
-awards.register_achievement("award_deep_down", {
-	title = S("Deep Down"),
-	description = S("Die below -10000"),
-	secret = true
+awards.register_achievement("awards_gold_ore", {
+	title = S("First Gold Find"),
+	description = S("Mine your first gold ore."),
+	icon = "default_stone.png^default_mineral_gold.png",
+	trigger = {
+		type = "dig",
+		node = "default:stone_with_gold",
+		target = 1
+	}
 })
-awards.register_on_death(function(player,data)
-	local pos = player:getpos()
-	if pos and pos.y < -10000 then
-		return "award_deep_down"
-	end
-	return nil
-end)
 
--- Die near diamond ore
-awards.register_achievement("award_no_screen", {
-	title = S("In space, no one can hear you scream"),
-	description = S("Die above 10000"),
-	secret = true
+awards.register_achievement("awards_gold_rush", {
+	title = S("Gold Rush"),
+	description = S("Mine 45 gold ores."),
+	icon = "default_stone.png^default_mineral_gold.png",
+	trigger = {
+		type = "dig",
+		node = "default:stone_with_gold",
+		target = 45
+	}
 })
-awards.register_on_death(function(player,data)
-	local pos = player:getpos()
-	if pos and pos.y > 10000 then
-		return "award_no_screen"
-	end
-	return nil
-end)
+
+awards.register_achievement("awards_diamond_ore", {
+	title = S("Wow, I am Diamonds!"),
+	description = S("Mine your first diamond ore."),
+	icon = "default_stone.png^default_mineral_diamond.png",
+	trigger = {
+		type = "dig",
+		node = "default:stone_with_diamond",
+		target = 1
+	}
+})
+
+awards.register_achievement("awards_diamond_rush", {
+	title = S("Girl's Best Friend"),
+	description = S("Mine 18 diamond ores."),
+	icon = "default_stone.png^default_mineral_diamond.png",
+	trigger = {
+		type = "dig",
+		node = "default:stone_with_diamond",
+		target = 18
+	}
+})
+
+awards.register_achievement("awards_diamondblock", {
+	title = S("Hardest Block on Earth"),
+	description = S("Craft a diamond block."),
+	icon = "default_diamond_block.png",
+	trigger = {
+		type = "craft",
+		item = "default:diamondblock",
+		target = 1
+	}
+})
+
+awards.register_achievement("awards_mossycobble", {
+	title = S("In the Dungeon"),
+	description = S("Mine a mossy cobblestone."),
+	icon = "default_mossycobble.png",
+	trigger = {
+		type = "dig",
+		node = "default:mossycobble",
+		target = 1
+	}
+})
