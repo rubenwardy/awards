@@ -220,8 +220,8 @@ function awards.unlock(name, award)
 	-- Get Notification Settings
 	local title = awdef.title or award
 	local desc = awdef.description or ""
-	local background = awdef.background or "bg_default.png"
-	local icon = awdef.icon or "unknown.png"
+	local background = awdef.background or "awards_bg_default.png"
+	local icon = awdef.icon or "awards_unknown.png"
 	local custom_announce = awdef.custom_announce or S("Achievement Unlocked:")
 
 	-- Do Notification
@@ -309,7 +309,7 @@ function awards.getFormspec(name, to, sid)
 		local def = awards.def[item.name]
 		if def and def.secret and not item.got then
 			formspec = formspec .. "label[1,2.75;Secret Award]"..
-								"image[1,0;3,3;unknown.png]"
+								"image[1,0;3,3;awards_unknown.png]"
 			if def and def.description then
 				formspec = formspec	.. "label[0,3.25;Unlock this award to find out what it is]"
 			end
