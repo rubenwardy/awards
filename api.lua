@@ -98,6 +98,23 @@ function awards.increment_item_counter(data, field, itemname, count)
 	end
 end
 
+function awards.get_item_count(data, field, itemname)
+	local name_split = string.split(itemname, ":")
+	if #name_split ~= 2 then
+		return false
+	end
+	local mod = name_split[1]
+	local item = name_split[2]
+
+	if data and field and mod and item then
+		awards.assertPlayer(data)
+		awards.tbv(data, field)
+		awards.tbv(data[field], mod)
+		awards.tbv(data[field][mod], item, 0)
+		return data[field][mod][item]
+	end
+end
+
 function awards.register_on_unlock(func)
 	table.insert(awards.on_unlock, func)
 end
@@ -284,6 +301,7 @@ awards.give_achievement = awards.unlock
 function awards.getFormspec(name, to, sid)
 	local formspec = "size[11,5]"
 	local listofawards = awards._order_awards(name)
+	local playerdata = awards.players[name]
 
 	-- Sidebar
 	if sid then
@@ -307,6 +325,21 @@ function awards.getFormspec(name, to, sid)
 			formspec = formspec .. "label[1,2.75;" .. title .. status .. "]"
 			if def and def.icon then
 				formspec = formspec .. "image[1,0;3,3;" .. def.icon .. "]"
+			end
+			local barwidth = 4.6
+			local perc = nil
+			local label = nil
+			if def.getProgress and playerdata then
+				local res = def:getProgress(playerdata)
+				perc = res.perc
+				label = res.label
+			end
+			if perc then
+				formspec = formspec .. "background[0,4.80;" .. barwidth ..",0.25;awards_progress_gray.png]"
+				formspec = formspec .. "background[0,4.80;" .. (barwidth * perc) ..",0.25;awards_progress_green.png]"
+				if label then
+					formspec = formspec .. "label[1.75,4.63;" .. label .. "]"
+				end
 			end
 			if def and def.description then
 				formspec = formspec	.. "label[0,3.25;"..def.description.."]"
