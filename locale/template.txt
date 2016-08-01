@@ -1,4 +1,9 @@
 Achievement Unlocked: =
+Secret Achievement Unlocked: =
+Achievement Unlocked: %s =
+Secret Achievement Unlocked: %s =
+Achievement Unlocked! =
+Secret Achievement Unlocked! =
 Light It Up =
 Place 100 torches. =
 Light ALL The Things! =

@@ -205,7 +205,14 @@ function awards.unlock(name, award)
 	local desc = awdef.description or ""
 	local background = awdef.background or "bg_default.png"
 	local icon = awdef.icon or "unknown.png"
-	local custom_announce = awdef.custom_announce or S("Achievement Unlocked:")
+	local custom_announce = awdef.custom_announce
+	if custom_announce == nil then
+		if awdef.secret == true then
+			custom_announce = S("Secret Achievement Unlocked:")
+		else
+			custom_announce = S("Achievement Unlocked:")
+		end
+	end
 
 	-- Do Notification
 	if awards.show_mode == "formspec" then
@@ -216,8 +223,14 @@ function awards.unlock(name, award)
 				"label[1.1,1;"..title.."]"..
 				"label[0.3,0.1;"..custom_announce.."]")
 	elseif awards.show_mode == "chat" then
+		local chat_announce
+		if awdef.secret == true then
+			chat_announce = S("Secret Achievement Unlocked: %s")
+		else
+			chat_announce = S("Achievement Unlocked: %s")
+		end
 		-- use the chat console to send it
-		minetest.chat_send_player(name, S("Achievement Unlocked:")..title)
+		minetest.chat_send_player(name, string.format(chat_announce, title))
 		if desc~="" then
 			minetest.chat_send_player(name, desc)
 		end
@@ -232,12 +245,18 @@ function awards.unlock(name, award)
 			offset = {x = 0, y = 138},
 			alignment = {x = 0, y = -1}
 		})
+		local hud_announce
+		if awdef.secret == true then
+			hud_announce = S("Secret Achievement Unlocked!")
+		else
+			hud_announce = S("Achievement Unlocked!")
+		end
 		local two = player:hud_add({
 			hud_elem_type = "text",
 			name = "award_au",
 			number = 0xFFFFFF,
 			scale = {x = 100, y = 20},
-			text = "Achievement Unlocked!",
+			text = hud_announce,
 			position = {x = 0.5, y = 0},
 			offset = {x = 0, y = 40},
 			alignment = {x = 0, y = -1}
@@ -290,10 +309,10 @@ function awards.getFormspec(name, to, sid)
 		local item = listofawards[sid+0]
 		local def = awards.def[item.name]
 		if def and def.secret and not item.got then
-			formspec = formspec .. "label[1,2.75;Secret Award]"..
+			formspec = formspec .. "label[1,2.75;(Secret Award)]"..
 								"image[1,0;3,3;unknown.png]"
 			if def and def.description then
-				formspec = formspec	.. "label[0,3.25;Unlock this award to find out what it is]"
+				formspec = formspec	.. "label[0,3.25;Unlock this award to find out what it is.]"
 			end
 		else
 			local title = item.name
@@ -326,7 +345,7 @@ function awards.getFormspec(name, to, sid)
 			first = false
 
 			if def.secret and not award.got then
-				formspec = formspec .. "#ACACACSecret Award"
+				formspec = formspec .. "#707070(Secret Award)"
 			else
 				local title = award.name
 				if def and def.title then
