@@ -335,6 +335,9 @@ function awards.getFormspec(name, to, sid)
 				label = res.label
 			end
 			if perc then
+				if perc > 1 then
+					perc = 1
+				end
 				formspec = formspec .. "background[0,4.80;" .. barwidth ..",0.25;awards_progress_gray.png]"
 				formspec = formspec .. "background[0,4.80;" .. (barwidth * perc) ..",0.25;awards_progress_green.png]"
 				if label then
