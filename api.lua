@@ -222,7 +222,14 @@ function awards.unlock(name, award)
 	local desc = awdef.description or ""
 	local background = awdef.background or "awards_bg_default.png"
 	local icon = awdef.icon or "awards_unknown.png"
-	local custom_announce = awdef.custom_announce or S("Achievement Unlocked:")
+	local custom_announce = awdef.custom_announce
+	if not custom_announce then
+		if awdef.secret then
+			custom_announce = S("Secret Achievement Unlocked:")
+		else
+			custom_announce = S("Achievement Unlocked:")
+		end
+	end
 
 	-- Do Notification
 	if awards.show_mode == "formspec" then
@@ -233,8 +240,14 @@ function awards.unlock(name, award)
 				"label[1.1,1;"..title.."]"..
 				"label[0.3,0.1;"..custom_announce.."]")
 	elseif awards.show_mode == "chat" then
+		local chat_announce
+		if awdef.secret == true then
+			chat_announce = S("Secret Achievement Unlocked: %s")
+		else
+			chat_announce = S("Achievement Unlocked: %s")
+		end
 		-- use the chat console to send it
-		minetest.chat_send_player(name, S("Achievement Unlocked:")..title)
+		minetest.chat_send_player(name, string.format(chat_announce, title))
 		if desc~="" then
 			minetest.chat_send_player(name, desc)
 		end
@@ -249,12 +262,18 @@ function awards.unlock(name, award)
 			offset = {x = 0, y = 138},
 			alignment = {x = 0, y = -1}
 		})
+		local hud_announce
+		if awdef.secret == true then
+			hud_announce = S("Secret Achievement Unlocked!")
+		else
+			hud_announce = S("Achievement Unlocked!")
+		end
 		local two = player:hud_add({
 			hud_elem_type = "text",
 			name = "award_au",
 			number = 0xFFFFFF,
 			scale = {x = 100, y = 20},
-			text = "Achievement Unlocked!",
+			text = hud_announce,
 			position = {x = 0.5, y = 0},
 			offset = {x = 0, y = 40},
 			alignment = {x = 0, y = -1}
