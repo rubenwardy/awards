@@ -32,7 +32,7 @@ awards.set_intllib(S)
 awards.register_achievement("award_lightitup",{
 	title = S("Light It Up"),
 	description = S("Place 100 torches."),
-	icon = "novicebuilder.png",
+	icon = "awards_novicebuilder.png",
 	trigger = {
 		type = "place",
 		node = "default:torch",
@@ -44,7 +44,7 @@ awards.register_achievement("award_lightitup",{
 awards.register_achievement("award_well_lit",{
 	title = S("Well Lit"),
 	description = S("Place 1,000 torches."),
-	icon = "novicebuilder.png",
+	icon = "awards_novicebuilder.png",
 	trigger = {
 		type = "place",
 		node = "default:torch",
@@ -58,7 +58,7 @@ if minetest.get_modpath("moreblocks") then
 	awards.register_achievement("award_saint_maclou",{
 		title = S("Saint-Maclou"),
 		description = S("Place 20 coal checkers."),
-		icon = "novicebuilder.png",
+		icon = "awards_novicebuilder.png",
 		trigger = {
 			type = "place",
 			node = "moreblocks:coal_checker",
@@ -70,7 +70,7 @@ if minetest.get_modpath("moreblocks") then
 	awards.register_achievement("award_castorama",{
 		title = S("Castorama"),
 		description = S("Place 20 iron checkers."),
-		icon = "novicebuilder.png",
+		icon = "awards_novicebuilder.png",
 		trigger = {
 			type = "place",
 			node = "moreblocks:iron_checker",
@@ -82,7 +82,7 @@ if minetest.get_modpath("moreblocks") then
 	awards.register_achievement("award_sam_the_trapper",{
 		title = S("Sam the Trapper"),
 		description = S("Place 2 trap stones."),
-		icon = "novicebuilder.png",
+		icon = "awards_novicebuilder.png",
 		trigger = {
 			type = "place",
 			node = "moreblocks:trap_stone",
@@ -95,8 +95,8 @@ end
 awards.register_achievement("award_obsessed_with_obsidian",{
 	title = S("Obsessed with Obsidian"),
 	description = S("Mine 50 obsidian."),
-	icon = "miniminer.png",
-	background = "bg_mining.png",
+	icon = "awards_miniminer.png",
+	background = "awards_bg_mining.png",
 	trigger = {
 		type = "dig",
 		node = "default:obsidian",
@@ -108,7 +108,7 @@ awards.register_achievement("award_obsessed_with_obsidian",{
 awards.register_achievement("award_on_the_way", {
 	title = S("On The Way"),
 	description = S("Place 100 rails."),
-	icon = "novicebuilder.png",
+	icon = "awards_novicebuilder.png",
 	trigger = {
 		type = "place",
 		node = "default:rail",
@@ -193,7 +193,7 @@ awards.register_achievement("award_mesefind", {
 	title = S("First Mese Find"),
 	description = S("Find some Mese."),
 	icon = "default_mese_block.png",
-	background = "bg_mining.png",
+	background = "awards_bg_mining.png",
 	trigger = {
 		type = "dig",
 		node = "default:stone_with_mese",
@@ -205,8 +205,8 @@ awards.register_achievement("award_mesefind", {
 awards.register_achievement("award_youre_a_copper", {
 	title = S("You're a copper"),
 	description = S("Dig 1,000 copper ores."),
-	icon = "miniminer.png",
-	background = "bg_mining.png",
+	icon = "awards_miniminer.png",
+	background = "awards_bg_mining.png",
 	trigger = {
 		type = "dig",
 		node = "default:stone_with_copper",
@@ -230,8 +230,8 @@ awards.register_achievement("award_nyanfind", {
 awards.register_achievement("award_mine2", {
 	title = S("Mini Miner"),
 	description = S("Dig 100 stone blocks."),
-	icon = "miniminer.png",
-	background = "bg_mining.png",
+	icon = "awards_miniminer.png",
+	background = "awards_bg_mining.png",
 	trigger = {
 		type = "dig",
 		node = "default:stone",
@@ -243,8 +243,8 @@ awards.register_achievement("award_mine2", {
 awards.register_achievement("award_mine3", {
 	title = S("Hardened Miner"),
 	description = S("Dig 1,000 stone blocks"),
-	icon = "miniminer.png",
-	background = "bg_mining.png",
+	icon = "awards_miniminer.png",
+	background = "awards_bg_mining.png",
 	trigger = {
 		type = "dig",
 		node = "default:stone",
@@ -256,8 +256,8 @@ awards.register_achievement("award_mine3", {
 awards.register_achievement("award_mine4", {
 	title = S("Master Miner"),
 	description = S("Dig 10,000 stone blocks."),
-	icon = "miniminer.png",
-	background = "bg_mining.png",
+	icon = "awards_miniminer.png",
+	background = "awards_bg_mining.png",
 	trigger = {
 		type = "dig",
 		node = "default:stone",
@@ -269,7 +269,7 @@ awards.register_achievement("award_mine4", {
 awards.register_achievement("award_marchand_de_sable", {
 	title = S("Marchand De Sable"),
 	description = S("Dig 1,000 sand."),
-	background = "bg_mining.png",
+	background = "awards_bg_mining.png",
 	trigger = {
 		type = "dig",
 		node = "default:sand",
