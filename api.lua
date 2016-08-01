@@ -299,7 +299,7 @@ awards.give_achievement = awards.unlock
 })]]--
 
 function awards.getFormspec(name, to, sid)
-	local formspec = "size[11,5]"
+	local formspec = ""
 	local listofawards = awards._order_awards(name)
 	local playerdata = awards.players[name]
 
@@ -338,8 +338,8 @@ function awards.getFormspec(name, to, sid)
 				if perc > 1 then
 					perc = 1
 				end
-				formspec = formspec .. "background[0,4.80;" .. barwidth ..",0.25;awards_progress_gray.png]"
-				formspec = formspec .. "background[0,4.80;" .. (barwidth * perc) ..",0.25;awards_progress_green.png]"
+				formspec = formspec .. "background[0,4.80;" .. barwidth ..",0.25;awards_progress_gray.png;false]"
+				formspec = formspec .. "background[0,4.80;" .. (barwidth * perc) ..",0.25;awards_progress_green.png;false]"
 				if label then
 					formspec = formspec .. "label[1.75,4.63;" .. label .. "]"
 				end
@@ -414,7 +414,8 @@ function awards.show_to(name, to, sid, text)
 			sid = 1
 		end
 		-- Show formspec to user
-		minetest.show_formspec(to,"awards:awards", awards.getFormspec(name, to, sid))
+		minetest.show_formspec(to,"awards:awards",
+			"size[11,5]" .. awards.getFormspec(name, to, sid))
 	end
 end
 awards.showto = awards.show_to
