@@ -290,10 +290,10 @@ function awards.getFormspec(name, to, sid)
 		local item = listofawards[sid+0]
 		local def = awards.def[item.name]
 		if def and def.secret and not item.got then
-			formspec = formspec .. "label[1,2.75;Secret Award]"..
+			formspec = formspec .. "label[1,2.75;(Secret Award)]"..
 								"image[1,0;3,3;unknown.png]"
 			if def and def.description then
-				formspec = formspec	.. "label[0,3.25;Unlock this award to find out what it is]"
+				formspec = formspec	.. "label[0,3.25;Unlock this award to find out what it is.]"
 			end
 		else
 			local title = item.name
@@ -326,7 +326,7 @@ function awards.getFormspec(name, to, sid)
 			first = false
 
 			if def.secret and not award.got then
-				formspec = formspec .. "#ACACACSecret Award"
+				formspec = formspec .. "#707070(Secret Award)"
 			else
 				local title = award.name
 				if def and def.title then
