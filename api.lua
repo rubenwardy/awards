@@ -77,7 +77,7 @@ function awards.run_trigger_callbacks(player, data, trigger, table_func)
 	end
 end
 
-function awards.increment_item_counter(data, field, itemname)
+function awards.increment_item_counter(data, field, itemname, count)
 	local name_split = string.split(itemname, ":")
 	if #name_split ~= 2 then
 		return false
@@ -91,7 +91,7 @@ function awards.increment_item_counter(data, field, itemname)
 		awards.tbv(data[field], mod)
 		awards.tbv(data[field][mod], item, 0)
 
-		data[field][mod][item] = data[field][mod][item] + 1
+		data[field][mod][item] = data[field][mod][item] + (count or 1)
 		return true
 	else
 		return false

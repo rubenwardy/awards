@@ -126,7 +126,7 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 	end
 
 	local data = awards.players[player:get_player_name()]
-	if not awards.increment_item_counter(data, "craft", itemstack:get_name()) then
+	if not awards.increment_item_counter(data, "craft", itemstack:get_name(), itemstack:get_count()) then
 		return
 	end
 
