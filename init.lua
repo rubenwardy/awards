@@ -108,13 +108,35 @@ if minetest.get_modpath("unified_inventory") ~= nil then
 end
 
 awards.register_achievement("awards_stonebrick", {
-	title = S("Home Improvement"),
+	title = S("Outpost"),
 	description = S("Craft 200 stone bricks."),
-	icon = "default_stone_brick.png",
+	icon = "default_stone_brick.png^awards_level1.png",
 	trigger = {
 		type = "craft",
 		item = "default:stonebrick",
 		target = 200
+	}
+})
+
+awards.register_achievement("awards_stonebrick2", {
+	title = S("Watchtower"),
+	description = S("Craft 800 stone bricks."),
+	icon = "default_stone_brick.png^awards_level2.png",
+	trigger = {
+		type = "craft",
+		item = "default:stonebrick",
+		target = 800
+	}
+})
+
+awards.register_achievement("awards_stonebrick3", {
+	title = S("Fortress"),
+	description = S("Craft 3200 stone bricks."),
+	icon = "default_stone_brick.png^awards_level3.png",
+	trigger = {
+		type = "craft",
+		item = "default:stonebrick",
+		target = 3200
 	}
 })
 
