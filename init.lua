@@ -132,7 +132,7 @@ if minetest.get_modpath("fire") ~= nil then
 		awards.register_achievement("awards_firefighter", {
 			title = S("Firefighter"),
 			description = S("Put out 1000 fires."),
-			icon = "fire_basic_flame.png",
+			icon = "awards_firefighter.png",
 				trigger = {
 				type = "dig",
 				node = "fire:basic_flame",
