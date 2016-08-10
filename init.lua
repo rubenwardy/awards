@@ -232,6 +232,21 @@ awards.register_achievement("award_obsessed_with_obsidian",{
 	}
 })
 
+-- Proof that player has found lava
+awards.register_achievement("award_lavaminer",{
+	title = S("Lava Miner"),
+	description = S("Mine any block while being very close to lava."),
+	icon = "default_lava.png",
+})
+awards.register_on_dig(function(player,data)
+	local pos = player:getpos()
+	if pos and (minetest.find_node_near(pos, 1, "default:lava_source") ~= nil or
+	minetest.find_node_near(pos, 1, "default:lava_flowing") ~= nil) then
+		return "award_lavaminer"
+	end
+	return nil
+end)
+
 -- On the way
 awards.register_achievement("award_on_the_way", {
 	title = S("On The Way"),
