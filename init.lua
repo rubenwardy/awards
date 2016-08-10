@@ -187,51 +187,50 @@ awards.register_achievement("award_on_the_way", {
 	}
 })
 
--- Lumberjack
-awards.register_achievement("award_lumberjack", {
-	title = S("Lumberjack"),
-	description = S("Dig 100 tree blocks."),
+awards.register_achievement("award_lumberjack_firstday", {
+	title = S("First Day in the Woods"),
+	description = S("Dig 6 tree blocks."),
 	icon = "default_tree.png^awards_level1.png",
 	trigger = {
 		type = "dig",
 		node = "default:tree",
-		target = 100
+		target = 6
+	}
+})
+
+-- Lumberjack
+awards.register_achievement("award_lumberjack", {
+	title = S("Lumberjack"),
+	description = S("Dig 36 tree blocks."),
+	icon = "default_tree.png^awards_level2.png",
+	trigger = {
+		type = "dig",
+		node = "default:tree",
+		target = 36
 	}
 })
 
 -- Semi-pro Lumberjack
 awards.register_achievement("award_lumberjack_semipro", {
 	title = S("Semi-pro Lumberjack"),
-	description = S("Dig 1,000 tree blocks."),
-	icon = "default_tree.png^awards_level2.png",
+	description = S("Dig 216 tree blocks."),
+	icon = "default_tree.png^awards_level3.png",
 	trigger = {
 		type = "dig",
 		node = "default:tree",
-		target = 1000
+		target = 216
 	}
 })
 
 -- Professional Lumberjack
 awards.register_achievement("award_lumberjack_professional", {
 	title = S("Professional Lumberjack"),
-	description = S("Dig 10,000 tree blocks."),
-	icon = "default_tree.png^awards_level3.png",
-	trigger = {
-		type = "dig",
-		node = "default:tree",
-		target = 10000
-	}
-})
-
--- L33T Lumberjack
-awards.register_achievement("award_lumberjack_leet", {
-	title = S("L33T Lumberjack"),
-	description = S("Dig 100,000 tree blocks."),
+	description = S("Dig 1296 tree blocks."),
 	icon = "default_tree.png^awards_level4.png",
 	trigger = {
 		type = "dig",
 		node = "default:tree",
-		target = 100000
+		target = 1296
 	}
 })
 
