@@ -54,6 +54,16 @@ awards.register_achievement("award_well_lit",{
 	}
 })
 
+awards.register_achievement("award_meselamp",{
+	title = S("Really Well Lit"),
+	description = S("Craft 10 mese lamps."),
+	icon = "default_meselamp.png",
+	trigger = {
+		type = "craft",
+		item = "default:meselamp",
+		target = 10
+	}
+})
 
 -- Saint-Maclou
 if minetest.get_modpath("moreblocks") then
