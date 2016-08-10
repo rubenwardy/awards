@@ -129,7 +129,7 @@ if minetest.get_modpath("fire") ~= nil then
 		}
 	})
 	if minetest.setting_getbool("disable_fire") ~= true then
-		awards.register_achievement("awards_figherfighter", {
+		awards.register_achievement("awards_firefighter", {
 			title = S("Firefighter"),
 			description = S("Put out 1000 fires."),
 			icon = "fire_basic_flame.png",
