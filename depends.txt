@@ -1,3 +1,11 @@
 intllib?
 sfinv?
 unified_inventory?
+default?
+stairs?
+farming?
+dye?
+beds?
+wool?
+vessels?
+moreblocks?

@@ -93,6 +93,19 @@ if minetest.get_modpath("moreblocks") then
 	})
 end
 
+-- This award can't be part of Unified Inventory, it would make a circular dependency
+if minetest.get_modpath("unified_inventory") ~= nil then
+	awards.register_achievement("awards_ui_bags", {
+		title = S("Backpacker"),
+		description = S("Craft 4 large bags."),
+		icon = "awards_ui_bags.png",
+		trigger = {
+			type = "craft",
+			item = "unified_inventory:bag_large",
+			target = 4
+		}
+	})
+end
 
 awards.register_achievement("awards_stonebrick", {
 	title = S("Home Improvement"),
@@ -265,7 +278,7 @@ awards.register_achievement("award_meseblock", {
 	title = S("Mese Mastery"),
 	description = S("Mine a mese block."),
 	icon = "default_mese_block.png",
-	background = "bg_mining.png",
+	background = "awards_bg_mining.png",
 	trigger = {
 		type = "dig",
 		node = "default:mese",
@@ -419,17 +432,6 @@ awards.register_achievement("awards_dry_shrub", {
 	}
 })
 
-awards.register_achievement("awards_farmer", {
-	title = S("Farmer"),
-	description = S("Dig a fully grown wheat plant."),
-	icon = "farming_wheat_8.png",
-	trigger = {
-		type = "dig",
-		node = "farming:wheat_8",
-		target = 1
-	}
-})
-
 awards.register_achievement("awards_ice", {
 	title = S("Glacier Discoverer"),
 	description = S("Mine your first ice."),
@@ -440,6 +442,65 @@ awards.register_achievement("awards_ice", {
 		target = 1
 	}
 })
+
+if minetest.get_modpath("farming") ~= nil then
+	awards.register_achievement("awards_farmer", {
+		title = S("Farming Skillls Aquired"),
+		description = S("Harvest a fully grown wheat plant."),
+		icon = "farming_wheat_8.png",
+		trigger = {
+			type = "dig",
+			node = "farming:wheat_8",
+			target = 1
+		}
+	})
+	awards.register_achievement("awards_farmer2", {
+		title = S("Field Worker"),
+		description = S("Harvest 25 fully grown wheat plants."),
+		icon = "farming_wheat_8.png",
+		trigger = {
+			type = "dig",
+			node = "farming:wheat_8",
+			target = 25
+		}
+	})
+
+	awards.register_achievement("awards_farmer3", {
+		title = S("Aspiring Farmer"),
+		description = S("Harvest 125 fully grown wheat plants."),
+		icon = "farming_wheat_8.png",
+		trigger = {
+			type = "dig",
+			node = "farming:wheat_8",
+			target = 125
+		}
+	})
+
+	awards.register_achievement("awards_farmer4", {
+		title = S("Wheat Magnate"),
+		description = S("Harvest 625 fully grown wheat plants."),
+		icon = "farming_wheat_8.png",
+		trigger = {
+			type = "dig",
+			node = "farming:wheat_8",
+			target = 625
+		}
+	})
+
+end
+
+if minetest.get_modpath("wool") ~= nil and minetest.get_modpath("farming") ~= nil then
+	awards.register_achievement("awards_wool", {
+		title = S("Wool Over Your Eyes"),
+		description = S("Craft 250 white wool."),
+		icon = "wool_white.png",
+		trigger = {
+			type = "craft",
+			item = "wool:white",
+			target = 250
+		}
+	})
+end
 
 awards.register_achievement("awards_gold_ore", {
 	title = S("First Gold Find"),
@@ -506,3 +567,158 @@ awards.register_achievement("awards_mossycobble", {
 		target = 1
 	}
 })
+
+if minetest.get_modpath("vessels") ~= nil then
+	awards.register_achievement("award_vessels_shelf", {
+		title = S("Glasser"),
+		icon = "vessels_shelf.png",
+		description = S("Craft 14 vessels shelves."),
+		trigger = {
+			type = "craft",
+			item= "vessels:shelf",
+			target = 14
+		}})
+end
+
+	awards.register_achievement("award_furnace", {
+		title = S("Smelter"),
+		description = S("Craft 10 furnaces."),
+		icon = "default_furnace_front.png",
+		trigger = {
+			type = "craft",
+			item= "default:furnace",
+			target = 10
+		}})
+
+	awards.register_achievement("award_chest", {
+		title = S("Treasurer"),
+		description = S("Craft 15 chests."),
+		icon = "default_chest_front.png",
+		trigger = {
+			type = "craft",
+			item= "default:chest",
+			target = 15
+		}})
+
+	awards.register_achievement("award_chest2", {
+		title = S("Bankier"),
+		description = S("Craft 30 locked chests."),
+		icon = "default_chest_lock.png",
+		trigger = {
+			type = "craft",
+			item= "default:chest_locked",
+			target = 30
+		}})
+
+	awards.register_achievement("award_brick", {
+		title = S("Bricker"),
+		description = S("Craft 200 brick blocks."),
+		icon = "default_brick.png",
+		trigger = {
+			type = "craft",
+			item= "default:brick",
+			target = 200
+		}})
+
+	awards.register_achievement("award_obsidianbrick", {
+		title = S("House of Obsidian"),
+		description = S("Craft 100 obsidian bricks."),
+		icon = "default_obsidian_brick.png",
+		trigger = {
+			type = "craft",
+			item= "default:obsidianbrick",
+			target = 100
+		}})
+
+	awards.register_achievement("award_placestone", {
+		title = S("Build a Cave"),
+		description = S("Place 100 stone."),
+		icon = "default_stone.png",
+		trigger = {
+			type = "place",
+			node = "default:stone",
+			target = 100
+		}})
+
+	awards.register_achievement("award_woodladder", {
+		title = S("Long Ladder"),
+		description = S("Place 400 wooden ladders."),
+		icon = "default_ladder_wood.png",
+		trigger = {
+			type = "place",
+			node = "default:ladder_wood",
+			target = 400
+		}})
+
+	awards.register_achievement("award_steelladder", {
+		title = S("Industrial Age"),
+		description = S("Place 40 steel ladders."),
+		icon = "default_ladder_steel.png",
+		trigger = {
+			type = "place",
+			node = "default:ladder_steel",
+			target = 40
+		}})
+
+if minetest.get_modpath("beds") ~= nil then
+	awards.register_achievement("award_bed", {
+		title = S("Hotelier"),
+		description = S("Craft 15 fancy beds."),
+		icon = "beds_bed_fancy.png",
+		trigger = {
+			type = "craft",
+			item= "beds:fancy_bed_bottom",
+			target = 15
+		}})
+end
+
+if minetest.get_modpath("stairs") ~= nil then
+	awards.register_achievement("award_stairs_goldblock", {
+		title = S("Filthy Rich"),
+		description = S("Craft 24 gold block stairs."),
+		icon = "default_gold_block.png",
+		trigger = {
+			type = "craft",
+			item= "stairs:stair_goldblock",
+			target = 24
+		}})
+end
+
+if minetest.get_modpath("dye") ~= nil then
+	awards.register_achievement("awards_dye_red", {
+	title = S("Roses Are Red"),
+	description = S("Craft 400 red dyes."),
+	icon = "dye_red.png",
+	trigger = {
+		type = "craft",
+		item = "dye:red",
+		target = 400
+	}})
+	awards.register_achievement("awards_dye_yellow", {
+	title = S("Dandelions are Yellow"),
+	description = S("Craft 400 yellow dyes."),
+	icon = "dye_yellow.png",
+	trigger = {
+		type = "craft",
+		item = "dye:yellow",
+		target = 400
+	}})
+	awards.register_achievement("awards_dye_blue", {
+	title = S("Geraniums are Blue"),
+	description = S("Craft 400 blue dyes."),
+	icon = "dye_blue.png",
+	trigger = {
+		type = "craft",
+		item= "dye:blue",
+		target = 400
+	}})
+	awards.register_achievement("awards_dye_white", {
+	title = S("White Color Stock"),
+	description = S("Craft 100 white dyes."),
+	icon = "dye_white.png",
+	trigger = {
+		type = "craft",
+		item= "dye:white",
+		target = 100
+	}})
+end
