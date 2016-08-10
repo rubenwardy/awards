@@ -107,6 +107,31 @@ if minetest.get_modpath("unified_inventory") ~= nil then
 	})
 end
 
+if minetest.get_modpath("fire") ~= nil then
+	awards.register_achievement("awards_pyro", {
+		title = S("Pyromaniac"),
+		description = S("Craft 8 times flint and steel."),
+		icon = "fire_flint_steel.png",
+			trigger = {
+			type = "craft",
+			item = "fire:flint_and_steel",
+			target = 8
+		}
+	})
+	if minetest.setting_getbool("disable_fire") ~= true then
+		awards.register_achievement("awards_figherfighter", {
+			title = S("Firefighter"),
+			description = S("Put out 1000 fires."),
+			icon = "fire_basic_flame.png",
+				trigger = {
+				type = "dig",
+				node = "fire:basic_flame",
+				target = 1000
+			}
+		})
+	end
+end
+
 awards.register_achievement("awards_stonebrick", {
 	title = S("Outpost"),
 	description = S("Craft 200 stone bricks."),

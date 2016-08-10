@@ -9,3 +9,4 @@ beds?
 wool?
 vessels?
 moreblocks?
+fire?
