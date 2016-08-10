@@ -34,7 +34,7 @@ awards.set_intllib(S)
 awards.register_achievement("award_lightitup",{
 	title = S("Light It Up"),
 	description = S("Place 100 torches."),
-	icon = "awards_novicebuilder.png",
+	icon = "awards_novicebuilder.png^awards_level1.png",
 	trigger = {
 		type = "place",
 		node = "default:torch",
@@ -46,7 +46,7 @@ awards.register_achievement("award_lightitup",{
 awards.register_achievement("award_well_lit",{
 	title = S("Well Lit"),
 	description = S("Place 1,000 torches."),
-	icon = "awards_novicebuilder.png",
+	icon = "awards_novicebuilder.png^awards_level2.png",
 	trigger = {
 		type = "place",
 		node = "default:torch",
@@ -154,7 +154,7 @@ awards.register_achievement("awards_bookshelf", {
 awards.register_achievement("awards_obsidian", {
 	title = S("Lava and Water"),
 	description = S("Mine your first obsidian."),
-	icon = "default_obsidian.png",
+	icon = "default_obsidian.png^awards_level1.png",
 	trigger = {
 		type = "dig",
 		node = "default:obsidian",
@@ -166,7 +166,7 @@ awards.register_achievement("awards_obsidian", {
 awards.register_achievement("award_obsessed_with_obsidian",{
 	title = S("Obsessed with Obsidian"),
 	description = S("Mine 50 obsidian."),
-	icon = "awards_miniminer.png",
+	icon = "default_obsidian.png^awards_level2.png",
 	background = "awards_bg_mining.png",
 	trigger = {
 		type = "dig",
@@ -179,7 +179,7 @@ awards.register_achievement("award_obsessed_with_obsidian",{
 awards.register_achievement("award_on_the_way", {
 	title = S("On The Way"),
 	description = S("Place 100 rails."),
-	icon = "awards_novicebuilder.png",
+	icon = "default_rail.png",
 	trigger = {
 		type = "place",
 		node = "default:rail",
@@ -191,7 +191,7 @@ awards.register_achievement("award_on_the_way", {
 awards.register_achievement("award_lumberjack", {
 	title = S("Lumberjack"),
 	description = S("Dig 100 tree blocks."),
-	icon = "default_tree.png",
+	icon = "default_tree.png^awards_level1.png",
 	trigger = {
 		type = "dig",
 		node = "default:tree",
@@ -203,7 +203,7 @@ awards.register_achievement("award_lumberjack", {
 awards.register_achievement("award_lumberjack_semipro", {
 	title = S("Semi-pro Lumberjack"),
 	description = S("Dig 1,000 tree blocks."),
-	icon = "default_tree.png",
+	icon = "default_tree.png^awards_level2.png",
 	trigger = {
 		type = "dig",
 		node = "default:tree",
@@ -215,7 +215,7 @@ awards.register_achievement("award_lumberjack_semipro", {
 awards.register_achievement("award_lumberjack_professional", {
 	title = S("Professional Lumberjack"),
 	description = S("Dig 10,000 tree blocks."),
-	icon = "default_tree.png",
+	icon = "default_tree.png^awards_level3.png",
 	trigger = {
 		type = "dig",
 		node = "default:tree",
@@ -227,7 +227,7 @@ awards.register_achievement("award_lumberjack_professional", {
 awards.register_achievement("award_lumberjack_leet", {
 	title = S("L33T Lumberjack"),
 	description = S("Dig 100,000 tree blocks."),
-	icon = "default_tree.png",
+	icon = "default_tree.png^awards_level4.png",
 	trigger = {
 		type = "dig",
 		node = "default:tree",
@@ -239,7 +239,7 @@ awards.register_achievement("award_lumberjack_leet", {
 awards.register_achievement("award_junglebaby", {
 	title = S("Junglebaby"),
 	description = S("Dig 100 jungle tree blocks."),
-	icon = "default_jungletree.png",
+	icon = "default_jungletree.png^awards_level1.png",
 	trigger = {
 		type = "dig",
 		node = "default:jungletree",
@@ -251,7 +251,7 @@ awards.register_achievement("award_junglebaby", {
 awards.register_achievement("award_jungleman", {
 	title = S("Jungleman"),
 	description = S("Dig 1,000 jungle tree blocks."),
-	icon = "default_jungletree.png",
+	icon = "default_jungletree.png^awards_level2.png",
 	trigger = {
 		type = "dig",
 		node = "default:jungletree",
@@ -292,7 +292,7 @@ awards.register_achievement("award_meseblock", {
 awards.register_achievement("award_youre_a_copper", {
 	title = S("You're a copper"),
 	description = S("Dig 1,000 copper ores."),
-	icon = "awards_miniminer.png",
+	icon = "default_stone.png^default_mineral_copper.png",
 	background = "awards_bg_mining.png",
 	trigger = {
 		type = "dig",
@@ -318,7 +318,7 @@ awards.register_achievement("award_nyanfind", {
 awards.register_achievement("award_mine2", {
 	title = S("Mini Miner"),
 	description = S("Dig 100 stone blocks."),
-	icon = "awards_miniminer.png",
+	icon = "awards_miniminer.png^awards_level1.png",
 	background = "awards_bg_mining.png",
 	trigger = {
 		type = "dig",
@@ -331,7 +331,7 @@ awards.register_achievement("award_mine2", {
 awards.register_achievement("award_mine3", {
 	title = S("Hardened Miner"),
 	description = S("Dig 1,000 stone blocks."),
-	icon = "awards_miniminer.png",
+	icon = "awards_miniminer.png^awards_level2.png",
 	background = "awards_bg_mining.png",
 	trigger = {
 		type = "dig",
@@ -344,8 +344,8 @@ awards.register_achievement("award_mine3", {
 awards.register_achievement("award_mine4", {
 	title = S("Master Miner"),
 	description = S("Dig 10,000 stone blocks."),
-	icon = "awards_miniminer.png",
-	background = "awards_bg_mining.png",
+	icon = "awards_miniminer.png^awards_level3.png",
+	background = "awards_bg_mining.png.png",
 	trigger = {
 		type = "dig",
 		node = "default:stone",
@@ -445,9 +445,9 @@ awards.register_achievement("awards_ice", {
 
 if minetest.get_modpath("farming") ~= nil then
 	awards.register_achievement("awards_farmer", {
-		title = S("Farming Skillls Aquired"),
+		title = S("Farming Skills Aquired"),
 		description = S("Harvest a fully grown wheat plant."),
-		icon = "farming_wheat_8.png",
+		icon = "farming_wheat_8.png^awards_level1.png",
 		trigger = {
 			type = "dig",
 			node = "farming:wheat_8",
@@ -457,7 +457,7 @@ if minetest.get_modpath("farming") ~= nil then
 	awards.register_achievement("awards_farmer2", {
 		title = S("Field Worker"),
 		description = S("Harvest 25 fully grown wheat plants."),
-		icon = "farming_wheat_8.png",
+		icon = "farming_wheat_8.png^awards_level2.png",
 		trigger = {
 			type = "dig",
 			node = "farming:wheat_8",
@@ -468,7 +468,7 @@ if minetest.get_modpath("farming") ~= nil then
 	awards.register_achievement("awards_farmer3", {
 		title = S("Aspiring Farmer"),
 		description = S("Harvest 125 fully grown wheat plants."),
-		icon = "farming_wheat_8.png",
+		icon = "farming_wheat_8.png^awards_level3.png",
 		trigger = {
 			type = "dig",
 			node = "farming:wheat_8",
@@ -479,7 +479,7 @@ if minetest.get_modpath("farming") ~= nil then
 	awards.register_achievement("awards_farmer4", {
 		title = S("Wheat Magnate"),
 		description = S("Harvest 625 fully grown wheat plants."),
-		icon = "farming_wheat_8.png",
+		icon = "farming_wheat_8.png^awards_level4.png",
 		trigger = {
 			type = "dig",
 			node = "farming:wheat_8",
@@ -505,7 +505,7 @@ end
 awards.register_achievement("awards_gold_ore", {
 	title = S("First Gold Find"),
 	description = S("Mine your first gold ore."),
-	icon = "default_stone.png^default_mineral_gold.png",
+	icon = "default_stone.png^default_mineral_gold.png^awards_level1.png",
 	trigger = {
 		type = "dig",
 		node = "default:stone_with_gold",
@@ -516,7 +516,7 @@ awards.register_achievement("awards_gold_ore", {
 awards.register_achievement("awards_gold_rush", {
 	title = S("Gold Rush"),
 	description = S("Mine 45 gold ores."),
-	icon = "default_stone.png^default_mineral_gold.png",
+	icon = "default_stone.png^default_mineral_gold.png^awards_level2.png",
 	trigger = {
 		type = "dig",
 		node = "default:stone_with_gold",
@@ -527,7 +527,7 @@ awards.register_achievement("awards_gold_rush", {
 awards.register_achievement("awards_diamond_ore", {
 	title = S("Wow, I am Diamonds!"),
 	description = S("Mine your first diamond ore."),
-	icon = "default_stone.png^default_mineral_diamond.png",
+	icon = "default_stone.png^default_mineral_diamond.png^awards_level1.png",
 	trigger = {
 		type = "dig",
 		node = "default:stone_with_diamond",
@@ -538,7 +538,7 @@ awards.register_achievement("awards_diamond_ore", {
 awards.register_achievement("awards_diamond_rush", {
 	title = S("Girl's Best Friend"),
 	description = S("Mine 18 diamond ores."),
-	icon = "default_stone.png^default_mineral_diamond.png",
+	icon = "default_stone.png^default_mineral_diamond.png^awards_level2.png",
 	trigger = {
 		type = "dig",
 		node = "default:stone_with_diamond",
