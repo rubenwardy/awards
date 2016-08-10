@@ -464,6 +464,18 @@ awards.register_achievement("awards_ice", {
 	}
 })
 
+-- Proof that player visited snowy lands
+awards.register_achievement("awards_snowblock", {
+	title = S("Very Simple Snow Man"),
+	description = S("Place two snow blocks."),
+	icon = "default_snow.png",
+	trigger = {
+		type = "place",
+		node = "default:snowblock",
+		target = 2
+	}
+})
+
 if minetest.get_modpath("farming") ~= nil then
 	awards.register_achievement("awards_farmer", {
 		title = S("Farming Skills Aquired"),
