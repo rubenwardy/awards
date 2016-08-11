@@ -212,6 +212,7 @@ awards.register_achievement("awards_obsidian", {
 	title = S("Lava and Water"),
 	description = S("Mine your first obsidian."),
 	icon = "default_obsidian.png^awards_level1.png",
+	background = "awards_bg_mining.png",
 	trigger = {
 		type = "dig",
 		node = "default:obsidian",
@@ -236,6 +237,7 @@ awards.register_achievement("award_obsessed_with_obsidian",{
 awards.register_achievement("award_lavaminer",{
 	title = S("Lava Miner"),
 	description = S("Mine any block while being very close to lava."),
+	background = "awards_bg_mining.png",
 	icon = "default_lava.png",
 })
 awards.register_on_dig(function(player,data)
@@ -416,7 +418,7 @@ awards.register_achievement("award_mine4", {
 	title = S("Master Miner"),
 	description = S("Dig 10,000 stone blocks."),
 	icon = "awards_miniminer.png^awards_level3.png",
-	background = "awards_bg_mining.png.png",
+	background = "awards_bg_mining.png",
 	trigger = {
 		type = "dig",
 		node = "default:stone",
@@ -589,6 +591,7 @@ awards.register_achievement("awards_gold_ore", {
 	title = S("First Gold Find"),
 	description = S("Mine your first gold ore."),
 	icon = "default_stone.png^default_mineral_gold.png^awards_level1.png",
+	background = "awards_bg_mining.png",
 	trigger = {
 		type = "dig",
 		node = "default:stone_with_gold",
@@ -600,6 +603,7 @@ awards.register_achievement("awards_gold_rush", {
 	title = S("Gold Rush"),
 	description = S("Mine 45 gold ores."),
 	icon = "default_stone.png^default_mineral_gold.png^awards_level2.png",
+	background = "awards_bg_mining.png",
 	trigger = {
 		type = "dig",
 		node = "default:stone_with_gold",
@@ -622,6 +626,7 @@ awards.register_achievement("awards_diamond_rush", {
 	title = S("Girl's Best Friend"),
 	description = S("Mine 18 diamond ores."),
 	icon = "default_stone.png^default_mineral_diamond.png^awards_level2.png",
+	background = "awards_bg_mining.png",
 	trigger = {
 		type = "dig",
 		node = "default:stone_with_diamond",
