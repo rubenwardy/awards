@@ -104,7 +104,7 @@ if minetest.get_modpath("moreblocks") then
 end
 
 -- This award can't be part of Unified Inventory, it would make a circular dependency
-if minetest.get_modpath("unified_inventory") ~= nil then
+if minetest.get_modpath("unified_inventory") then
 	awards.register_achievement("awards_ui_bags", {
 		title = S("Backpacker"),
 		description = S("Craft 4 large bags."),
@@ -117,7 +117,7 @@ if minetest.get_modpath("unified_inventory") ~= nil then
 	})
 end
 
-if minetest.get_modpath("fire") ~= nil then
+if minetest.get_modpath("fire") then
 	awards.register_achievement("awards_pyro", {
 		title = S("Pyromaniac"),
 		description = S("Craft 8 times flint and steel."),
@@ -528,7 +528,7 @@ awards.register_achievement("awards_snowblock", {
 	}
 })
 
-if minetest.get_modpath("farming") ~= nil then
+if minetest.get_modpath("farming") then
 	awards.register_achievement("awards_farmer", {
 		title = S("Farming Skills Aquired"),
 		description = S("Harvest a fully grown wheat plant."),
@@ -574,7 +574,7 @@ if minetest.get_modpath("farming") ~= nil then
 
 end
 
-if minetest.get_modpath("wool") ~= nil and minetest.get_modpath("farming") ~= nil then
+if minetest.get_modpath("wool") and minetest.get_modpath("farming") then
 	awards.register_achievement("awards_wool", {
 		title = S("Wool Over Your Eyes"),
 		description = S("Craft 250 white wool."),
@@ -656,7 +656,7 @@ awards.register_achievement("awards_mossycobble", {
 	}
 })
 
-if minetest.get_modpath("vessels") ~= nil then
+if minetest.get_modpath("vessels") then
 	awards.register_achievement("award_vessels_shelf", {
 		title = S("Glasser"),
 		icon = "vessels_shelf.png",
@@ -750,7 +750,7 @@ end
 			target = 40
 		}})
 
-if minetest.get_modpath("beds") ~= nil then
+if minetest.get_modpath("beds") then
 	awards.register_achievement("award_bed", {
 		title = S("Hotelier"),
 		description = S("Craft 15 fancy beds."),
@@ -762,7 +762,7 @@ if minetest.get_modpath("beds") ~= nil then
 		}})
 end
 
-if minetest.get_modpath("stairs") ~= nil then
+if minetest.get_modpath("stairs") then
 	awards.register_achievement("award_stairs_goldblock", {
 		title = S("Filthy Rich"),
 		description = S("Craft 24 gold block stairs."),
@@ -775,7 +775,7 @@ if minetest.get_modpath("stairs") ~= nil then
 	})
 end
 
-if minetest.get_modpath("dye") ~= nil then
+if minetest.get_modpath("dye") then
 	awards.register_achievement("awards_dye_red", {
 		title = S("Roses Are Red"),
 		description = S("Craft 400 red dyes."),
