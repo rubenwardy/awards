@@ -122,7 +122,7 @@ if minetest.get_modpath("fire") ~= nil then
 		title = S("Pyromaniac"),
 		description = S("Craft 8 times flint and steel."),
 		icon = "fire_flint_steel.png",
-			trigger = {
+		trigger = {
 			type = "craft",
 			item = "fire:flint_and_steel",
 			target = 8
@@ -133,7 +133,7 @@ if minetest.get_modpath("fire") ~= nil then
 			title = S("Firefighter"),
 			description = S("Put out 1000 fires."),
 			icon = "awards_firefighter.png",
-				trigger = {
+			trigger = {
 				type = "dig",
 				node = "fire:basic_flame",
 				target = 1000
@@ -665,7 +665,8 @@ if minetest.get_modpath("vessels") ~= nil then
 			type = "craft",
 			item= "vessels:shelf",
 			target = 14
-		}})
+		}
+	})
 end
 
 	awards.register_achievement("award_furnace", {
@@ -676,7 +677,8 @@ end
 			type = "craft",
 			item= "default:furnace",
 			target = 10
-		}})
+		}
+	})
 
 	awards.register_achievement("award_chest", {
 		title = S("Treasurer"),
@@ -769,44 +771,52 @@ if minetest.get_modpath("stairs") ~= nil then
 			type = "craft",
 			item= "stairs:stair_goldblock",
 			target = 24
-		}})
+		}
+	})
 end
 
 if minetest.get_modpath("dye") ~= nil then
 	awards.register_achievement("awards_dye_red", {
-	title = S("Roses Are Red"),
-	description = S("Craft 400 red dyes."),
-	icon = "dye_red.png",
-	trigger = {
-		type = "craft",
-		item = "dye:red",
-		target = 400
-	}})
+		title = S("Roses Are Red"),
+		description = S("Craft 400 red dyes."),
+		icon = "dye_red.png",
+		trigger = {
+			type = "craft",
+			item = "dye:red",
+			target = 400
+		}
+	})
+
 	awards.register_achievement("awards_dye_yellow", {
-	title = S("Dandelions are Yellow"),
-	description = S("Craft 400 yellow dyes."),
-	icon = "dye_yellow.png",
-	trigger = {
-		type = "craft",
-		item = "dye:yellow",
-		target = 400
-	}})
+		title = S("Dandelions are Yellow"),
+		description = S("Craft 400 yellow dyes."),
+		icon = "dye_yellow.png",
+		trigger = {
+			type = "craft",
+			item = "dye:yellow",
+			target = 400
+		}
+	})
+
 	awards.register_achievement("awards_dye_blue", {
-	title = S("Geraniums are Blue"),
-	description = S("Craft 400 blue dyes."),
-	icon = "dye_blue.png",
-	trigger = {
-		type = "craft",
-		item= "dye:blue",
-		target = 400
-	}})
+		title = S("Geraniums are Blue"),
+		description = S("Craft 400 blue dyes."),
+		icon = "dye_blue.png",
+		trigger = {
+			type = "craft",
+			item= "dye:blue",
+			target = 400
+		}
+	})
+
 	awards.register_achievement("awards_dye_white", {
-	title = S("White Color Stock"),
-	description = S("Craft 100 white dyes."),
-	icon = "dye_white.png",
-	trigger = {
-		type = "craft",
-		item= "dye:white",
-		target = 100
-	}})
+		title = S("White Color Stock"),
+		description = S("Craft 100 white dyes."),
+		icon = "dye_white.png",
+		trigger = {
+			type = "craft",
+			item= "dye:white",
+			target = 100
+		}
+	})
 end
