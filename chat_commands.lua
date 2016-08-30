@@ -14,20 +14,28 @@
 -- 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 --
 
+local S
+if (intllib) then
+	dofile(minetest.get_modpath("intllib").."/intllib.lua")
+	S = intllib.Getter(minetest.get_current_modname())
+else
+	S = function ( s ) return s end
+end
+
 minetest.register_chatcommand("awards", {
-	params = "",
-	description = "awards: list awards",
+	params = S("[c|clear|disable|enable]"),
+	description = S("Show, clear, disable or enable your achievements"),
 	func = function(name, param)
 		if param == "clear" then
 			awards.clear_player(name)
-			minetest.chat_send_player(name, "All your awards and statistics " ..
-					" have been cleared. You can now start again.")
+			minetest.chat_send_player(name,
+			S("All your awards and statistics have been cleared. You can now start again."))
 		elseif param == "disable" then
 			awards.disable(name)
-			minetest.chat_send_player(name, "You have disabled awards. (only affects you)")
+			minetest.chat_send_player(name, S("You have disabled your achievements."))
 		elseif param == "enable" then
 			awards.enable(name)
-			minetest.chat_send_player(name, "You have enabled awards. (only affects you)")
+			minetest.chat_send_player(name, S("You have enabled your achievements."))
 		elseif param == "c" then
 			awards.show_to(name, name, nil, true)
 		else
@@ -38,23 +46,22 @@ minetest.register_chatcommand("awards", {
 
 minetest.register_chatcommand("cawards", {
 	params = "",
-	description = "awards: list awards in chat",
+	description = S("List awards in chat (deprecated)"),
 	func = function(name, param)
 		awards.show_to(name, name, nil, true)
-		minetest.chat_send_player(name, "/cawards has been depreciated," ..
-				" use /awards c instead")
+		minetest.chat_send_player(name, S("/cawards has been deprecated, use /awards c instead."))
 	end
 })
 
 minetest.register_chatcommand("awd", {
-	params = "award name",
-	description = "awd: Details of awd gotten",
+	params = S("<achievement ID>"),
+	description = S("Show details of an achievement"),
 	func = function(name, param)
 		local def = awards.def[param]
 		if def then
-			minetest.chat_send_player(name,def.title..": "..def.description)
+			minetest.chat_send_player(name, string.format(S("%s: %s"), def.title, def.description))
 		else
-			minetest.chat_send_player(name,"Award not found.")
+			minetest.chat_send_player(name, S("Achievement not found."))
 		end
 	end
 })
@@ -63,7 +70,8 @@ minetest.register_chatcommand("awpl", {
 	privs = {
 		server = true
 	},
-	description = "awpl: Get the statistics for the player given",
+	params = S("<name>"),
+	description = S("Get the achievements statistics for the given player or yourself"),
 	func = function(name, param)
 		if not param or param == "" then
 			param = name

@@ -140,6 +140,11 @@ function awards.register_achievement(name, def)
 
 	-- Add Award
 	awards.def[name] = def
+
+	local tdef = awards.def[name]
+	if def.description == nil and tdef.getDefaultDescription then
+		def.description = tdef:getDefaultDescription()
+	end
 end
 
 function awards.enable(name)
@@ -327,21 +332,23 @@ function awards.getFormspec(name, to, sid)
 		local item = listofawards[sid+0]
 		local def = awards.def[item.name]
 		if def and def.secret and not item.got then
-			formspec = formspec .. "label[1,2.75;(Secret Award)]"..
+			formspec = formspec .. "label[1,2.75;"..minetest.formspec_escape(S("(Secret Award)")).."]"..
 								"image[1,0;3,3;awards_unknown.png]"
 			if def and def.description then
-				formspec = formspec	.. "label[0,3.25;Unlock this award to find out what it is.]"
+				formspec = formspec	.. "textarea[0.25,3.25;4.8,1.7;;"..minetest.formspec_escape(S("Unlock this award to find out what it is."))..";]"
 			end
 		else
 			local title = item.name
 			if def and def.title then
 				title = def.title
 			end
-			local status = ""
+			local status = "%s"
 			if item.got then
-				status = " (got)"
+				status = S("%s (got)")
 			end
-			formspec = formspec .. "label[1,2.75;" .. title .. status .. "]"
+			formspec = formspec .. "label[1,2.75;" ..
+				string.format(status, minetest.formspec_escape(title)) ..
+				"]"
 			if def and def.icon then
 				formspec = formspec .. "image[1,0;3,3;" .. def.icon .. "]"
 			end
@@ -360,11 +367,11 @@ function awards.getFormspec(name, to, sid)
 				formspec = formspec .. "background[0,4.80;" .. barwidth ..",0.25;awards_progress_gray.png;false]"
 				formspec = formspec .. "background[0,4.80;" .. (barwidth * perc) ..",0.25;awards_progress_green.png;false]"
 				if label then
-					formspec = formspec .. "label[1.75,4.63;" .. label .. "]"
+					formspec = formspec .. "label[1.75,4.63;" .. minetest.formspec_escape(label) .. "]"
 				end
 			end
 			if def and def.description then
-				formspec = formspec	.. "label[0,3.25;"..def.description.."]"
+				formspec = formspec	.. "textarea[0.25,3.25;4.8,1.7;;"..minetest.formspec_escape(def.description)..";]"
 			end
 		end
 	end
@@ -381,7 +388,7 @@ function awards.getFormspec(name, to, sid)
 			first = false
 
 			if def.secret and not award.got then
-				formspec = formspec .. "#707070(Secret Award)"
+				formspec = formspec .. "#707070"..minetest.formspec_escape(S("(Secret Award)"))
 			else
 				local title = award.name
 				if def and def.title then
@@ -403,23 +410,22 @@ function awards.show_to(name, to, sid, text)
 		name = to
 	end
 	if name == to and awards.player(to).disabled then
-		minetest.chat_send_player("You've disabled awards. Type /awards" ..
-				" enable to reenable")
+		minetest.chat_send_player(S("You've disabled awards. Type /awards enable to reenable."))
 		return
 	end
 	if text then
 		if not awards.players[name] or not awards.players[name].unlocked  then
-			minetest.chat_send_player(to, "You have not unlocked any awards")
+			minetest.chat_send_player(to, S("You have not unlocked any awards"))
 			return
 		end
-		minetest.chat_send_player(to, name.."'s awards:")
+		minetest.chat_send_player(to, string.format(S("%s’s awards:"), name))
 
 		for _, str in pairs(awards.players[name].unlocked) do
 			local def = awards.def[str]
 			if def then
 				if def.title then
 					if def.description then
-						minetest.chat_send_player(to, def.title..": "..def.description)
+						minetest.chat_send_player(to, string.format(S("%s: %s"), def.title, def.description))
 					else
 						minetest.chat_send_player(to, def.title)
 					end

@@ -1,6 +1,14 @@
 if minetest.get_modpath("sfinv") then
+	local S
+	if (intllib) then
+		dofile(minetest.get_modpath("intllib").."/intllib.lua")
+		S = intllib.Getter(minetest.get_current_modname())
+	else
+		S = function ( s ) return s end
+	end
+
 	sfinv.register_page("awards:awards", {
-		title = "Awards",
+		title = S("Awards"),
 		on_enter = function(self, player, context)
 			context.awards_idx = 1
 		end,
