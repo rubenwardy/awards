@@ -669,86 +669,93 @@ if minetest.get_modpath("vessels") then
 	})
 end
 
-	awards.register_achievement("award_furnace", {
-		title = S("Smelter"),
-		description = S("Craft 10 furnaces."),
-		icon = "default_furnace_front.png",
-		trigger = {
-			type = "craft",
-			item= "default:furnace",
-			target = 10
-		}
-	})
+awards.register_achievement("award_furnace", {
+	title = S("Smelter"),
+	description = S("Craft 10 furnaces."),
+	icon = "default_furnace_front.png",
+	trigger = {
+		type = "craft",
+		item= "default:furnace",
+		target = 10
+	}
+})
 
-	awards.register_achievement("award_chest", {
-		title = S("Treasurer"),
-		description = S("Craft 15 chests."),
-		icon = "default_chest_front.png",
-		trigger = {
-			type = "craft",
-			item= "default:chest",
-			target = 15
-		}})
+awards.register_achievement("award_chest", {
+	title = S("Treasurer"),
+	description = S("Craft 15 chests."),
+	icon = "default_chest_front.png",
+	trigger = {
+		type = "craft",
+		item= "default:chest",
+		target = 15
+	}
+})
 
-	awards.register_achievement("award_chest2", {
-		title = S("Bankier"),
-		description = S("Craft 30 locked chests."),
-		icon = "default_chest_lock.png",
-		trigger = {
-			type = "craft",
-			item= "default:chest_locked",
-			target = 30
-		}})
+awards.register_achievement("award_chest2", {
+	title = S("Bankier"),
+	description = S("Craft 30 locked chests."),
+	icon = "default_chest_lock.png",
+	trigger = {
+		type = "craft",
+		item= "default:chest_locked",
+		target = 30
+	}
+})
 
-	awards.register_achievement("award_brick", {
-		title = S("Bricker"),
-		description = S("Craft 200 brick blocks."),
-		icon = "default_brick.png",
-		trigger = {
-			type = "craft",
-			item= "default:brick",
-			target = 200
-		}})
+awards.register_achievement("award_brick", {
+	title = S("Bricker"),
+	description = S("Craft 200 brick blocks."),
+	icon = "default_brick.png",
+	trigger = {
+		type = "craft",
+		item= "default:brick",
+		target = 200
+	}
+})
 
-	awards.register_achievement("award_obsidianbrick", {
-		title = S("House of Obsidian"),
-		description = S("Craft 100 obsidian bricks."),
-		icon = "default_obsidian_brick.png",
-		trigger = {
-			type = "craft",
-			item= "default:obsidianbrick",
-			target = 100
-		}})
+awards.register_achievement("award_obsidianbrick", {
+	title = S("House of Obsidian"),
+	description = S("Craft 100 obsidian bricks."),
+	icon = "default_obsidian_brick.png",
+	trigger = {
+		type = "craft",
+		item= "default:obsidianbrick",
+		target = 100
+	}
+})
 
-	awards.register_achievement("award_placestone", {
-		title = S("Build a Cave"),
-		description = S("Place 100 stone."),
-		icon = "default_stone.png",
-		trigger = {
-			type = "place",
-			node = "default:stone",
-			target = 100
-		}})
+awards.register_achievement("award_placestone", {
+	title = S("Build a Cave"),
+	description = S("Place 100 stone."),
+	icon = "default_stone.png",
+	trigger = {
+		type = "place",
+		node = "default:stone",
+		target = 100
+	}
+})
 
-	awards.register_achievement("award_woodladder", {
-		title = S("Long Ladder"),
-		description = S("Place 400 wooden ladders."),
-		icon = "default_ladder_wood.png",
-		trigger = {
-			type = "place",
-			node = "default:ladder_wood",
-			target = 400
-		}})
+awards.register_achievement("award_woodladder", {
+	title = S("Long Ladder"),
+	description = S("Place 400 wooden ladders."),
+	icon = "default_ladder_wood.png",
+	trigger = {
+		type = "place",
+		node = "default:ladder_wood",
+		target = 400
+	}
+})
 
-	awards.register_achievement("award_steelladder", {
-		title = S("Industrial Age"),
-		description = S("Place 40 steel ladders."),
-		icon = "default_ladder_steel.png",
-		trigger = {
-			type = "place",
-			node = "default:ladder_steel",
-			target = 40
-		}})
+awards.register_achievement("award_steelladder", {
+	title = S("Industrial Age"),
+	description = S("Place 40 steel ladders."),
+	icon = "default_ladder_steel.png",
+	trigger = {
+		type = "place",
+		node = "default:ladder_steel",
+		target = 40
+	}
+})
 
 if minetest.get_modpath("beds") then
 	awards.register_achievement("award_bed", {
@@ -759,7 +766,8 @@ if minetest.get_modpath("beds") then
 			type = "craft",
 			item= "beds:fancy_bed_bottom",
 			target = 15
-		}})
+		}
+	})
 end
 
 if minetest.get_modpath("stairs") then
