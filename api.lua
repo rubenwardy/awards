@@ -140,6 +140,11 @@ function awards.register_achievement(name, def)
 
 	-- Add Award
 	awards.def[name] = def
+
+	local tdef = awards.def[name]
+	if def.description == nil and tdef.getDefaultDescription then
+		def.description = tdef:getDefaultDescription()
+	end
 end
 
 function awards.enable(name)

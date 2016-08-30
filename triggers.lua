@@ -26,7 +26,7 @@ awards.register_trigger("dig", function(def)
 	local tmp = {
 		award  = def.name,
 		node   = def.trigger.node,
-		target = def.trigger.target
+		target = def.trigger.target,
 	}
 	table.insert(awards.on.dig, tmp)
 	def.getProgress = function(self, data)
@@ -36,13 +36,25 @@ awards.register_trigger("dig", function(def)
 			label = string.format(S("%d/%d dug"), itemcount, tmp.target)
 		}
 	end
+	def.getDefaultDescription = function(self)
+		local nname = minetest.registered_nodes[self.trigger.node].description
+		if nname == nil then
+			nname = self.trigger.node
+		end
+		local ddesc
+		if self.trigger.target ~= 1 then
+			return string.format(S("Mine blocks: %d×%s"), self.trigger.target, nname)
+		else
+			return string.format(S("Mine a block: %s"), nname)
+		end
+	end
 end)
 
 awards.register_trigger("place", function(def)
 	local tmp = {
 		award  = def.name,
 		node   = def.trigger.node,
-		target = def.trigger.target
+		target = def.trigger.target,
 	}
 	table.insert(awards.on.place, tmp)
 	def.getProgress = function(self, data)
@@ -52,12 +64,23 @@ awards.register_trigger("place", function(def)
 			label = string.format(S("%d/%d placed"), itemcount, tmp.target)
 		}
 	end
+	def.getDefaultDescription = function(self)
+		local nname = minetest.registered_nodes[self.trigger.node].description
+		if nname == nil then
+			nname = self.trigger.node
+		end
+		if self.trigger.target ~= 1 then
+			return string.format(S("Place blocks: %d×%s"), self.trigger.target, nname)
+		else
+			return string.format(S("Place a block: %s"), nname)
+		end
+	end
 end)
 
 awards.register_trigger("death", function(def)
 	local tmp = {
 		award  = def.name,
-		target = def.trigger.target
+		target = def.trigger.target,
 	}
 	table.insert(awards.on.death, tmp)
 	def.getProgress = function(self, data)
@@ -67,30 +90,43 @@ awards.register_trigger("death", function(def)
 			label = string.format(S("%d/%d deaths"), itemcount, tmp.target)
 		}
 	end
+	def.getDefaultDescription = function(self)
+		if self.trigger.target ~= 1 then
+			return string.format(S("Die %d times."), self.trigger.target)
+		else
+			return S("Die.")
+		end
+	end
 end)
 
 awards.register_trigger("chat", function(def)
 	local tmp = {
 		award  = def.name,
-		target = def.trigger.target
+		target = def.trigger.target,
 	}
 	table.insert(awards.on.chat, tmp)
 	def.getProgress = function(self, data)
 		local itemcount = data.chats or 0
 		return {
 			perc = itemcount / tmp.target,
-			label = string.format(S("%d/%d lines of chat"), itemcount, tmp.target)
+			label = string.format(S("%d/%d chat messages"), itemcount, tmp.target)
 		}
+	end
+	def.getDefaultDescription = function(self)
+		if self.trigger.target ~= 1 then
+			return string.format(S("Write %d chat messages."), self.trigger.target)
+		else
+			return S("Write something in chat.")
+		end
 	end
 end)
 
 awards.register_trigger("join", function(def)
 	local tmp = {
 		award  = def.name,
-		target = def.trigger.target
+		target = def.trigger.target,
 	}
 	table.insert(awards.on.join, tmp)
-
 	def.getProgress = function(self, data)
 		local itemcount = data.joins or 0
 		return {
@@ -98,13 +134,20 @@ awards.register_trigger("join", function(def)
 			label = string.format(S("%d/%d game joins"), itemcount, tmp.target)
 		}
 	end
+	def.getDefaultDescription = function(self)
+		if self.trigger.target ~= 1 then
+			return string.format(S("Join the game %d times."), self.trigger.target)
+		else
+			return S("Join the game.")
+		end
+	end
 end)
 
 awards.register_trigger("craft", function(def)
 	local tmp = {
 		award  = def.name,
-		item   = def.trigger.item,
-		target = def.trigger.target
+		item = def.trigger.item,
+		target = def.trigger.target,
 	}
 	table.insert(awards.on.craft, tmp)
 	def.getProgress = function(self, data)
@@ -113,6 +156,17 @@ awards.register_trigger("craft", function(def)
 			perc = itemcount / tmp.target,
 			label = string.format(S("%d/%d crafted"), itemcount, tmp.target)
 		}
+	end
+	def.getDefaultDescription = function(self)
+		local iname = minetest.registered_items[self.trigger.item].description
+		if iname == nil then
+			iname = self.trigger.item
+		end
+		if self.trigger.target ~= 1 then
+			return string.format(S("Craft: %d×%s"), self.trigger.target, iname)
+		else
+			return string.format(S("Craft: %s"), iname)
+		end
 	end
 end)
 
