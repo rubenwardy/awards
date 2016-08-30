@@ -327,10 +327,10 @@ function awards.getFormspec(name, to, sid)
 		local item = listofawards[sid+0]
 		local def = awards.def[item.name]
 		if def and def.secret and not item.got then
-			formspec = formspec .. "label[1,2.75;(Secret Award)]"..
+			formspec = formspec .. "label[1,2.75;"..minetest.formspec_escape(S("(Secret Award)")).."]"..
 								"image[1,0;3,3;awards_unknown.png]"
 			if def and def.description then
-				formspec = formspec	.. "label[0,3.25;Unlock this award to find out what it is.]"
+				formspec = formspec	.. "label[0,3.25;"..minetest.formspec_escape(S("Unlock this award to find out what it is.")).."]"
 			end
 		else
 			local title = item.name
@@ -381,7 +381,7 @@ function awards.getFormspec(name, to, sid)
 			first = false
 
 			if def.secret and not award.got then
-				formspec = formspec .. "#707070(Secret Award)"
+				formspec = formspec .. "#707070"..minetest.formspec_escape(S("(Secret Award)"))
 			else
 				local title = award.name
 				if def and def.title then
@@ -403,23 +403,22 @@ function awards.show_to(name, to, sid, text)
 		name = to
 	end
 	if name == to and awards.player(to).disabled then
-		minetest.chat_send_player("You've disabled awards. Type /awards" ..
-				" enable to reenable")
+		minetest.chat_send_player(S("You've disabled awards. Type /awards enable to reenable."))
 		return
 	end
 	if text then
 		if not awards.players[name] or not awards.players[name].unlocked  then
-			minetest.chat_send_player(to, "You have not unlocked any awards")
+			minetest.chat_send_player(to, S("You have not unlocked any awards"))
 			return
 		end
-		minetest.chat_send_player(to, name.."'s awards:")
+		minetest.chat_send_player(to, string.format(S("%s’s awards:"), name))
 
 		for _, str in pairs(awards.players[name].unlocked) do
 			local def = awards.def[str]
 			if def then
 				if def.title then
 					if def.description then
-						minetest.chat_send_player(to, def.title..": "..def.description)
+						minetest.chat_send_player(to, string.format(S("%s: %s"), def.title, def.description))
 					else
 						minetest.chat_send_player(to, def.title)
 					end
