@@ -335,7 +335,7 @@ function awards.getFormspec(name, to, sid)
 			formspec = formspec .. "label[1,2.75;"..minetest.formspec_escape(S("(Secret Award)")).."]"..
 								"image[1,0;3,3;awards_unknown.png]"
 			if def and def.description then
-				formspec = formspec	.. "label[0,3.25;"..minetest.formspec_escape(S("Unlock this award to find out what it is.")).."]"
+				formspec = formspec	.. "textarea[0.25,3.25;4.8,1.7;;"..minetest.formspec_escape(S("Unlock this award to find out what it is."))..";]"
 			end
 		else
 			local title = item.name
@@ -367,11 +367,11 @@ function awards.getFormspec(name, to, sid)
 				formspec = formspec .. "background[0,4.80;" .. barwidth ..",0.25;awards_progress_gray.png;false]"
 				formspec = formspec .. "background[0,4.80;" .. (barwidth * perc) ..",0.25;awards_progress_green.png;false]"
 				if label then
-					formspec = formspec .. "label[1.75,4.63;" .. label .. "]"
+					formspec = formspec .. "label[1.75,4.63;" .. minetest.formspec_escape(label) .. "]"
 				end
 			end
 			if def and def.description then
-				formspec = formspec	.. "label[0,3.25;"..def.description.."]"
+				formspec = formspec	.. "textarea[0.25,3.25;4.8,1.7;;"..minetest.formspec_escape(def.description)..";]"
 			end
 		end
 	end
