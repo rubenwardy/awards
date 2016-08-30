@@ -15,8 +15,8 @@
 --
 
 minetest.register_chatcommand("awards", {
-	params = "",
-	description = "awards: list awards",
+	params = "[c|clear|disable|enable]",
+	description = "Show, clear, disable or enable your achievements.",
 	func = function(name, param)
 		if param == "clear" then
 			awards.clear_player(name)
@@ -24,10 +24,10 @@ minetest.register_chatcommand("awards", {
 					" have been cleared. You can now start again.")
 		elseif param == "disable" then
 			awards.disable(name)
-			minetest.chat_send_player(name, "You have disabled awards. (only affects you)")
+			minetest.chat_send_player(name, "You have disabled your achievements.")
 		elseif param == "enable" then
 			awards.enable(name)
-			minetest.chat_send_player(name, "You have enabled awards. (only affects you)")
+			minetest.chat_send_player(name, "You have enabled your achievements.")
 		elseif param == "c" then
 			awards.show_to(name, name, nil, true)
 		else
@@ -38,23 +38,23 @@ minetest.register_chatcommand("awards", {
 
 minetest.register_chatcommand("cawards", {
 	params = "",
-	description = "awards: list awards in chat",
+	description = "List awards in chat (deprecated)",
 	func = function(name, param)
 		awards.show_to(name, name, nil, true)
-		minetest.chat_send_player(name, "/cawards has been depreciated," ..
+		minetest.chat_send_player(name, "/cawards has been deprecated," ..
 				" use /awards c instead")
 	end
 })
 
 minetest.register_chatcommand("awd", {
-	params = "award name",
-	description = "awd: Details of awd gotten",
+	params = "<achievement name>",
+	description = "Show details of an achievement you got",
 	func = function(name, param)
 		local def = awards.def[param]
 		if def then
-			minetest.chat_send_player(name,def.title..": "..def.description)
+			minetest.chat_send_player(name,string.format("%s: %s", def.title, def.description))
 		else
-			minetest.chat_send_player(name,"Award not found.")
+			minetest.chat_send_player(name,"Achievement not found.")
 		end
 	end
 })
@@ -63,7 +63,8 @@ minetest.register_chatcommand("awpl", {
 	privs = {
 		server = true
 	},
-	description = "awpl: Get the statistics for the player given",
+	param = "<player>",
+	description = "Get the achievements statistics for the player given",
 	func = function(name, param)
 		if not param or param == "" then
 			param = name

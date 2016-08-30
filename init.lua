@@ -166,7 +166,7 @@ awards.register_achievement("awards_stonebrick2", {
 
 awards.register_achievement("awards_stonebrick3", {
 	title = S("Fortress"),
-	description = S("Craft 3200 stone bricks."),
+	description = S("Craft 3,200 stone bricks."),
 	icon = "default_stone_brick.png^awards_level3.png",
 	trigger = {
 		type = "craft",
@@ -299,7 +299,7 @@ awards.register_achievement("award_lumberjack_semipro", {
 -- Professional Lumberjack
 awards.register_achievement("award_lumberjack_professional", {
 	title = S("Professional Lumberjack"),
-	description = S("Dig 1296 tree blocks."),
+	description = S("Dig 1,296 tree blocks."),
 	icon = "default_tree.png^awards_level4.png",
 	trigger = {
 		type = "dig",
@@ -363,7 +363,7 @@ awards.register_achievement("award_meseblock", {
 
 -- You're a copper
 awards.register_achievement("award_youre_a_copper", {
-	title = S("You're a copper"),
+	title = S("You’re a copper"),
 	description = S("Dig 1,000 copper ores."),
 	icon = "default_stone.png^default_mineral_copper.png",
 	background = "awards_bg_mining.png",

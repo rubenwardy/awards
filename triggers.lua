@@ -25,7 +25,7 @@ awards.register_trigger("dig", function(def)
 		local itemcount = awards.get_item_count(data, "count", tmp.node) or 0
 		return {
 			perc = itemcount / tmp.target,
-			label = itemcount .. " / " .. tmp.target .. " dug"  -- TODO: translation
+			label = string.format("%d/%d dug", itemcount, tmp.target)
 		}
 	end
 end)
@@ -41,7 +41,7 @@ awards.register_trigger("place", function(def)
 		local itemcount = awards.get_item_count(data, "place", tmp.node) or 0
 		return {
 			perc = itemcount / tmp.target,
-			label = itemcount .. " / " .. tmp.target .. " placed"  -- TODO: translation
+			label = string.format("%d/%d placed", itemcount, tmp.target)
 		}
 	end
 end)
@@ -56,7 +56,7 @@ awards.register_trigger("death", function(def)
 		local itemcount = data.deaths or 0
 		return {
 			perc = itemcount / tmp.target,
-			label = itemcount .. " deaths, need " .. tmp.target  -- TODO: translation
+			label = string.format("%d/%d deaths", itemcount, tmp.target)
 		}
 	end
 end)
@@ -71,7 +71,7 @@ awards.register_trigger("chat", function(def)
 		local itemcount = data.chats or 0
 		return {
 			perc = itemcount / tmp.target,
-			label = itemcount .. " / " .. tmp.target .. " line of chat"  -- TODO: translation
+			label = string.format("%d/%d lines of chat", itemcount, tmp.target)
 		}
 	end
 end)
@@ -87,7 +87,7 @@ awards.register_trigger("join", function(def)
 		local itemcount = data.joins or 0
 		return {
 			perc = itemcount / tmp.target,
-			label = itemcount .. " game joins, need " .. tmp.target  -- TODO: translation
+			label = string.format("%d/%d game joins", itemcount, tmp.target)
 		}
 	end
 end)
@@ -103,7 +103,7 @@ awards.register_trigger("craft", function(def)
 		local itemcount = awards.get_item_count(data, "craft", tmp.item) or 0
 		return {
 			perc = itemcount / tmp.target,
-			label = itemcount .. " / " .. tmp.target .. " crafted"  -- TODO: translation
+			label = string.format("%d/%d crafted", itemcount, tmp.target)
 		}
 	end
 end)
