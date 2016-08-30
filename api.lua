@@ -337,11 +337,13 @@ function awards.getFormspec(name, to, sid)
 			if def and def.title then
 				title = def.title
 			end
-			local status = ""
+			local status = "%s"
 			if item.got then
-				status = " (got)"
+				status = S("%s (got)")
 			end
-			formspec = formspec .. "label[1,2.75;" .. title .. status .. "]"
+			formspec = formspec .. "label[1,2.75;" ..
+				string.format(status, minetest.formspec_escape(title)) ..
+				"]"
 			if def and def.icon then
 				formspec = formspec .. "image[1,0;3,3;" .. def.icon .. "]"
 			end

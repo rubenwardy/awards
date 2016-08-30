@@ -54,8 +54,8 @@ minetest.register_chatcommand("cawards", {
 })
 
 minetest.register_chatcommand("awd", {
-	params = S("<achievement name>"),
-	description = S("Show details of an achievement you got"),
+	params = S("<achievement ID>"),
+	description = S("Show details of an achievement"),
 	func = function(name, param)
 		local def = awards.def[param]
 		if def then
@@ -70,7 +70,7 @@ minetest.register_chatcommand("awpl", {
 	privs = {
 		server = true
 	},
-	param = S("<player>"),
+	params = S("<name>"),
 	description = S("Get the achievements statistics for the given player or yourself"),
 	func = function(name, param)
 		if not param or param == "" then
