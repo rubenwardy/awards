@@ -227,6 +227,10 @@ function awards.unlock(name, award)
 	local desc = awdef.description or ""
 	local background = awdef.background or "awards_bg_default.png"
 	local icon = awdef.icon or "awards_unknown.png"
+	local sound = awdef.sound
+	if sound == nil then
+		sound = {name="awards_got_generic", gain=0.25}
+	end
 	local custom_announce = awdef.custom_announce
 	if not custom_announce then
 		if awdef.secret then
@@ -237,6 +241,14 @@ function awards.unlock(name, award)
 	end
 
 	-- Do Notification
+	if sound ~= false then
+		-- Enforce sound delay to prevent sound spamming
+		local lastsound = awards.players[name].lastsound
+		if lastsound == nil or os.difftime(os.time(), lastsound) >= 1 then
+			minetest.sound_play(sound, {to_player=name})
+			awards.players[name].lastsound = os.time()
+		end
+	end
 	if awards.show_mode == "formspec" then
 		-- use a formspec to send it
 		minetest.show_formspec(name, "achievements:unlocked", "size[4,2]"..
