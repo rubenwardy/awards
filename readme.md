@@ -13,7 +13,8 @@ old fork in Carbone, under same license.
 * awards.register_achievement(name, def)
 	* name
 	* desciption
-	* sound [optional]
+	* sound [optional] - set a custom sound (SimpleSoundSpec) or `false` to play no sound.
+          If not specified, a default sound is played
 	* image [optional] - texture name, eg: award_one.png
 	* background [optional] - texture name, eg: award_one.png
 	* trigger [optional] [table]
