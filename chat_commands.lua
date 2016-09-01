@@ -36,16 +36,6 @@ minetest.register_chatcommand("awards", {
 	end
 })
 
-minetest.register_chatcommand("cawards", {
-	params = "",
-	description = "awards: list awards in chat",
-	func = function(name, param)
-		awards.show_to(name, name, nil, true)
-		minetest.chat_send_player(name, "/cawards has been depreciated," ..
-				" use /awards c instead")
-	end
-})
-
 minetest.register_chatcommand("awd", {
 	params = "award name",
 	description = "awd: Details of awd gotten",
