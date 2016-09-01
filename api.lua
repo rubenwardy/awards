@@ -341,10 +341,17 @@ function awards.getFormspec(name, to, sid)
 	local listofawards = awards._order_awards(name)
 	local playerdata = awards.players[name]
 
+	if #listofawards == 0 then
+		formspec = formspec .. "label[3.9,1.5;"..minetest.formspec_escape(S("Error: No awards available.")).."]"
+		formspec = formspec .. "button_exit[4.2,2.3;3,1;close;"..minetest.formspec_escape(S("OK")).."]"
+		return formspec
+	end
+
 	-- Sidebar
 	if sid then
 		local item = listofawards[sid+0]
 		local def = awards.def[item.name]
+
 		if def and def.secret and not item.got then
 			formspec = formspec .. "label[1,2.75;"..minetest.formspec_escape(S("(Secret Award)")).."]"..
 								"image[1,0;3,3;awards_unknown.png]"
@@ -428,8 +435,12 @@ function awards.show_to(name, to, sid, text)
 		return
 	end
 	if text then
-		if not awards.players[name] or not awards.players[name].unlocked  then
-			minetest.chat_send_player(to, S("You have not unlocked any awards"))
+		local listofawards = awards._order_awards(name)
+		if #listofawards == 0 then
+			minetest.chat_send_player(to, S("Error: No awards available."))
+			return
+		elseif not awards.players[name] or not awards.players[name].unlocked  then
+			minetest.chat_send_player(to, S("You have not unlocked any awards."))
 			return
 		end
 		minetest.chat_send_player(to, string.format(S("%s’s awards:"), name))
@@ -454,7 +465,8 @@ function awards.show_to(name, to, sid, text)
 		end
 		-- Show formspec to user
 		minetest.show_formspec(to,"awards:awards",
-			"size[11,5]" .. awards.getFormspec(name, to, sid))
+			"size[11,5]" .. default.gui_bg .. default.gui_bg_img ..
+			awards.getFormspec(name, to, sid))
 	end
 end
 awards.showto = awards.show_to
