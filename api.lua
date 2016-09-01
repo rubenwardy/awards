@@ -157,7 +157,7 @@ function awards.disable(name)
 end
 
 function awards.clear_player(name)
-	awards.players[name] = nil
+	awards.players[name] = {}
 end
 
 -- This function is called whenever a target condition is met.
