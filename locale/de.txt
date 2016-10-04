@@ -175,3 +175,10 @@ Join the game %d times. = Treten Sie dem Spiel %d mal bei.
 Show details of an achievement = Details einer Auszeichnung anzeigen
 OK = OK
 Error: No awards available. = Fehler: Keine Auszeichnungen vorhanden.
+
+#### nodes.lua ####
+Awards Board = 
+\n  right-clic to open \n  left-clic to display in chat = 
+Consult = 
+'s Awards = 
+Consult Awards =
