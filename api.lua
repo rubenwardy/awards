@@ -253,8 +253,8 @@ function awards.unlock(name, award)
 
 	if awards.show_mode == "formspec" then
 		-- use a formspec to send it
-		minetest.show_formspec(name, "achievements:unlocked", "size[4,2]"..
-				"image_button_exit[0,0;4,2;"..background..";close1; ]"..
+		minetest.show_formspec(name, "achievements:unlocked", "size[6,2]"..
+				"image_button_exit[0,0;6,2;"..background..";close1; ]"..
 				"image_button_exit[0.2,0.8;1,1;"..icon..";close2; ]"..
 				"label[1.1,1;"..title.."]"..
 				"label[0.3,0.1;"..custom_announce.."]")
@@ -275,7 +275,7 @@ function awards.unlock(name, award)
 		local one = player:hud_add({
 			hud_elem_type = "image",
 			name = "award_bg",
-			scale = {x = 1, y = 1},
+			scale = {x = 2, y = 1},
 			text = background,
 			position = {x = 0.5, y = 0},
 			offset = {x = 0, y = 138},
@@ -312,11 +312,11 @@ function awards.unlock(name, award)
 			name = "award_icon",
 			scale = {x = 4, y = 4},
 			text = icon,
-			position = {x = 0.5, y = 0},
+			position = {x = 0.4, y = 0},
 			offset = {x = -81.5, y = 126},
 			alignment = {x = 0, y = -1}
 		})
-		minetest.after(3, function()
+		minetest.after(4, function()
 			player:hud_remove(one)
 			player:hud_remove(two)
 			player:hud_remove(three)
