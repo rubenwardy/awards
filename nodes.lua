@@ -64,20 +64,20 @@ minetest.register_node("awards:board", {
 
 })
 
+if minetest.get_modpath("wool") and minetest.get_modpath("default") then
+	minetest.register_craft({
+	   output = "awards:board",
+	   recipe = { 
+		      { "wool:red","default:glass","wool:red " },
+		      { "default:sign_wall_wood","default:gold_ingot","default:sign_wall_wood" },
+		     }
+	});
 
-minetest.register_craft({
-   output = "awards:board",
-   recipe = { 
-              { "wool:red","default:glass","wool:red " },
-              { "default:sign_wall_wood","default:gold_lump","default:sign_wall_wood" },
-             }
-});
-
-minetest.register_craft({
-   output = "awards:board",
-   recipe = { 
-              { "wool:red","group:glass","wool:red " },
-              { "group:sign_wall","default:gold_lump","group:sign_wall" },
-             }
-});
-
+	minetest.register_craft({
+	   output = "awards:board",
+	   recipe = { 
+		      { "wool:red","group:glass","wool:red " },
+		      { "group:sign_wall","default:gold_ingot","group:sign_wall" },
+		     }
+	});
+end
