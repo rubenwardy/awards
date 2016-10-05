@@ -24,7 +24,7 @@ end
 local board_img = "signs_wall_sign.png^[colorize:red:120^awards_trophy_icon.png"
 
 minetest.register_node("awards:board", {
-  	description = S("Awards Board")..S("\n  right-click to open \n  left-click to display in chat"),
+  	description = S("Awards Board")..S("\n  right-click to open"),
 	drawtype = "nodebox",
 	tiles = {board_img},
 	inventory_image = board_img,
@@ -48,7 +48,7 @@ minetest.register_node("awards:board", {
 		local meta = minetest.get_meta(pos)
 		meta:set_string("owner", placer:get_player_name() or "")
 		meta:set_string("infotext", S("Consult").." "..
-				meta:get_string("owner")..S("'s Awards")..S("\n  right-click to open \n  left-click to display in chat"))
+				meta:get_string("owner")..S("'s Awards")..S("\n  right-click to open"))
 	end,
 	
 	on_construct = function(pos)
