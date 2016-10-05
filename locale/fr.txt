@@ -180,7 +180,7 @@ Error: No awards available. = Erreur : Aucun trophé disponible
 
 #### nodes.lua ####
 Awards Board = Tableau des Trophés
-\n  right-click to open \n  left-click to display in chat = \n  clic-droit pour ouvrir \n  clic-gauche pour afficher dans le chat
+\n  right-click to open = \n  clic-droit pour ouvrir
 Consult = Consulter les Trophés de
 's Awards = ...
 Consult Awards = Consulter les Trophés
