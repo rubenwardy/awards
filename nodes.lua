@@ -72,12 +72,4 @@ if minetest.get_modpath("wool") and minetest.get_modpath("default") then
 		      { "default:sign_wall_wood","default:gold_ingot","default:sign_wall_wood" },
 		     }
 	});
-
-	minetest.register_craft({
-	   output = "awards:board",
-	   recipe = { 
-		      { "wool:red","group:glass","wool:red " },
-		      { "group:sign_wall","default:gold_ingot","group:sign_wall" },
-		     }
-	});
 end
