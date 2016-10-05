@@ -367,9 +367,8 @@ function awards.getFormspec(name, to, sid)
 			if item.got then
 				status = S("%s (got)")
 			end
-			formspec = formspec .. "label[1,2.75;" ..
-				string.format(status, minetest.formspec_escape(title)) ..
-				"]"
+			formspec = formspec .. "textarea[0.5,2.7;4.8,1.45;;"..string.format(status, minetest.formspec_escape(title))..";]"
+			
 			if def and def.icon then
 				formspec = formspec .. "image[1,0;3,3;" .. def.icon .. "]"
 			end
@@ -392,7 +391,7 @@ function awards.getFormspec(name, to, sid)
 				end
 			end
 			if def and def.description then
-				formspec = formspec	.. "textarea[0.25,3.25;4.8,1.7;;"..minetest.formspec_escape(def.description)..";]"
+				formspec = formspec	.. "textarea[0.25,3.75;4.8,1.7;;"..minetest.formspec_escape(def.description)..";]"
 			end
 		end
 	end
