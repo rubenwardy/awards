@@ -463,9 +463,13 @@ function awards.show_to(name, to, sid, text)
 		if sid == nil or sid < 1 then
 			sid = 1
 		end
+		local deco = ""
+		if minetest.global_exists("default") then
+			deco = default.gui_bg .. default.gui_bg_img
+		end
 		-- Show formspec to user
 		minetest.show_formspec(to,"awards:awards",
-			"size[11,5]" .. default.gui_bg .. default.gui_bg_img ..
+			"size[11,5]" .. deco ..
 			awards.getFormspec(name, to, sid))
 	end
 end

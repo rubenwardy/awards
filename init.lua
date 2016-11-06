@@ -70,16 +70,18 @@ end
 
 -- This award can't be part of Unified Inventory, it would make a circular dependency
 if minetest.get_modpath("unified_inventory") then
-	awards.register_achievement("awards_ui_bags", {
-		title = S("Backpacker"),
-		description = S("Craft 4 large bags."),
-		icon = "awards_ui_bags.png",
-		trigger = {
-			type = "craft",
-			item = "unified_inventory:bag_large",
-			target = 4
-		}
-	})
+	if minetest.get_all_craft_recipes("unified_inventory:bag_large") ~= nil then
+		awards.register_achievement("awards_ui_bags", {
+			title = S("Backpacker"),
+			description = S("Craft 4 large bags."),
+			icon = "awards_ui_bags.png",
+			trigger = {
+				type = "craft",
+				item = "unified_inventory:bag_large",
+				target = 4
+			}
+		})
+	end
 end
 
 if minetest.get_modpath("fire") then
