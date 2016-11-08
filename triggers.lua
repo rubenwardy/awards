@@ -77,6 +77,33 @@ awards.register_trigger("place", function(def)
 	end
 end)
 
+awards.register_trigger("eat", function(def)
+	local tmp = {
+		award  = def.name,
+		item = def.trigger.item,
+		target = def.trigger.target,
+	}
+	table.insert(awards.on.eat, tmp)
+	def.getProgress = function(self, data)
+		local itemcount = awards.get_item_count(data, "eat", tmp.item) or 0
+		return {
+			perc = itemcount / tmp.target,
+			label = string.format(S("%d/%d eaten"), itemcount, tmp.target)
+		}
+	end
+	def.getDefaultDescription = function(self)
+		local iname = minetest.registered_items[self.trigger.item].description
+		if iname == nil then
+			iname = self.trigger.iode
+		end
+		if self.trigger.target ~= 1 then
+			return string.format(S("Eat: %d×%s"), self.trigger.target, iname)
+		else
+			return string.format(S("Eat: %s"), iname)
+		end
+	end
+end)
+
 awards.register_trigger("death", function(def)
 	local tmp = {
 		award  = def.name,
@@ -219,6 +246,28 @@ minetest.register_on_placenode(function(pos, node, digger)
 			if not tmod or not titem or not data.place[tmod] or not data.place[tmod][titem] then
 				-- table running failed!
 			elseif data.place[tmod][titem] > entry.target-1 then
+				return entry.award
+			end
+		end
+	end)
+end)
+
+minetest.register_on_item_eat(function(hp_change, replace_with_item, itemstack, user, pointed_thing)
+	if not user or not itemstack or not user:get_player_name() or user:get_player_name()=="" then
+		return
+	end
+	local data = awards.players[user:get_player_name()]
+	if not awards.increment_item_counter(data, "eat", itemstack:get_name()) then
+		return
+	end
+	awards.run_trigger_callbacks(user, data, "eat", function(entry)
+		if entry.item and entry.target then
+			local titemstring = string.split(entry.item, ":")
+			local tmod = titemstring[1]
+			local titem = titemstring[2]
+			if not tmod or not titem or not data.eat[tmod] or not data.eat[tmod][titem] then
+				-- table running failed!
+			elseif data.eat[tmod][titem] > entry.target-1 then
 				return entry.award
 			end
 		end

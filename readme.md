@@ -18,10 +18,10 @@ old fork in Carbone, under same license.
 	* image [optional] - texture name, eg: award_one.png
 	* background [optional] - texture name, eg: award_one.png
 	* trigger [optional] [table]
-		* type - "dig", "place", "craft", "death", "chat" or "join"
-		* (for dig/place type) node - the nodes name
-		* (for craft type) item - the items name
-		* (for all types) target - how many to dig / place
+		* type - "dig", "place", "craft", "death", "chat", "join" or "eat"
+		* (for dig/place type) node - the node name
+		* (for craft/eat type) item - the item name
+		* (for all types) target - how many times to dig/place/craft/etc.
 		* See Triggers
 	* secret [optional] - if true, then player needs to unlock to find out what it is.
 	* on_unlock [optional] - func(name, def)
@@ -98,6 +98,14 @@ Callbacks (register a function to be run)
 
 	trigger = {
 		type = "join",
+		target = 100
+	}
+
+### eat
+
+	trigger = {
+		type = "eat",
+		item = "default:apple",
 		target = 100
 	}
 

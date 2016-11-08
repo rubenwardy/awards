@@ -685,6 +685,17 @@ if minetest.get_modpath("default") then
 			target = 40
 		}
 	})
+
+	awards.register_achievement("award_apples", {
+		title = S("Yummy!"),
+		description = S("Eat 80 apples."),
+		icon = "default_apple.png",
+		trigger = {
+			type = "eat",
+			item = "default:apple",
+			target = 80
+		}
+	})
 end
 
 if minetest.get_modpath("vessels") then
@@ -741,6 +752,17 @@ if minetest.get_modpath("farming") then
 			type = "dig",
 			node = "farming:wheat_8",
 			target = 625
+		}
+	})
+
+	awards.register_achievement("award_bread", {
+		title = S("Baker"),
+		description = S("Eat 10 loaves of bread."),
+		icon = "farming_bread.png",
+		trigger = {
+			type = "eat",
+			item = "farming:bread",
+			target = 10
 		}
 	})
 
