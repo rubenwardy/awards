@@ -852,3 +852,36 @@ if minetest.get_modpath("dye") then
 		}
 	})
 end
+
+if minetest.get_modpath("flowers") then
+	awards.register_achievement("awards_brown_mushroom1", {
+		title = S("Tasty Mushrooms"),
+		description = S("Eat 3 brown mushrooms."),
+		icon = "flowers_mushroom_brown.png^awards_level1.png",
+		trigger = {
+			type = "eat",
+			item= "flowers:mushroom_brown",
+			target = 3,
+		}
+	})
+	awards.register_achievement("awards_brown_mushroom2", {
+		title = S("Mushroom Lover"),
+		description = S("Eat 33 brown mushrooms."),
+		icon = "flowers_mushroom_brown.png^awards_level2.png",
+		trigger = {
+			type = "eat",
+			item= "flowers:mushroom_brown",
+			target = 33,
+		}
+	})
+	awards.register_achievement("awards_brown_mushroom3", {
+		title = S("Underground Mushroom Farmer"),
+		description = S("Eat 333 brown mushrooms."),
+		icon = "flowers_mushroom_brown.png^awards_level3.png",
+		trigger = {
+			type = "eat",
+			item= "flowers:mushroom_brown",
+			target = 333,
+		}
+	})
+end
