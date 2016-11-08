@@ -19,8 +19,17 @@ old fork in Carbone, under same license.
 	* background [optional] - texture name, eg: award_one.png
 	* trigger [optional] [table]
 		* type - "dig", "place", "craft", "death", "chat", "join" or "eat"
-		* (for dig/place type) node - the node name
-		* (for craft/eat type) item - the item name
+		* dig type: Dig a node.
+			* node: the dug node type. If nil, all dug nodes are counted
+		* place type: Place a node.
+			* node: the placed node type. If nil, all placed nodes are counted
+		* eat type: Eat an item.
+			* item: the eaten item type. If nil, all eaten items are counted
+		* craft type: Craft something.
+			* item: the crafted item type. If nil, all crafted items are counted
+		* death type: Die.
+		* chat type: Write a chat message.
+		* join type: Join the server.
 		* (for all types) target - how many times to dig/place/craft/etc.
 		* See Triggers
 	* secret [optional] - if true, then player needs to unlock to find out what it is.
@@ -117,6 +126,9 @@ Callbacks (register a function to be run)
 * awards.register_on_place(func(player, data))
 	* data is player data (see below)
 	* return award name or null
+* awards.register_on_eat(func(player, data))
+	* data is player data (see below)
+	* return award name or null
 * awards.register_on_death(func(player, data))
 	* data is player data (see below)
 	* return award name or null
@@ -140,6 +152,9 @@ A list of data referenced/hashed by the player's name.
 		* modname [table]
 			* itemname [int]
 	* craft [table] - craft counter
+		* modname [table]
+			* itemname [int]
+	* eat [table] - eat counter
 		* modname [table]
 			* itemname [int]
 	* deaths
