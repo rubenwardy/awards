@@ -885,3 +885,53 @@ if minetest.get_modpath("flowers") then
 		}
 	})
 end
+
+-- This ensures the following code is executed after all items have been registered
+minetest.after(0, function()
+	-- Check whether there is at least one node which can be built by the player
+	local building_is_possible = false
+	for _, def in pairs(minetest.registered_nodes) do
+		if (def.description and def.pointable ~= false and not def.groups.not_in_creative_inventory) then
+			building_is_possible = true
+			break
+		end
+	end
+
+	-- The following awards require at least one node which can be built
+	if not building_is_possible then
+		return
+	end
+
+	awards.register_achievement("awards_builder1", {
+		title = S("Builder"),
+		icon = "awards_house.png^awards_level1.png",
+		trigger = {
+			type = "place",
+			target = 1000,
+		},
+	})
+	awards.register_achievement("awards_builder2", {
+		title = S("Constructor"),
+		icon = "awards_house.png^awards_level2.png",
+		trigger = {
+			type = "place",
+			target = 5000,
+		},
+	})
+	awards.register_achievement("awards_builder3", {
+		title = S("Architect"),
+		icon = "awards_house.png^awards_level3.png",
+		trigger = {
+			type = "place",
+			target = 10000,
+		},
+	})
+	awards.register_achievement("awards_builder4", {
+		title = S("Master Architect"),
+		icon = "awards_house.png^awards_level4.png",
+		trigger = {
+			type = "place",
+			target = 25000,
+		},
+	})
+end)
