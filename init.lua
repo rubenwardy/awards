@@ -16,9 +16,8 @@
 
 
 local S
-if (intllib) then
-	dofile(minetest.get_modpath("intllib").."/intllib.lua")
-	S = intllib.Getter(minetest.get_current_modname())
+if minetest.get_modpath("intllib") then
+	S = intllib.Getter()
 else
 	S = function ( s ) return s end
 end
