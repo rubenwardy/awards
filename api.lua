@@ -115,6 +115,22 @@ function awards.get_item_count(data, field, itemname)
 	end
 end
 
+function awards.get_total_item_count(data, field)
+	local i = 0
+	if data and field then
+		awards.assertPlayer(data)
+		awards.tbv(data, field)
+		for mod,_ in pairs(data[field]) do
+			awards.tbv(data[field], mod)
+			for item,_ in pairs(data[field][mod]) do
+				awards.tbv(data[field][mod], item, 0)
+				i = i + data[field][mod][item]
+			end
+		end
+	end
+	return i
+end
+
 function awards.register_on_unlock(func)
 	table.insert(awards.on_unlock, func)
 end
