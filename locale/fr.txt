@@ -177,3 +177,10 @@ You’re a copper = Faites Jouer les Cuivres
 [c|clear|disable|enable] = [c|clear|disable|enable]
 OK = OK
 Error: No awards available. = Erreur : Aucun trophé disponible
+
+#### nodes.lua ####
+Awards Board = Tableau des Trophés
+\n  right-click to open = \n  clic-droit pour ouvrir
+Consult = Consulter les Trophés de
+'s Awards = ...
+Consult Awards = Consulter les Trophés

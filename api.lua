@@ -383,7 +383,8 @@ function awards.getFormspec(name, to, sid)
 			if item.got then
 				status = S("%s (got)")
 			end
-			formspec = formspec .. "textarea[0.5,2.7;4.8,1.45;;" ..
+
+      formspec = formspec .. "textarea[0.5,2.7;4.8,1.45;;" ..
 				string.format(status, minetest.formspec_escape(title)) ..
 				";]"
 			
