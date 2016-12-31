@@ -269,8 +269,8 @@ function awards.unlock(name, award)
 
 	if awards.show_mode == "formspec" then
 		-- use a formspec to send it
-		minetest.show_formspec(name, "achievements:unlocked", "size[4,2]"..
-				"image_button_exit[0,0;4,2;"..background..";close1; ]"..
+		minetest.show_formspec(name, "achievements:unlocked", "size[6,2]"..
+				"image_button_exit[0,0;6,2;"..background..";close1; ]"..
 				"image_button_exit[0.2,0.8;1,1;"..icon..";close2; ]"..
 				"label[1.1,1;"..title.."]"..
 				"label[0.3,0.1;"..custom_announce.."]")
@@ -291,7 +291,7 @@ function awards.unlock(name, award)
 		local one = player:hud_add({
 			hud_elem_type = "image",
 			name = "award_bg",
-			scale = {x = 1, y = 1},
+			scale = {x = 2, y = 1},
 			text = background,
 			position = {x = 0.5, y = 0},
 			offset = {x = 0, y = 138},
@@ -328,11 +328,11 @@ function awards.unlock(name, award)
 			name = "award_icon",
 			scale = {x = 4, y = 4},
 			text = icon,
-			position = {x = 0.5, y = 0},
+			position = {x = 0.4, y = 0},
 			offset = {x = -81.5, y = 126},
 			alignment = {x = 0, y = -1}
 		})
-		minetest.after(3, function()
+		minetest.after(4, function()
 			player:hud_remove(one)
 			player:hud_remove(two)
 			player:hud_remove(three)
@@ -383,9 +383,11 @@ function awards.getFormspec(name, to, sid)
 			if item.got then
 				status = S("%s (got)")
 			end
-			formspec = formspec .. "label[1,2.75;" ..
+
+      formspec = formspec .. "textarea[0.5,2.7;4.8,1.45;;" ..
 				string.format(status, minetest.formspec_escape(title)) ..
-				"]"
+				";]"
+			
 			if def and def.icon then
 				formspec = formspec .. "image[1,0;3,3;" .. def.icon .. "]"
 			end
@@ -408,7 +410,7 @@ function awards.getFormspec(name, to, sid)
 				end
 			end
 			if def and def.description then
-				formspec = formspec	.. "textarea[0.25,3.25;4.8,1.7;;"..minetest.formspec_escape(def.description)..";]"
+				formspec = formspec	.. "textarea[0.25,3.75;4.8,1.7;;"..minetest.formspec_escape(def.description)..";]"
 			end
 		end
 	end
