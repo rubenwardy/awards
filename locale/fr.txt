@@ -195,9 +195,3 @@ Eat 3 brown mushrooms. = Mange 3 champignons marrons.
 Eat 33 brown mushrooms. = Mange 33 champignons marrons.
 Eat 333 brown mushrooms. = Mange 333 champignons marrons.
 
-#### nodes.lua ####
-Awards Board = Tableau des Trophés
-\n  right-click to open = \n  clic-droit pour ouvrir
-Consult = Consulter les Trophés de
-'s Awards = ...
-Consult Awards = Consulter les Trophés
