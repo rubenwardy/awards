@@ -196,3 +196,11 @@ Place %d block(s). = Platzieren Sie %d Blöcke.
 Dig %d block(s). = Bauen Sie %d Blöcke ab.
 Eat %d item(s). = Essen Sie %d Dinge.
 Craft %d item(s). = Fertigen Sie %d Gegenstände.
+
+
+#### nodes.lua ####
+Awards Board = 
+\n  right-click to open =
+Consult = 
+'s Awards = 
+Consult Awards =

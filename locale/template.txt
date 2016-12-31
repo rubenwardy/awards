@@ -194,3 +194,10 @@ Underground Mushroom Farmer =
 Eat 3 brown mushrooms. =
 Eat 33 brown mushrooms. =
 Eat 333 brown mushrooms. =
+
+#### nodes.lua ####
+Awards Board = 
+\n  right-click to open =
+Consult = 
+'s Awards = 
+Consult Awards = 
