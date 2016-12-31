@@ -15,9 +15,8 @@
 --
 
 local S
-if (intllib) then
-	dofile(minetest.get_modpath("intllib").."/intllib.lua")
-	S = intllib.Getter(minetest.get_current_modname())
+if minetest.get_modpath("intllib") then
+	S = intllib.Getter()
 else
 	S = function ( s ) return s end
 end
@@ -30,22 +29,30 @@ awards.register_trigger("dig", function(def)
 	}
 	table.insert(awards.on.dig, tmp)
 	def.getProgress = function(self, data)
-		local itemcount = awards.get_item_count(data, "count", tmp.node) or 0
+		local itemcount
+		if tmp.node then
+			itemcount = awards.get_item_count(data, "count", tmp.node) or 0
+		else
+			itemcount = awards.get_total_item_count(data, "count")
+		end
 		return {
 			perc = itemcount / tmp.target,
 			label = string.format(S("%d/%d dug"), itemcount, tmp.target)
 		}
 	end
 	def.getDefaultDescription = function(self)
-		local nname = minetest.registered_nodes[self.trigger.node].description
-		if nname == nil then
-			nname = self.trigger.node
-		end
-		local ddesc
-		if self.trigger.target ~= 1 then
-			return string.format(S("Mine blocks: %d×%s"), self.trigger.target, nname)
+		if self.trigger.node then
+			local nname = minetest.registered_nodes[self.trigger.node].description
+			if nname == nil then
+				nname = self.trigger.node
+			end
+			if self.trigger.target ~= 1 then
+				return string.format(S("Mine blocks: %d×%s"), self.trigger.target, nname)
+			else
+				return string.format(S("Mine a block: %s"), nname)
+			end
 		else
-			return string.format(S("Mine a block: %s"), nname)
+			return string.format(S("Mine %d block(s)."), self.trigger.target)
 		end
 	end
 end)
@@ -58,21 +65,66 @@ awards.register_trigger("place", function(def)
 	}
 	table.insert(awards.on.place, tmp)
 	def.getProgress = function(self, data)
-		local itemcount = awards.get_item_count(data, "place", tmp.node) or 0
+		local itemcount
+		if tmp.node then
+			itemcount = awards.get_item_count(data, "place", tmp.node) or 0
+		else
+			itemcount = awards.get_total_item_count(data, "place")
+		end
 		return {
 			perc = itemcount / tmp.target,
 			label = string.format(S("%d/%d placed"), itemcount, tmp.target)
 		}
 	end
 	def.getDefaultDescription = function(self)
-		local nname = minetest.registered_nodes[self.trigger.node].description
-		if nname == nil then
-			nname = self.trigger.node
-		end
-		if self.trigger.target ~= 1 then
-			return string.format(S("Place blocks: %d×%s"), self.trigger.target, nname)
+		if self.trigger.node then
+			local nname = minetest.registered_nodes[self.trigger.node].description
+			if nname == nil then
+				nname = self.trigger.node
+			end
+			if self.trigger.target ~= 1 then
+				return string.format(S("Place blocks: %d×%s"), self.trigger.target, nname)
+			else
+				return string.format(S("Place a block: %s"), nname)
+			end
 		else
-			return string.format(S("Place a block: %s"), nname)
+			return string.format(S("Place %d block(s)."), self.trigger.target)
+		end
+	end
+end)
+
+awards.register_trigger("eat", function(def)
+	local tmp = {
+		award  = def.name,
+		item = def.trigger.item,
+		target = def.trigger.target,
+	}
+	table.insert(awards.on.eat, tmp)
+	def.getProgress = function(self, data)
+		local itemcount
+		if tmp.item then
+			itemcount = awards.get_item_count(data, "eat", tmp.item) or 0
+		else
+			itemcount = awards.get_total_item_count(data, "eat")
+		end
+		return {
+			perc = itemcount / tmp.target,
+			label = string.format(S("%d/%d eaten"), itemcount, tmp.target)
+		}
+	end
+	def.getDefaultDescription = function(self)
+		if self.trigger.item then
+			local iname = minetest.registered_items[self.trigger.item].description
+			if iname == nil then
+				iname = self.trigger.iode
+			end
+			if self.trigger.target ~= 1 then
+				return string.format(S("Eat: %d×%s"), self.trigger.target, iname)
+			else
+				return string.format(S("Eat: %s"), iname)
+			end
+		else
+			return string.format(S("Eat %d item(s)."), self.trigger.target)
 		end
 	end
 end)
@@ -151,21 +203,30 @@ awards.register_trigger("craft", function(def)
 	}
 	table.insert(awards.on.craft, tmp)
 	def.getProgress = function(self, data)
-		local itemcount = awards.get_item_count(data, "craft", tmp.item) or 0
+		local itemcount
+		if tmp.item then
+			itemcount = awards.get_item_count(data, "craft", tmp.item) or 0
+		else
+			itemcount = awards.get_total_item_count(data, "craft")
+		end
 		return {
 			perc = itemcount / tmp.target,
 			label = string.format(S("%d/%d crafted"), itemcount, tmp.target)
 		}
 	end
 	def.getDefaultDescription = function(self)
-		local iname = minetest.registered_items[self.trigger.item].description
-		if iname == nil then
-			iname = self.trigger.item
-		end
-		if self.trigger.target ~= 1 then
-			return string.format(S("Craft: %d×%s"), self.trigger.target, iname)
+		if self.trigger.item then
+			local iname = minetest.registered_items[self.trigger.item].description
+			if iname == nil then
+				iname = self.trigger.item
+			end
+			if self.trigger.target ~= 1 then
+				return string.format(S("Craft: %d×%s"), self.trigger.target, iname)
+			else
+				return string.format(S("Craft: %s"), iname)
+			end
 		else
-			return string.format(S("Craft: %s"), iname)
+			return string.format(S("Craft %d item(s)."), self.trigger.target)
 		end
 	end
 end)
@@ -189,13 +250,17 @@ minetest.register_on_dignode(function(pos, oldnode, digger)
 		return
 	end
 	awards.run_trigger_callbacks(digger, data, "dig", function(entry)
-		if entry.node and entry.target then
-			local tnodedug = string.split(entry.node, ":")
-			local tmod = tnodedug[1]
-			local titem = tnodedug[2]
-			if not tmod or not titem or not data.count[tmod] or not data.count[tmod][titem] then
-				-- table running failed!
-			elseif data.count[tmod][titem] > entry.target-1 then
+		if entry.target then
+			if entry.node then
+				local tnodedug = string.split(entry.node, ":")
+				local tmod = tnodedug[1]
+				local titem = tnodedug[2]
+				if not tmod or not titem or not data.count[tmod] or not data.count[tmod][titem] then
+					-- table running failed!
+				elseif data.count[tmod][titem] > entry.target-1 then
+					return entry.award
+				end
+			elseif awards.get_total_item_count(data, "count") > entry.target-1 then
 				return entry.award
 			end
 		end
@@ -212,13 +277,43 @@ minetest.register_on_placenode(function(pos, node, digger)
 	end
 
 	awards.run_trigger_callbacks(digger, data, "place", function(entry)
-		if entry.node and entry.target then
-			local tnodedug = string.split(entry.node, ":")
-			local tmod = tnodedug[1]
-			local titem = tnodedug[2]
-			if not tmod or not titem or not data.place[tmod] or not data.place[tmod][titem] then
-				-- table running failed!
-			elseif data.place[tmod][titem] > entry.target-1 then
+		if entry.target then
+			if entry.node then
+				local tnodedug = string.split(entry.node, ":")
+				local tmod = tnodedug[1]
+				local titem = tnodedug[2]
+				if not tmod or not titem or not data.place[tmod] or not data.place[tmod][titem] then
+					-- table running failed!
+				elseif data.place[tmod][titem] > entry.target-1 then
+					return entry.award
+				end
+			elseif awards.get_total_item_count(data, "place") > entry.target-1 then
+				return entry.award
+			end
+		end
+	end)
+end)
+
+minetest.register_on_item_eat(function(hp_change, replace_with_item, itemstack, user, pointed_thing)
+	if not user or not itemstack or not user:get_player_name() or user:get_player_name()=="" then
+		return
+	end
+	local data = awards.players[user:get_player_name()]
+	if not awards.increment_item_counter(data, "eat", itemstack:get_name()) then
+		return
+	end
+	awards.run_trigger_callbacks(user, data, "eat", function(entry)
+		if entry.target then
+			if entry.item then
+				local titemstring = string.split(entry.item, ":")
+				local tmod = titemstring[1]
+				local titem = titemstring[2]
+				if not tmod or not titem or not data.eat[tmod] or not data.eat[tmod][titem] then
+					-- table running failed!
+				elseif data.eat[tmod][titem] > entry.target-1 then
+					return entry.award
+				end
+			elseif awards.get_total_item_count(data, "eat") > entry.target-1 then
 				return entry.award
 			end
 		end
@@ -236,13 +331,17 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 	end
 
 	awards.run_trigger_callbacks(player, data, "craft", function(entry)
-		if entry.item and entry.target then
-			local titemcrafted = string.split(entry.item, ":")
-			local tmod = titemcrafted[1]
-			local titem = titemcrafted[2]
-			if not tmod or not titem or not data.craft[tmod] or not data.craft[tmod][titem] then
-				-- table running failed!
-			elseif data.craft[tmod][titem] > entry.target-1 then
+		if entry.target then
+			if entry.item then
+				local titemcrafted = string.split(entry.item, ":")
+				local tmod = titemcrafted[1]
+				local titem = titemcrafted[2]
+				if not tmod or not titem or not data.craft[tmod] or not data.craft[tmod][titem] then
+					-- table running failed!
+				elseif data.craft[tmod][titem] > entry.target-1 then
+					return entry.award
+				end
+			elseif awards.get_total_item_count(data, "craft") > entry.target-1 then
 				return entry.award
 			end
 		end

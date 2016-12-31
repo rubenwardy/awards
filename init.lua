@@ -16,9 +16,8 @@
 
 
 local S
-if (intllib) then
-	dofile(minetest.get_modpath("intllib").."/intllib.lua")
-	S = intllib.Getter(minetest.get_current_modname())
+if minetest.get_modpath("intllib") then
+	S = intllib.Getter()
 else
 	S = function ( s ) return s end
 end
@@ -70,16 +69,18 @@ end
 
 -- This award can't be part of Unified Inventory, it would make a circular dependency
 if minetest.get_modpath("unified_inventory") then
-	awards.register_achievement("awards_ui_bags", {
-		title = S("Backpacker"),
-		description = S("Craft 4 large bags."),
-		icon = "awards_ui_bags.png",
-		trigger = {
-			type = "craft",
-			item = "unified_inventory:bag_large",
-			target = 4
-		}
-	})
+	if minetest.get_all_craft_recipes("unified_inventory:bag_large") ~= nil then
+		awards.register_achievement("awards_ui_bags", {
+			title = S("Backpacker"),
+			description = S("Craft 4 large bags."),
+			icon = "awards_ui_bags.png",
+			trigger = {
+				type = "craft",
+				item = "unified_inventory:bag_large",
+				target = 4
+			}
+		})
+	end
 end
 
 if minetest.get_modpath("fire") then
@@ -683,6 +684,17 @@ if minetest.get_modpath("default") then
 			target = 40
 		}
 	})
+
+	awards.register_achievement("award_apples", {
+		title = S("Yummy!"),
+		description = S("Eat 80 apples."),
+		icon = "default_apple.png",
+		trigger = {
+			type = "eat",
+			item = "default:apple",
+			target = 80
+		}
+	})
 end
 
 if minetest.get_modpath("vessels") then
@@ -739,6 +751,17 @@ if minetest.get_modpath("farming") then
 			type = "dig",
 			node = "farming:wheat_8",
 			target = 625
+		}
+	})
+
+	awards.register_achievement("award_bread", {
+		title = S("Baker"),
+		description = S("Eat 10 loaves of bread."),
+		icon = "farming_bread.png",
+		trigger = {
+			type = "eat",
+			item = "farming:bread",
+			target = 10
 		}
 	})
 
@@ -828,3 +851,86 @@ if minetest.get_modpath("dye") then
 		}
 	})
 end
+
+if minetest.get_modpath("flowers") then
+	awards.register_achievement("awards_brown_mushroom1", {
+		title = S("Tasty Mushrooms"),
+		description = S("Eat 3 brown mushrooms."),
+		icon = "flowers_mushroom_brown.png^awards_level1.png",
+		trigger = {
+			type = "eat",
+			item= "flowers:mushroom_brown",
+			target = 3,
+		}
+	})
+	awards.register_achievement("awards_brown_mushroom2", {
+		title = S("Mushroom Lover"),
+		description = S("Eat 33 brown mushrooms."),
+		icon = "flowers_mushroom_brown.png^awards_level2.png",
+		trigger = {
+			type = "eat",
+			item= "flowers:mushroom_brown",
+			target = 33,
+		}
+	})
+	awards.register_achievement("awards_brown_mushroom3", {
+		title = S("Underground Mushroom Farmer"),
+		description = S("Eat 333 brown mushrooms."),
+		icon = "flowers_mushroom_brown.png^awards_level3.png",
+		trigger = {
+			type = "eat",
+			item= "flowers:mushroom_brown",
+			target = 333,
+		}
+	})
+end
+
+-- This ensures the following code is executed after all items have been registered
+minetest.after(0, function()
+	-- Check whether there is at least one node which can be built by the player
+	local building_is_possible = false
+	for _, def in pairs(minetest.registered_nodes) do
+		if (def.description and def.pointable ~= false and not def.groups.not_in_creative_inventory) then
+			building_is_possible = true
+			break
+		end
+	end
+
+	-- The following awards require at least one node which can be built
+	if not building_is_possible then
+		return
+	end
+
+	awards.register_achievement("awards_builder1", {
+		title = S("Builder"),
+		icon = "awards_house.png^awards_level1.png",
+		trigger = {
+			type = "place",
+			target = 1000,
+		},
+	})
+	awards.register_achievement("awards_builder2", {
+		title = S("Constructor"),
+		icon = "awards_house.png^awards_level2.png",
+		trigger = {
+			type = "place",
+			target = 5000,
+		},
+	})
+	awards.register_achievement("awards_builder3", {
+		title = S("Architect"),
+		icon = "awards_house.png^awards_level3.png",
+		trigger = {
+			type = "place",
+			target = 10000,
+		},
+	})
+	awards.register_achievement("awards_builder4", {
+		title = S("Master Architect"),
+		icon = "awards_house.png^awards_level4.png",
+		trigger = {
+			type = "place",
+			target = 25000,
+		},
+	})
+end)

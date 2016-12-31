@@ -175,6 +175,28 @@ Join the game %d times. = Treten Sie dem Spiel %d mal bei.
 Show details of an achievement = Details einer Auszeichnung anzeigen
 OK = OK
 Error: No awards available. = Fehler: Keine Auszeichnungen vorhanden.
+Eat: %d×%s = Essen Sie: %d×%s
+Eat: %s = Essen Sie: %s
+%d/%d eaten = %d/%d gegessen
+Yummy! = Lecker!
+Baker = Bäcker
+Eat 10 loaves of bread. = Essen Sie 10 Brote.
+Eat 80 apples. = Essen Sie 80 Äpfel.
+Tasty Mushrooms = Leckere Pilze
+Mushroom Lover = Pilzfreund
+Underground Mushroom Farmer = Unterirdischer Pilzbauer
+Eat 3 brown mushrooms. = Essen Sie 3 braune Pilze.
+Eat 33 brown mushrooms. = Essen Sie 33 braune Pilze.
+Eat 333 brown mushrooms. = Essen Sie 333 braune Pilze.
+Builder = Bauarbeiter
+Constructor = Konstrukteur
+Architect = Architekt
+Master Architect = Meisterarchitekt
+Place %d block(s). = Platzieren Sie %d Blöcke.
+Dig %d block(s). = Bauen Sie %d Blöcke ab.
+Eat %d item(s). = Essen Sie %d Dinge.
+Craft %d item(s). = Fertigen Sie %d Gegenstände.
+
 
 #### nodes.lua ####
 Awards Board = 
