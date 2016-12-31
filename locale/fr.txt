@@ -177,6 +177,23 @@ You’re a copper = Faites Jouer les Cuivres
 [c|clear|disable|enable] = [c|clear|disable|enable]
 OK = OK
 Error: No awards available. = Erreur : Aucun trophé disponible
+Eat: %d×%s = Mange: %d×%s
+Eat: %s = Mange: %s
+%d/%d eaten = %d/%d mangés
+Place %d block(s). = Place %d bloc(s).
+Dig %d block(s). = Creuse %d bloc(s).
+Eat %d item(s). = Mange %d objet(s).
+Craft %d item(s). = Craft %d objets(s).
+Yummy! = Miam !
+Baker = Boulanger
+Eat 10 loaves of bread. = Mange 10 miches de pain.
+Eat 80 apples. = Mange 80 pommes.
+Tasty Mushrooms = Champignons Délicieux
+Mushroom Lover = Champignons Adorés
+Underground Mushroom Farmer = Champignons Cultivés en Cave
+Eat 3 brown mushrooms. = Mange 3 champignons marrons.
+Eat 33 brown mushrooms. = Mange 33 champignons marrons.
+Eat 333 brown mushrooms. = Mange 333 champignons marrons.
 
 #### nodes.lua ####
 Awards Board = Tableau des Trophés
