@@ -115,6 +115,22 @@ function awards.get_item_count(data, field, itemname)
 	end
 end
 
+function awards.get_total_item_count(data, field)
+	local i = 0
+	if data and field then
+		awards.assertPlayer(data)
+		awards.tbv(data, field)
+		for mod,_ in pairs(data[field]) do
+			awards.tbv(data[field], mod)
+			for item,_ in pairs(data[field][mod]) do
+				awards.tbv(data[field][mod], item, 0)
+				i = i + data[field][mod][item]
+			end
+		end
+	end
+	return i
+end
+
 function awards.register_on_unlock(func)
 	table.insert(awards.on_unlock, func)
 end
@@ -464,9 +480,13 @@ function awards.show_to(name, to, sid, text)
 		if sid == nil or sid < 1 then
 			sid = 1
 		end
+		local deco = ""
+		if minetest.global_exists("default") then
+			deco = default.gui_bg .. default.gui_bg_img
+		end
 		-- Show formspec to user
 		minetest.show_formspec(to,"awards:awards",
-			"size[11,5]" .. default.gui_bg .. default.gui_bg_img ..
+			"size[11,5]" .. deco ..
 			awards.getFormspec(name, to, sid))
 	end
 end
