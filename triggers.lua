@@ -14,12 +14,7 @@
 -- 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 --
 
-local S
-if minetest.get_modpath("intllib") then
-	S = intllib.Getter()
-else
-	S = function ( s ) return s end
-end
+local S, NS = awards.gettext, awards.ngettext
 
 awards.register_trigger("dig", function(def)
 	local tmp = {
@@ -37,22 +32,20 @@ awards.register_trigger("dig", function(def)
 		end
 		return {
 			perc = itemcount / tmp.target,
-			label = string.format(S("%d/%d dug"), itemcount, tmp.target)
+			label = S("@1/@2 dug", itemcount, tmp.target),
 		}
 	end
 	def.getDefaultDescription = function(self)
+		local n = self.trigger.target
 		if self.trigger.node then
 			local nname = minetest.registered_nodes[self.trigger.node].description
 			if nname == nil then
 				nname = self.trigger.node
 			end
-			if self.trigger.target ~= 1 then
-				return string.format(S("Mine blocks: %d×%s"), self.trigger.target, nname)
-			else
-				return string.format(S("Mine a block: %s"), nname)
-			end
+			-- Translators: @1 is count, @2 is description.
+			return NS("Mine: @2", "Mine: @1×@2", n, n, nname)
 		else
-			return string.format(S("Mine %d block(s)."), self.trigger.target)
+			return NS("Mine @1 block.", "Mine @1 blocks.", n, n)
 		end
 	end
 end)
@@ -73,22 +66,20 @@ awards.register_trigger("place", function(def)
 		end
 		return {
 			perc = itemcount / tmp.target,
-			label = string.format(S("%d/%d placed"), itemcount, tmp.target)
+			label = S("@1/@2 placed", itemcount, tmp.target),
 		}
 	end
 	def.getDefaultDescription = function(self)
+		local n = self.trigger.target
 		if self.trigger.node then
 			local nname = minetest.registered_nodes[self.trigger.node].description
 			if nname == nil then
 				nname = self.trigger.node
 			end
-			if self.trigger.target ~= 1 then
-				return string.format(S("Place blocks: %d×%s"), self.trigger.target, nname)
-			else
-				return string.format(S("Place a block: %s"), nname)
-			end
+			-- Translators: @1 is count, @2 is description.
+			return NS("Place: @2", "Place: @1×@2", n, n, nname)
 		else
-			return string.format(S("Place %d block(s)."), self.trigger.target)
+			return NS("Place a block.", "Place @1 blocks.", n, n)
 		end
 	end
 end)
@@ -109,22 +100,20 @@ awards.register_trigger("eat", function(def)
 		end
 		return {
 			perc = itemcount / tmp.target,
-			label = string.format(S("%d/%d eaten"), itemcount, tmp.target)
+			label = S("@1/@2 eaten", itemcount, tmp.target),
 		}
 	end
 	def.getDefaultDescription = function(self)
+		local n = self.trigger.target
 		if self.trigger.item then
 			local iname = minetest.registered_items[self.trigger.item].description
 			if iname == nil then
 				iname = self.trigger.iode
 			end
-			if self.trigger.target ~= 1 then
-				return string.format(S("Eat: %d×%s"), self.trigger.target, iname)
-			else
-				return string.format(S("Eat: %s"), iname)
-			end
+			-- Translators: @1 is count, @2 is description.
+			return NS("Eat: @2", "Eat: @1×@2", n, n, iname)
 		else
-			return string.format(S("Eat %d item(s)."), self.trigger.target)
+			return NS("Eat an item.", "Eat @1 items.", n, n)
 		end
 	end
 end)
@@ -139,15 +128,12 @@ awards.register_trigger("death", function(def)
 		local itemcount = data.deaths or 0
 		return {
 			perc = itemcount / tmp.target,
-			label = string.format(S("%d/%d deaths"), itemcount, tmp.target)
+			label = S("@1/@2 deaths", itemcount, tmp.target),
 		}
 	end
 	def.getDefaultDescription = function(self)
-		if self.trigger.target ~= 1 then
-			return string.format(S("Die %d times."), self.trigger.target)
-		else
-			return S("Die.")
-		end
+		local n = self.trigger.target
+		return NS("Die.", "Die @1 times.", n, n)
 	end
 end)
 
@@ -161,15 +147,12 @@ awards.register_trigger("chat", function(def)
 		local itemcount = data.chats or 0
 		return {
 			perc = itemcount / tmp.target,
-			label = string.format(S("%d/%d chat messages"), itemcount, tmp.target)
+			label = S("@1/@2 chat messages", itemcount, tmp.target),
 		}
 	end
 	def.getDefaultDescription = function(self)
-		if self.trigger.target ~= 1 then
-			return string.format(S("Write %d chat messages."), self.trigger.target)
-		else
-			return S("Write something in chat.")
-		end
+		local n = self.trigger.target
+		return NS("Write something in chat.", "Write @1 chat messages.", n, n)
 	end
 end)
 
@@ -183,15 +166,12 @@ awards.register_trigger("join", function(def)
 		local itemcount = data.joins or 0
 		return {
 			perc = itemcount / tmp.target,
-			label = string.format(S("%d/%d game joins"), itemcount, tmp.target)
+			label = S("@1/@2 game joins", itemcount, tmp.target),
 		}
 	end
 	def.getDefaultDescription = function(self)
-		if self.trigger.target ~= 1 then
-			return string.format(S("Join the game %d times."), self.trigger.target)
-		else
-			return S("Join the game.")
-		end
+		local n = self.trigger.target
+		return NS("Join the game.", "Join the game @1 times.", n, n)
 	end
 end)
 
@@ -211,22 +191,20 @@ awards.register_trigger("craft", function(def)
 		end
 		return {
 			perc = itemcount / tmp.target,
-			label = string.format(S("%d/%d crafted"), itemcount, tmp.target)
+			label = S("@1/@2 crafted", itemcount, tmp.target),
 		}
 	end
 	def.getDefaultDescription = function(self)
+		local n = self.trigger.target
 		if self.trigger.item then
 			local iname = minetest.registered_items[self.trigger.item].description
 			if iname == nil then
 				iname = self.trigger.item
 			end
-			if self.trigger.target ~= 1 then
-				return string.format(S("Craft: %d×%s"), self.trigger.target, iname)
-			else
-				return string.format(S("Craft: %s"), iname)
-			end
+			-- Translators: @1 is count, @2 is description.
+			return NS("Craft: @2", "Craft: @1×@2", n, n, iname)
 		else
-			return string.format(S("Craft %d item(s)."), self.trigger.target)
+			return NS("Craft an item.", "Craft @1 items.", n)
 		end
 	end
 end)

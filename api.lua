@@ -14,10 +14,8 @@
 -- 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 --
 
--- The global award namespace
-awards = {
-	show_mode = "hud"
-}
+local S = awards.gettext
+
 dofile(minetest.get_modpath("awards").."/api_helpers.lua")
 
 -- Table Save Load Functions
@@ -27,11 +25,6 @@ function awards.save()
 		file:write(minetest.serialize(awards.players))
 		file:close()
 	end
-end
-
-local S = function(s) return s end
-function awards.set_intllib(locale)
-	S = locale
 end
 
 function awards.init()
