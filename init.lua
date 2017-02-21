@@ -14,20 +14,21 @@
 -- 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 --
 
+-- The global award namespace
+awards = {
+	show_mode = "hud"
+}
 
-local S
-if minetest.get_modpath("intllib") then
-	S = intllib.Getter()
-else
-	S = function ( s ) return s end
-end
+-- Internationalization support.
+local S, NS = dofile(minetest.get_modpath("awards").."/intllib.lua")
+
+awards.gettext, awards.ngettext = S, NS
 
 dofile(minetest.get_modpath("awards").."/api.lua")
 dofile(minetest.get_modpath("awards").."/chat_commands.lua")
 dofile(minetest.get_modpath("awards").."/sfinv.lua")
 dofile(minetest.get_modpath("awards").."/unified_inventory.lua")
 dofile(minetest.get_modpath("awards").."/triggers.lua")
-awards.set_intllib(S)
 
 -- Saint-Maclou
 if minetest.get_modpath("moreblocks") then
@@ -712,7 +713,7 @@ end
 
 if minetest.get_modpath("farming") then
 	awards.register_achievement("awards_farmer", {
-		title = S("Farming Skills Aquired"),
+		title = S("Farming Skills Acquired"),
 		description = S("Harvest a fully grown wheat plant."),
 		icon = "farming_wheat_8.png^awards_level1.png",
 		trigger = {
