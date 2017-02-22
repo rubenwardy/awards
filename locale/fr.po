@@ -53,7 +53,7 @@ msgstr "OK"
 
 #: api.lua
 msgid "(Secret Award)"
-msgstr "(trophée Secret)"
+msgstr "(Trophée Secret)"
 
 #: api.lua
 msgid "Unlock this award to find out what it is."
@@ -66,8 +66,7 @@ msgstr "%s (obtenu)"
 
 #: api.lua
 msgid "You've disabled awards. Type /awards enable to reenable."
-msgstr ""
-"Vous avez désactivé les trophées. Tapez '/awards enable' pour les réactiver."
+msgstr "Vous avez désactivé les trophées. Tapez '/awards enable' pour les réactiver."
 
 #: api.lua
 msgid "You have not unlocked any awards."
@@ -99,11 +98,10 @@ msgstr[0] "Mine : @2"
 msgstr[1] "Mine : @1×@2"
 
 #: triggers.lua
-#, fuzzy
 msgid "Mine @1 block."
 msgid_plural "Mine @1 blocks."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Creuse @1 bloc."
+msgstr[1] "Creuse @1 blocs."
 
 #: triggers.lua
 msgid "@1/@2 placed"
@@ -134,11 +132,10 @@ msgstr[0] "Mange : @2"
 msgstr[1] "Mange : @1×@2"
 
 #: triggers.lua
-#, fuzzy
 msgid "Eat an item."
 msgid_plural "Eat @1 items."
-msgstr[0] "Mange un chose."
-msgstr[1] "Mange @1 choses."
+msgstr[0] "Mange quelque chose."
+msgstr[1] "Mange @1 aliments."
 
 #: triggers.lua
 msgid "@1/@2 deaths"
@@ -157,8 +154,8 @@ msgstr "@1/@2 messages du chat"
 #: triggers.lua
 msgid "Write something in chat."
 msgid_plural "Write @1 chat messages."
-msgstr[0] "Écrit quelquechose dans le chat."
-msgstr[1] "Écrit @1 message dans le chat."
+msgstr[0] "Écrit quelque chose dans le chat."
+msgstr[1] "Écrit @1 messages dans le chat."
 
 #: triggers.lua
 msgid "@1/@2 game joins"
@@ -193,7 +190,7 @@ msgstr "Saint-Maclou"
 
 #: init.lua
 msgid "Place 20 coal checkers."
-msgstr "Place 20 pions de charbon."
+msgstr "Place 20 damiers de charbon."
 
 #: init.lua
 msgid "Castorama"
@@ -201,7 +198,7 @@ msgstr "Castorama"
 
 #: init.lua
 msgid "Place 20 iron checkers."
-msgstr "Place 20 pions de fer."
+msgstr "Place 20 damiers de fer."
 
 #: init.lua
 msgid "Sam the Trapper"
@@ -240,7 +237,6 @@ msgid "Light It Up"
 msgstr "Eclairé·e"
 
 #: init.lua
-#, fuzzy
 msgid "Place 100 torches."
 msgstr "Place 100 torches."
 
@@ -249,7 +245,6 @@ msgid "Well Lit"
 msgstr "Bien Éclairé"
 
 #: init.lua
-#, fuzzy
 msgid "Place 1,000 torches."
 msgstr "Place 1000 torches."
 
@@ -287,12 +282,11 @@ msgstr "Confectionne 3200 briques de pierre."
 
 #: init.lua
 msgid "Desert Dweller"
-msgstr "Habitant·e du Désert."
+msgstr "Habitant·e du Désert"
 
 #: init.lua
-#, fuzzy
 msgid "Craft 400 desert stone bricks."
-msgstr "Confectionne 400 briques de pierre."
+msgstr "Confectionne 400 briques de pierre du désert."
 
 #: init.lua
 msgid "Pharaoh"
@@ -336,10 +330,9 @@ msgstr "Mine n'importe quel bloc à proximité de la lave."
 
 #: init.lua
 msgid "On The Way"
-msgstr "Faîtes Place"
+msgstr "Sur La Voie"
 
 #: init.lua
-#, fuzzy
 msgid "Place 100 rails."
 msgstr "Place 100 rails."
 
@@ -389,7 +382,7 @@ msgstr "Personne de la Jungle"
 
 #: init.lua
 msgid "Dig 1,000 jungle tree blocks."
-msgstr "Creuse 1000 blocs d'arbres de jungle."
+msgstr "Creuse 1000 blocs d'arbre de jungle."
 
 #: init.lua
 msgid "First Mese Find"
@@ -401,7 +394,7 @@ msgstr "Mine ton premier minerai de mese."
 
 #: init.lua
 msgid "Mese Mastery"
-msgstr "Maitrise de Mese"
+msgstr "Maîtrise de Mese"
 
 #: init.lua
 msgid "Mine a mese block."
@@ -441,14 +434,13 @@ msgstr "Creuse 1000 blocs de pierre."
 
 #: init.lua
 msgid "Master Miner"
-msgstr "Maitre·sse Mineu·r·se"
+msgstr "Maître·sse Mineu·r·se"
 
 #: init.lua
 msgid "Dig 10,000 stone blocks."
 msgstr "Creuse 10000 blocs de pierre."
 
 #: init.lua
-#, fuzzy
 msgid "Marchand De Sable"
 msgstr "Marchand·e De Sable"
 
@@ -482,7 +474,7 @@ msgstr "Ramasse de l'herbe."
 
 #: init.lua
 msgid "Savannah Discoverer"
-msgstr "Explorat·eur·trice de la Savanne"
+msgstr "Explorat·eur·rice de la Savanne"
 
 #: init.lua
 msgid "Mine some dry grass."
@@ -530,7 +522,7 @@ msgstr "Mine ton premier minerai d'or."
 
 #: init.lua
 msgid "Gold Rush"
-msgstr "Ruée vers l'or"
+msgstr "Ruée vers l'Or"
 
 #: init.lua
 msgid "Mine 45 gold ores."
@@ -547,7 +539,7 @@ msgstr "Mine ton premier diamant."
 #: init.lua
 #, fuzzy
 msgid "Girl's Best Friend"
-msgstr ""
+msgstr "Girl's Best Friend"
 
 #: init.lua
 msgid "Mine 18 diamond ores."
@@ -614,9 +606,8 @@ msgid "Build a Cave"
 msgstr "Construis une grotte"
 
 #: init.lua
-#, fuzzy
 msgid "Place 100 stone."
-msgstr "Place 100 stone."
+msgstr "Place 100 pierres."
 
 #: init.lua
 msgid "Long Ladder"
@@ -631,7 +622,6 @@ msgid "Industrial Age"
 msgstr "Âge Industriel"
 
 #: init.lua
-#, fuzzy
 msgid "Place 40 steel ladders."
 msgstr "Place 40 échelles métalliques."
 
@@ -757,7 +747,7 @@ msgstr "Mange 3 champignons marrons."
 
 #: init.lua
 msgid "Mushroom Lover"
-msgstr "Adorat·eur·trice de Champignons"
+msgstr "Adorat·eur·rice de Champignons"
 
 #: init.lua
 msgid "Eat 33 brown mushrooms."
@@ -772,24 +762,20 @@ msgid "Eat 333 brown mushrooms."
 msgstr "Mange 333 champignons marrons."
 
 #: init.lua
-#, fuzzy
 msgid "Builder"
-msgstr ""
+msgstr "Bâtisseu·r·se"
 
 #: init.lua
-#, fuzzy
 msgid "Constructor"
-msgstr ""
+msgstr "Construct·eur·rice"
 
 #: init.lua
-#, fuzzy
 msgid "Architect"
-msgstr ""
+msgstr "Architecte"
 
 #: init.lua
-#, fuzzy
 msgid "Master Architect"
-msgstr ""
+msgstr "Maître·sse Architecte"
 
 #: chat_commands.lua
 msgid "[c|clear|disable|enable]"
@@ -800,11 +786,8 @@ msgid "Show, clear, disable or enable your achievements"
 msgstr "Affiche, réinitialise, désactive ou active vos réussites."
 
 #: chat_commands.lua
-msgid ""
-"All your awards and statistics have been cleared. You can now start again."
-msgstr ""
-"Tous vos trophées et statistiques ont été réinitialisés. Vous pouvez "
-"recommencer à nouveau."
+msgid "All your awards and statistics have been cleared. You can now start again."
+msgstr "Tous vos trophées et statistiques ont été réinitialisés. Vous pouvez recommencer à nouveau."
 
 #: chat_commands.lua
 msgid "You have disabled your achievements."
@@ -832,5 +815,4 @@ msgstr "<nom>"
 
 #: chat_commands.lua
 msgid "Get the achievements statistics for the given player or yourself"
-msgstr ""
-"Obtenez les statistiques des réussites d'un joueur donné ou de vous-même"
+msgstr "Obtenez les statistiques des réussites d'un joueur donné ou de vous-même"
