@@ -1,6 +1,7 @@
 # Awards
 
-by Andrew "Rubenwardy" Ward, LGPL 2.1 or later.
+by [rubenwardy](https://rubenwardy.com), with lots of awesome contributions
+from Wuzzy, kaeza, MrIbby, and Traxie21.
 
 This mod adds achievements to Minetest.
 
