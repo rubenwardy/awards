@@ -95,7 +95,7 @@ if minetest.get_modpath("fire") then
 			target = 8
 		}
 	})
-	if minetest.setting_getbool("disable_fire") ~= true then
+	if minetest.settings:get_bool("disable_fire") ~= true then
 		awards.register_achievement("awards_firefighter", {
 			title = S("Firefighter"),
 			description = S("Put out 1000 fires."),
