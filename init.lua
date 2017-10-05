@@ -256,7 +256,7 @@ if minetest.get_modpath("default") then
 	awards.register_achievement("award_on_the_way", {
 		title = S("On The Way"),
 		description = S("Place 100 rails."),
-		icon = "default_rail.png",
+		icon = "carts_rail_straight.png",
 		trigger = {
 			type = "place",
 			node = "default:rail",
