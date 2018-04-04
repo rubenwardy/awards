@@ -34,6 +34,7 @@ function awards.assertPlayer(playern)
 end
 
 function awards.player(name)
+	awards.assertPlayer(name)
 	return awards.players[name]
 end
 

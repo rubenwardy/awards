@@ -14,9 +14,11 @@
 -- 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 --
 
-local S = awards.gettext
+local S, NS = awards.gettext, awards.ngettext
 
-dofile(minetest.get_modpath("awards").."/api_helpers.lua")
+awards.def = {}
+awards.on = {}
+awards.on_unlock = {}
 
 -- Table Save Load Functions
 function awards.save()
@@ -27,63 +29,59 @@ function awards.save()
 	end
 end
 
-function awards.init()
-	awards.players = awards.load()
-	awards.def = {}
-	awards.trigger_types = {}
-	awards.on = {}
-	awards.on_unlock = {}
-end
-
 function awards.load()
 	local file = io.open(minetest.get_worldpath().."/awards.txt", "r")
 	if file then
 		local table = minetest.deserialize(file:read("*all"))
 		if type(table) == "table" then
-			return table
+			awards.players = table
 		end
 	end
-	return {}
+	awards.players = {}
 end
+--
+-- local function make_on_reg_wrapper()
+-- 	return function(def)
+-- 		local tmp = {
+-- 			award  = def.name,
+-- 			key    = def.trigger.node,
+-- 			target = def.trigger.target,
+-- 		}
+-- 		table.insert(awards.on.dig, tmp)
+--
+-- 		function def:getProgress(data)
+-- 			local itemcount
+-- 			if tmp.key then
+-- 				itemcount = data["dig"][tmp.key] or 0
+-- 			else
+-- 				itemcount = awards.get_total_keyed_count(data, "dig")
+-- 			end
+-- 			return {
+-- 				perc = itemcount / tmp.target,
+-- 				label = S("@1/@2 dug", itemcount, tmp.target),
+-- 			}
+-- 		end
+--
+-- 		function def:getDefaultDescription()
+-- 			local n = self.trigger.target
+-- 			if self.trigger.node then
+-- 				local nname = minetest.registered_nodes[self.trigger.node].description
+-- 				if nname == nil then
+-- 					nname = self.trigger.node
+-- 				end
+-- 				-- Translators: @1 is count, @2 is description.
+-- 				return NS("Mine: @2", "Mine: @1×@2", n, n, nname)
+-- 			else
+-- 				return NS("Mine @1 block.", "Mine @1 blocks.", n, n)
+-- 			end
+-- 		end
+-- 	end
+-- end
 
-function awards.register_trigger(name, tfunc)
-	awards.trigger_types[name] = tfunc
-	awards.on[name] = {}
-	awards['register_on_'..name] = function(func)
-		table.insert(awards.on[name], func)
-	end
-end
-
--- Registers a trigger which replies on counting
-function awards.register_trigger_counted(tname, tfunc)
-	awards.register_trigger(tname, tfunc)
-
-	local key = tname .. "s"
-
-	awards["notify_" .. tname] = function(player)
-		assert(player and player.is_player and player:is_player())
-		local name = player:get_player_name()
-
-		awards.assertPlayer(name)
-		local data = awards.players[name]
-
-		-- Increment counter
-		data[key] = data[key] + 1
-		local currentVal = data[key]
-
-		awards.run_trigger_callbacks(player, data, tname, function(entry)
-			if entry.target and entry.award and currentVal and
-					currentVal >= entry.target then
-				return entry.award
-			end
-		end)
-	end
-end
-
-function awards.run_trigger_callbacks(player, data, trigger, table_func)
-	for i = 1, #awards.on[trigger] do
+local function run_trigger_callbacks(self, player, data, table_func)
+	for i = 1, #self.on do
 		local res = nil
-		local entry = awards.on[trigger][i]
+		local entry = self.on[i]
 		if type(entry) == "function" then
 			res = entry(player, data)
 		elseif type(entry) == "table" and entry.award then
@@ -96,42 +94,89 @@ function awards.run_trigger_callbacks(player, data, trigger, table_func)
 	end
 end
 
+function awards.register_trigger(tname, tdef)
+	if type(tdef) == "function" then
+		tdef = {
+			on_register = tdef
+		}
+	end
+	tdef.name = tname
+	tdef.run_callbacks = run_trigger_callbacks
+
+	if tdef.type == "counted" then
+		local datakey = tname .. "s"
+		local old_reg = tdef.on_register
+
+		function tdef:on_register(def)
+			local tmp = {
+				award  = def.name,
+				target = def.trigger.target,
+			}
+			tdef.register(tmp)
+
+			function def.getProgress(_, data)
+				local done = data[datakey] or 0
+				return {
+					perc = done / tmp.target,
+					label = S(tdef.progress, done, tmp.target),
+				}
+			end
+
+			function def.getDefaultDescription(_)
+				local n = self.trigger.target
+				return NS(tdef.auto_description[1], tdef.auto_description[2], n, n)
+			end
+
+			if old_reg then
+				return old_reg(tdef, def)
+			end
+		end
+
+		function tdef.notify(player)
+			assert(player and player.is_player and player:is_player())
+			local name = player:get_player_name()
+			local data = awards.player(name)
+			print(dump(data))
+
+			-- Increment counter
+			local currentVal = data[datakey] + 1
+			data[datakey] = currentVal
+
+			tdef:run_callbacks(player, data, function(entry)
+				if entry.target and entry.award and currentVal and
+						currentVal >= entry.target then
+					return entry.award
+				end
+			end)
+		end
+
+		awards["notify_" .. tname] = tdef.notify
+	end
+
+	awards.registered_triggers[tname] = tdef
+
+	tdef.on = {}
+	tdef.register = function(func)
+		table.insert(tdef.on, func)
+	end
+
+	-- Backwards compat
+	awards.on[tname] = tdef.on
+	awards['register_on_' .. tname] = tdef.register
+end
+
 function awards.increment_item_counter(data, field, itemname, count)
-	local name_split = string.split(itemname, ":")
-	if #name_split ~= 2 then
-		return false
-	end
-	local mod = name_split[1]
-	local item = name_split[2]
-
-	if data and field and mod and item then
-		awards.assertPlayer(data)
-		awards.tbv(data, field)
-		awards.tbv(data[field], mod)
-		awards.tbv(data[field][mod], item, 0)
-
-		data[field][mod][item] = data[field][mod][item] + (count or 1)
-		return true
-	else
-		return false
-	end
+	itemname = minetest.registered_aliases[itemname] or itemname
+	data[field][itemname] = (data[field][itemname] or 0) + 1
 end
 
 function awards.get_item_count(data, field, itemname)
-	local name_split = string.split(itemname, ":")
-	if #name_split ~= 2 then
-		return false
-	end
-	local mod = name_split[1]
-	local item = name_split[2]
+	itemname = minetest.registered_aliases[itemname] or itemname
+	return data[field][itemname] or 0
+end
 
-	if data and field and mod and item then
-		awards.assertPlayer(data)
-		awards.tbv(data, field)
-		awards.tbv(data[field], mod)
-		awards.tbv(data[field][mod], item, 0)
-		return data[field][mod][item]
-	end
+function awards.get_total_keyed_count(data, field)
+	return data[field].__total or 0
 end
 
 function awards.get_total_item_count(data, field)
@@ -154,23 +199,14 @@ function awards.register_on_unlock(func)
 	table.insert(awards.on_unlock, func)
 end
 
--- API Functions
-function awards._additional_triggers(name, def)
-	-- Depreciated!
-end
-
 function awards.register_achievement(name, def)
 	def.name = name
 
 	-- Add Triggers
 	if def.trigger and def.trigger.type then
-		local func = awards.trigger_types[def.trigger.type]
-
-		if func then
-			func(def)
-		else
-			awards._additional_triggers(name, def)
-		end
+		local tdef = awards.registered_triggers[def.trigger.type]
+		assert(tdef, "Trigger not found: " .. def.trigger.type)
+		tdef:on_register(def)
 	end
 
 	-- Add Award
@@ -515,7 +551,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	return true
 end)
 
-awards.init()
+awards.load()
 
 minetest.register_on_newplayer(function(player)
 	local playern = player:get_player_name()
