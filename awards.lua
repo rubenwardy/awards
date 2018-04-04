@@ -214,9 +214,9 @@ if minetest.get_modpath("default") then
 		icon = "default_lava.png",
 	})
 	awards.register_on_dig(function(player,data)
-		local pos = player:getpos()
-		if pos and (minetest.find_node_near(pos, 1, "default:lava_source") ~= nil or
-		minetest.find_node_near(pos, 1, "default:lava_flowing") ~= nil) then
+		local pos = player:get_pos()
+		if pos and (minetest.find_node_near(pos, 1, "default:lava_source") or
+				minetest.find_node_near(pos, 1, "default:lava_flowing")) then
 			return "award_lavaminer"
 		end
 		return nil

@@ -162,7 +162,7 @@ function awards.register_trigger(tname, tdef)
 			end
 
 			function def.getDefaultDescription(_)
-				local n = self.trigger.target
+				local n = def.trigger.target
 				return NS(tdef.auto_description[1], tdef.auto_description[2], n, n)
 			end
 
@@ -216,7 +216,7 @@ function awards.register_trigger(tname, tdef)
 			end
 
 			function def.getDefaultDescription(_)
-				local n = self.trigger.target
+				local n = def.trigger.target
 				if tmp.key then
 					local nname = tmp.key
 					return NS(tdef.auto_description[1],
