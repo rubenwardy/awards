@@ -174,6 +174,7 @@ function awards.register_trigger(tname, tdef)
 	-- Backwards compat
 	awards.on[tname] = tdef.on
 	awards['register_on_' .. tname] = tdef.register
+	return tdef
 end
 
 function awards.increment_item_counter(data, field, itemname, count)
