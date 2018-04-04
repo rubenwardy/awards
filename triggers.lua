@@ -21,6 +21,7 @@ awards.register_trigger("death", {
 })
 minetest.register_on_dieplayer(awards.notify_death)
 
+
 awards.register_trigger("chat", {
 	type = "counted",
 	progress = "@1/@2 chat messages",
@@ -34,6 +35,7 @@ minetest.register_on_chat_message(function(name, message)
 
 	awards.notify_chat(player)
 end)
+
 
 awards.register_trigger("join", {
 	type = "counted",
@@ -52,116 +54,72 @@ awards.register_trigger("dig", {
 		return minetest.registered_aliases[def.trigger.node] or def.trigger.node
 	end
 })
-
-minetest.register_on_dignode(function(pos, oldnode, player)
-	if not player or not pos or not oldnode then
+minetest.register_on_dignode(function(pos, node, player)
+	if not player or not pos or not node then
 		return
 	end
 
-	local node_name = oldnode.name
+	local node_name = node.name
 	node_name = minetest.registered_aliases[node_name] or node_name
 	awards.notify_dig(player, node_name)
 end)
---
--- awards.register_trigger("place", {
--- 	type = "counted_key",
--- 	progress = "@1/@2 placed",
--- 	auto_description = { "Place: @2", "Place: @1×@2" },
--- 	auto_description_total = { "Place @1 block.", "Place @1 blocks." },
--- 	get_key = function(self, def)
--- 		return minetest.registered_aliases[def.trigger.node] or def.trigger.node
--- 	end
--- })
---
--- awards.register_trigger("craft", {
--- 	type = "counted_key",
--- 	progress = "@1/@2 crafted",
--- 	auto_description = { "Craft: @2", "Craft: @1×@2" },
--- 	auto_description_total = { "Craft @1 item", "Craft @1 items." },
--- 	get_key = function(self, def)
--- 		return minetest.registered_aliases[def.trigger.item] or def.trigger.item
--- 	end
--- })
 
--- Trigger Handles
---
--- minetest.register_on_placenode(function(pos, node, digger)
--- 	if not digger or not pos or not node or not digger:get_player_name() or digger:get_player_name()=="" then
--- 		return
--- 	end
--- 	local data = awards.players[digger:get_player_name()]
--- 	if not awards.increment_item_counter(data, "place", node.name) then
--- 		return
--- 	end
---
--- 	awards.run_trigger_callbacks(digger, data, "place", function(entry)
--- 		if entry.target then
--- 			if entry.node then
--- 				local tnodedug = string.split(entry.node, ":")
--- 				local tmod = tnodedug[1]
--- 				local titem = tnodedug[2]
--- 				if not (not tmod or not titem or not data.place[tmod] or
--- 							not data.place[tmod][titem]) and
--- 						data.place[tmod][titem] > entry.target-1 then
--- 					return entry.award
--- 				end
--- 			elseif awards.get_total_item_count(data, "place") > entry.target-1 then
--- 				return entry.award
--- 			end
--- 		end
--- 	end)
--- end)
---
--- minetest.register_on_item_eat(function(hp_change, replace_with_item, itemstack, user, pointed_thing)
--- 	if not user or not itemstack or not user:get_player_name() or user:get_player_name()=="" then
--- 		return
--- 	end
--- 	local data = awards.players[user:get_player_name()]
--- 	if not awards.increment_item_counter(data, "eat", itemstack:get_name()) then
--- 		return
--- 	end
--- 	awards.run_trigger_callbacks(user, data, "eat", function(entry)
--- 		if entry.target then
--- 			if entry.item then
--- 				local titemstring = string.split(entry.item, ":")
--- 				local tmod = titemstring[1]
--- 				local titem = titemstring[2]
--- 				if not (not tmod or not titem or not data.eat[tmod] or
--- 							not data.eat[tmod][titem]) and
--- 						data.eat[tmod][titem] > entry.target-1 then
--- 					return entry.award
--- 				end
--- 			elseif awards.get_total_item_count(data, "eat") > entry.target-1 then
--- 				return entry.award
--- 			end
--- 		end
--- 	end)
--- end)
---
--- minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
--- 	if not player or not itemstack then
--- 		return
--- 	end
---
--- 	local data = awards.players[player:get_player_name()]
--- 	if not awards.increment_item_counter(data, "craft", itemstack:get_name(), itemstack:get_count()) then
--- 		return
--- 	end
---
--- 	awards.run_trigger_callbacks(player, data, "craft", function(entry)
--- 		if entry.target then
--- 			if entry.item then
--- 				local titemcrafted = string.split(entry.item, ":")
--- 				local tmod = titemcrafted[1]
--- 				local titem = titemcrafted[2]
--- 				if not (not tmod or not titem or not data.craft[tmod] or
--- 							not data.craft[tmod][titem]) and
--- 						data.craft[tmod][titem] > entry.target-1 then
--- 					return entry.award
--- 				end
--- 			elseif awards.get_total_item_count(data, "craft") > entry.target-1 then
--- 				return entry.award
--- 			end
--- 		end
--- 	end)
--- end)
+
+awards.register_trigger("place", {
+	type = "counted_key",
+	progress = "@1/@2 placed",
+	auto_description = { "Place: @2", "Place: @1×@2" },
+	auto_description_total = { "Place @1 block.", "Place @1 blocks." },
+	get_key = function(self, def)
+		return minetest.registered_aliases[def.trigger.node] or def.trigger.node
+	end
+})
+minetest.register_on_placenode(function(pos, node, player)
+	if not player or not pos or not node then
+		return
+	end
+
+	local node_name = node.name
+	node_name = minetest.registered_aliases[node_name] or node_name
+	awards.notify_place(player, node_name)
+end)
+
+
+awards.register_trigger("craft", {
+	type = "counted_key",
+	progress = "@1/@2 crafted",
+	auto_description = { "Craft: @2", "Craft: @1×@2" },
+	auto_description_total = { "Craft @1 item", "Craft @1 items." },
+	get_key = function(self, def)
+		return minetest.registered_aliases[def.trigger.item] or def.trigger.item
+	end
+})
+minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
+	if not player or itemstack:empty() then
+		return
+	end
+
+	local itemname = itemstack:get_name()
+	itemname = minetest.registered_aliases[itemname] or itemname
+	awards.notify_craft(player, itemname, itemstack:get_count())
+end)
+
+
+awards.register_trigger("eat", {
+	type = "counted_key",
+	progress = "@1/@2 eaten",
+	auto_description = { "Eat @2", "Eat @1×@2" },
+	auto_description_total = { "Eat @1 item", "Eat @1 items." },
+	get_key = function(self, def)
+		return minetest.registered_aliases[def.trigger.item] or def.trigger.item
+	end
+})
+minetest.register_on_item_eat(function(_, _, itemstack, player, _)
+	if not player or itemstack:empty() then
+		return
+	end
+
+	local itemname = itemstack:get_name()
+	itemname = minetest.registered_aliases[itemname] or itemname
+	awards.notify_craft(player, itemname, itemstack:get_count())
+end)
