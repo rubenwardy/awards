@@ -20,24 +20,76 @@ awards.registered_awards = {}
 awards.on = {}
 awards.on_unlock = {}
 
+local storage = minetest.get_mod_storage()
+
 -- Table Save Load Functions
 function awards.save()
-	local file = io.open(minetest.get_worldpath().."/awards.txt", "w")
-	if file then
-		file:write(minetest.serialize(awards.players))
-		file:close()
+	storage:set_string("player_data", minetest.write_json(awards.players))
+end
+
+local function convert_data()
+	minetest.log("warning", "Importing awards data from previous version")
+
+	for name, data in pairs(awards.players) do
+		while name.name do
+			name = name.name
+		end
+		data.name = name
+		print("Converting data for " .. name)
+
+		-- Just rename counted
+		local counted = {
+			chats  = "chat",
+			deaths = "death",
+			joins  = "join",
+		}
+		for from, to in pairs(counted) do
+			data[to]   = data[from]
+			data[from] = nil
+		end
+
+		-- Convert item db to new format
+		local counted_items = {
+			count = "dig",
+			place = "place",
+			craft = "craft",
+		}
+		for from, to in pairs(counted_items) do
+			local ret = {}
+
+			local count = 0
+			for modname, items in pairs(data[from]) do
+				for itemname, value in pairs(items) do
+					itemname = modname .. ":" .. itemname
+					local key = minetest.registered_aliases[itemname] or itemname
+					ret[key] = value
+					count = count + value
+				end
+			end
+
+			ret.__total = count
+			data[from] = nil
+			data[to] = ret
+		end
 	end
 end
 
 function awards.load()
-	local file = io.open(minetest.get_worldpath().."/awards.txt", "r")
+	local old_save_path = minetest.get_worldpath().."/awards.txt"
+	local file = io.open(old_save_path, "r")
 	if file then
 		local table = minetest.deserialize(file:read("*all"))
 		if type(table) == "table" then
 			awards.players = table
+			convert_data()
+		else
+			awards.players = {}
 		end
+		file:close()
+		os.rename(old_save_path, minetest.get_worldpath().."/awards.bk.txt")
+	else
+		awards.players = minetest.parse_json(storage:get_string("player_data")) or {}
 	end
-	awards.players = {}
 end
 
 function awards.player(name)
