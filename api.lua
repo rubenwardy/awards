@@ -241,14 +241,6 @@ function awards.unlock(name, award)
 		-- Explicit check for nil because sound could be `false` to disable it
 		sound = {name="awards_got_generic", gain=0.25}
 	end
-	local custom_announce = awdef.custom_announce
-	if not custom_announce then
-		if awdef.secret then
-			custom_announce = S("Secret Achievement Unlocked:")
-		else
-			custom_announce = S("Achievement Unlocked:")
-		end
-	end
 
 	-- Do Notification
 	if sound then
@@ -260,14 +252,7 @@ function awards.unlock(name, award)
 		end
 	end
 
-	if awards.show_mode == "formspec" then
-		-- use a formspec to send it
-		minetest.show_formspec(name, "achievements:unlocked", "size[6,2]"..
-				"image_button_exit[0,0;6,2;"..background..";close1; ]"..
-				"image_button_exit[0.2,0.8;1,1;"..icon..";close2; ]"..
-				"label[1.1,1;"..title.."]"..
-				"label[0.3,0.1;"..custom_announce.."]")
-	elseif awards.show_mode == "chat" then
+	if awards.show_mode == "chat" then
 		local chat_announce
 		if awdef.secret == true then
 			chat_announce = S("Secret Achievement Unlocked: %s")
