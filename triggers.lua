@@ -14,13 +14,6 @@
 -- 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 --
 
-awards.register_trigger("death", {
-	type = "counted",
-	progress = "@1/@2 deaths",
-	auto_description = { "Die once", "Die @1 times" },
-})
-minetest.register_on_dieplayer(awards.notify_death)
-
 
 awards.register_trigger("chat", {
 	type = "counted",
@@ -43,6 +36,25 @@ awards.register_trigger("join", {
 	auto_description = { "Join once", "Join @1 times" },
 })
 minetest.register_on_joinplayer(awards.notify_join)
+
+
+awards.register_trigger("death", {
+	type = "counted_key",
+	progress = "@1/@2 deaths",
+	auto_description = { "Die once of @2", "Die @1 times of @2" },
+	auto_description_total = { "Die @1 times.", "Mine @1 times" },
+	get_key = function(self, def)
+		return def.trigger.reason
+	end,
+})
+minetest.register_on_dieplayer(function(player, reason)
+	if reason then
+		reason = reason.type
+	else
+		reason = "unknown"
+	end
+	awards.notify_death(player, reason)
+end)
 
 
 awards.register_trigger("dig", {

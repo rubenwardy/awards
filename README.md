@@ -97,6 +97,8 @@ Callbacks (register a function to be run)
 * craft type: Craft something.
 	* item: the crafted item type. If nil, all crafted items are counted
 * death type: Die.
+	* reason: the death reason, one of the types in PlayerHPChangeReason (see lua_api.txt)
+				or nil for total deaths.
 * chat type: Write a chat message.
 * join type: Join the server.
 * (for all types) target - how many times to dig/place/craft/etc.

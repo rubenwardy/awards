@@ -48,6 +48,11 @@ local function convert_data()
 			data[from] = nil
 		end
 
+		data.death = {
+			unknown = data.death,
+			__total = data.death,
+		}
+
 		-- Convert item db to new format
 		local counted_items = {
 			count = "dig",
