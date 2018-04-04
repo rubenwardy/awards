@@ -39,6 +39,19 @@ function awards.load()
 	end
 	awards.players = {}
 end
+
+function awards.player(name)
+	local data = awards.players[name] or {}
+	awards.players[name] = data
+	data.name = data.name or name
+	data.unlocked = data.unlocked or {}
+	return data
+end
+
+function awards.player_or_nil(name)
+	return awards.players[name]
+end
+
 --
 -- local function make_on_reg_wrapper()
 -- 	return function(def)

@@ -22,7 +22,8 @@ awards = {
 
 -- Internationalization support.
 awards.gettext, awards.ngettext = dofile(minetest.get_modpath("awards").."/intllib.lua")
-dofile(minetest.get_modpath("awards").."/api_helpers.lua")
+
+-- Load files
 dofile(minetest.get_modpath("awards").."/api.lua")
 dofile(minetest.get_modpath("awards").."/chat_commands.lua")
 dofile(minetest.get_modpath("awards").."/gui.lua")
