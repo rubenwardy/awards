@@ -40,6 +40,7 @@ awards.register_onDeath = awards.register_on_death
 awards.register_onChat  = awards.register_on_chat
 awards.register_onJoin  = awards.register_on_join
 awards.register_onCraft = awards.register_on_craft
+awards.def              = awards.registered_awards
 
 awards.register_achievement("award_saint_maclou",{
 	title = "Saint-Maclou",

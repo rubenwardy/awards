@@ -6,13 +6,13 @@ local function order_awards(name)
 	local player = awards.player(name)
 	if player and player.unlocked then
 		for _,got in pairs(player.unlocked) do
-			if awards.def[got] then
+			if awards.registered_awards[got] then
 				done[got] = true
 				table.insert(retval,{name=got,got=true})
 			end
 		end
 	end
-	for _,def in pairs(awards.def) do
+	for _,def in pairs(awards.registered_awards) do
 		if not done[def.name] then
 			table.insert(retval,{name=def.name,got=false})
 		end
@@ -34,7 +34,7 @@ function awards.get_formspec(name, to, sid)
 	-- Sidebar
 	if sid then
 		local item = listofawards[sid+0]
-		local def = awards.def[item.name]
+		local def = awards.registered_awards[item.name]
 
 		if def and def.secret and not item.got then
 			formspec = formspec .. "label[1,2.75;"..minetest.formspec_escape(S("(Secret Award)")).."]"..
@@ -87,7 +87,7 @@ function awards.get_formspec(name, to, sid)
 	formspec = formspec .. "textlist[4.75,0;6,5;awards;"
 	local first = true
 	for _,award in pairs(listofawards) do
-		local def = awards.def[award.name]
+		local def = awards.registered_awards[award.name]
 		if def then
 			if not first then
 				formspec = formspec .. ","
@@ -134,7 +134,7 @@ function awards.show_to(name, to, sid, text)
 		minetest.chat_send_player(to, string.format(S("%s’s awards:"), name))
 
 		for _, str in pairs(data.unlocked) do
-			local def = awards.def[str]
+			local def = awards.registered_awards[str]
 			if def then
 				if def.title then
 					if def.description then

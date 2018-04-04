@@ -16,7 +16,7 @@
 
 local S, NS = awards.gettext, awards.ngettext
 
-awards.def = {}
+awards.registered_awards = {}
 awards.on = {}
 awards.on_unlock = {}
 
@@ -205,9 +205,9 @@ function awards.register_achievement(name, def)
 	end
 
 	-- Add Award
-	awards.def[name] = def
+	awards.registered_awards[name] = def
 
-	local tdef = awards.def[name]
+	local tdef = awards.registered_awards[name]
 	if def.description == nil and tdef.getDefaultDescription then
 		def.description = tdef:getDefaultDescription()
 	end
@@ -241,7 +241,7 @@ end
 function awards.unlock(name, award)
 	-- Access Player Data
 	local data  = awards.player(name)
-	local awdef = awards.def[award]
+	local awdef = awards.registered_awards[award]
 	assert(awdef, "Unable to unlock an award which doesn't exist!")
 
 	if data.disabled or
