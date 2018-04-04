@@ -278,10 +278,10 @@ function awards.unlock(name, award)
 	-- Do Notification
 	if sound then
 		-- Enforce sound delay to prevent sound spamming
-		local lastsound = awards.player(name).lastsound
+		local lastsound = data.lastsound
 		if lastsound == nil or os.difftime(os.time(), lastsound) >= 1 then
 			minetest.sound_play(sound, {to_player=name})
-			awards.player(name).lastsound = os.time()
+			data.lastsound = os.time()
 		end
 	end
 
@@ -459,7 +459,8 @@ function awards.show_to(name, to, sid, text)
 	if name == "" or name == nil then
 		name = to
 	end
-	if name == to and awards.player(to).disabled then
+	local data = awards.player(to)
+	if name == to and data.disabled then
 		minetest.chat_send_player(S("You've disabled awards. Type /awards enable to reenable."))
 		return
 	end
@@ -468,13 +469,13 @@ function awards.show_to(name, to, sid, text)
 		if #listofawards == 0 then
 			minetest.chat_send_player(to, S("Error: No awards available."))
 			return
-		elseif not awards.player(name) or not awards.player(name).unlocked  then
+		elseif not data or not data.unlocked  then
 			minetest.chat_send_player(to, S("You have not unlocked any awards."))
 			return
 		end
 		minetest.chat_send_player(to, string.format(S("%s’s awards:"), name))
 
-		for _, str in pairs(awards.player(name).unlocked) do
+		for _, str in pairs(data.unlocked) do
 			local def = awards.def[str]
 			if def then
 				if def.title then
