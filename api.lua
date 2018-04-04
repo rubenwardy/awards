@@ -74,8 +74,6 @@ function awards.register_trigger(tname, tdef)
 
 	tdef.name = tname
 	tdef.run_callbacks = run_trigger_callbacks
-	local datakey = tname .. "s"
-	tdef.data_key = datakey
 
 	if tdef.type == "counted" then
 		local old_reg = tdef.on_register
@@ -88,7 +86,7 @@ function awards.register_trigger(tname, tdef)
 			tdef.register(tmp)
 
 			function def.getProgress(_, data)
-				local done = data[datakey] or 0
+				local done = data[tname] or 0
 				return {
 					perc = done / tmp.target,
 					label = S(tdef.progress, done, tmp.target),
@@ -112,8 +110,8 @@ function awards.register_trigger(tname, tdef)
 			print(dump(data))
 
 			-- Increment counter
-			local currentVal = (data[datakey] or 0) + 1
-			data[datakey] = currentVal
+			local currentVal = (data[tname] or 0) + 1
+			data[tname] = currentVal
 
 			tdef:run_callbacks(player, data, function(entry)
 				if entry.target and entry.award and currentVal and
@@ -137,11 +135,11 @@ function awards.register_trigger(tname, tdef)
 
 			function def.getProgress(_, data)
 				local done
-				data[datakey] = data[datakey] or {}
+				data[tname] = data[tname] or {}
 				if tmp.key then
-					done = data[datakey][tmp.key] or 0
+					done = data[tname][tmp.key] or 0
 				else
-					done = data[datakey].__total or 0
+					done = data[tname].__total or 0
 				end
 				return {
 					perc = done / tmp.target,
@@ -175,17 +173,17 @@ function awards.register_trigger(tname, tdef)
 			print(dump(data))
 
 			-- Increment counter
-			data[datakey] = data[datakey] or {}
-			local currentVal = (data[datakey][key] or 0) + n
-			data[datakey][key] = currentVal
-			data[datakey].__total = (data[datakey].__total or 0) + n
+			data[tname] = data[tname] or {}
+			local currentVal = (data[tname][key] or 0) + n
+			data[tname][key] = currentVal
+			data[tname].__total = (data[tname].__total or 0) + n
 
 			tdef:run_callbacks(player, data, function(entry)
 				local current
 				if entry.key == key then
 					current = currentVal
 				elseif entry.key == nil then
-					current = data[datakey].__total
+					current = data[tname].__total
 				else
 					return
 				end
