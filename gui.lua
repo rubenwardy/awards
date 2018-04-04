@@ -1,3 +1,5 @@
+-- Copyright (c) 2013-18 rubenwardy. MIT.
+
 local S = awards.gettext
 
 local function order_awards(name)

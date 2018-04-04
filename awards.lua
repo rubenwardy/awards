@@ -1,3 +1,5 @@
+-- Copyright (c) 2013-18 rubenwardy and Wuzzy. MIT.
+
 local S = awards.gettext
 
 -- Saint-Maclou

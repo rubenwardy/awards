@@ -2,8 +2,8 @@
 
 Adds achievements to Minetest (plus a very good API).
 
-by [rubenwardy](https://rubenwardy.com),
-with thanks to Wuzzy, kaeza, and MrIbby.
+by [rubenwardy](https://rubenwardy.com), licensed under MIT.
+With thanks to Wuzzy, kaeza, and MrIbby.
 
 Majority of awards are back ported from Calinou's old fork in Carbone, under same license.
 
