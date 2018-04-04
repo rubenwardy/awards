@@ -95,11 +95,9 @@ local function run_trigger_callbacks(self, player, data, table_func)
 end
 
 function awards.register_trigger(tname, tdef)
-	if type(tdef) == "function" then
-		tdef = {
-			on_register = tdef
-		}
-	end
+	assert(type(tdef) == "table",
+			"Passing a callback to register_trigger is not supported in 3.0")
+
 	tdef.name = tname
 	tdef.run_callbacks = run_trigger_callbacks
 
@@ -139,7 +137,7 @@ function awards.register_trigger(tname, tdef)
 			print(dump(data))
 
 			-- Increment counter
-			local currentVal = data[datakey] + 1
+			local currentVal = (data[datakey] or 0) + 1
 			data[datakey] = currentVal
 
 			tdef:run_callbacks(player, data, function(entry)
@@ -177,22 +175,6 @@ end
 
 function awards.get_total_keyed_count(data, field)
 	return data[field].__total or 0
-end
-
-function awards.get_total_item_count(data, field)
-	local i = 0
-	if data and field then
-		awards.assertPlayer(data)
-		awards.tbv(data, field)
-		for mod,_ in pairs(data[field]) do
-			awards.tbv(data[field], mod)
-			for item,_ in pairs(data[field][mod]) do
-				awards.tbv(data[field][mod], item, 0)
-				i = i + data[field][mod][item]
-			end
-		end
-	end
-	return i
 end
 
 function awards.register_on_unlock(func)
@@ -245,23 +227,12 @@ end
 -- award - the name of the award to give
 function awards.unlock(name, award)
 	-- Access Player Data
-	local data  = awards.players[name]
+	local data  = awards.player(name)
 	local awdef = awards.def[award]
+	assert(awdef, "Unable to unlock an award which doesn't exist!")
 
-	-- Perform checks
-	if not data then
-		return
-	end
-	if not awdef then
-		return
-	end
-	if data.disabled then
-		return
-	end
-	awards.tbv(data,"unlocked")
-
-	-- Don't give the achievement if it has already been given
-	if data.unlocked[award] and data.unlocked[award] == award then
+	if data.disabled or
+			(data.unlocked[award] and data.unlocked[award] == award) then
 		return
 	end
 
@@ -307,10 +278,10 @@ function awards.unlock(name, award)
 	-- Do Notification
 	if sound then
 		-- Enforce sound delay to prevent sound spamming
-		local lastsound = awards.players[name].lastsound
+		local lastsound = awards.player(name).lastsound
 		if lastsound == nil or os.difftime(os.time(), lastsound) >= 1 then
 			minetest.sound_play(sound, {to_player=name})
-			awards.players[name].lastsound = os.time()
+			awards.player(name).lastsound = os.time()
 		end
 	end
 
@@ -395,7 +366,7 @@ awards.give_achievement = awards.unlock
 function awards.getFormspec(name, to, sid)
 	local formspec = ""
 	local listofawards = awards._order_awards(name)
-	local playerdata = awards.players[name]
+	local playerdata = awards.player(name)
 
 	if #listofawards == 0 then
 		formspec = formspec .. "label[3.9,1.5;"..minetest.formspec_escape(S("Error: No awards available.")).."]"
@@ -497,13 +468,13 @@ function awards.show_to(name, to, sid, text)
 		if #listofawards == 0 then
 			minetest.chat_send_player(to, S("Error: No awards available."))
 			return
-		elseif not awards.players[name] or not awards.players[name].unlocked  then
+		elseif not awards.player(name) or not awards.player(name).unlocked  then
 			minetest.chat_send_player(to, S("You have not unlocked any awards."))
 			return
 		end
 		minetest.chat_send_player(to, string.format(S("%s’s awards:"), name))
 
-		for _, str in pairs(awards.players[name].unlocked) do
+		for _, str in pairs(awards.player(name).unlocked) do
 			local def = awards.def[str]
 			if def then
 				if def.title then
@@ -552,11 +523,6 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 end)
 
 awards.load()
-
-minetest.register_on_newplayer(function(player)
-	local playern = player:get_player_name()
-	awards.assertPlayer(playern)
-end)
 
 minetest.register_on_shutdown(function()
 	awards.save()
