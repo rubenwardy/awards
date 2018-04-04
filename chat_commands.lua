@@ -42,7 +42,7 @@ minetest.register_chatcommand("awd", {
 	params = S("<achievement ID>"),
 	description = S("Show details of an achievement"),
 	func = function(name, param)
-		local def = awards.def[param]
+		local def = awards.registered_awards[param]
 		if def then
 			minetest.chat_send_player(name, string.format(S("%s: %s"), def.title, def.description))
 		else

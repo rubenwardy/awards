@@ -14,50 +14,114 @@
 -- 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 --
 
-local S = awards.gettext
+local S, NS = awards.gettext, awards.ngettext
 
-dofile(minetest.get_modpath("awards").."/api_helpers.lua")
+awards.registered_awards = {}
+awards.on = {}
+awards.on_unlock = {}
+
+local storage = minetest.get_mod_storage()
 
 -- Table Save Load Functions
 function awards.save()
-	local file = io.open(minetest.get_worldpath().."/awards.txt", "w")
-	if file then
-		file:write(minetest.serialize(awards.players))
-		file:close()
-	end
+	storage:set_string("player_data", minetest.write_json(awards.players))
 end
 
-function awards.init()
-	awards.players = awards.load()
-	awards.def = {}
-	awards.trigger_types = {}
-	awards.on = {}
-	awards.on_unlock = {}
+local function convert_data()
+	minetest.log("warning", "Importing awards data from previous version")
+
+	local old_players = awards.players
+	awards.players = {}
+	for name, data in pairs(old_players) do
+		while name.name do
+			name = name.name
+		end
+		data.name = name
+		print("Converting data for " .. name)
+
+		-- Just rename counted
+		local counted = {
+			chats  = "chat",
+			deaths = "death",
+			joins  = "join",
+		}
+		for from, to in pairs(counted) do
+			data[to]   = data[from]
+			data[from] = nil
+		end
+
+		data.death = {
+			unknown = data.death,
+			__total = data.death,
+		}
+
+		-- Convert item db to new format
+		local counted_items = {
+			count = "dig",
+			place = "place",
+			craft = "craft",
+		}
+		for from, to in pairs(counted_items) do
+			local ret = {}
+
+			local count = 0
+			for modname, items in pairs(data[from]) do
+				for itemname, value in pairs(items) do
+					itemname = modname .. ":" .. itemname
+					local key = minetest.registered_aliases[itemname] or itemname
+					ret[key] = value
+					count = count + value
+				end
+			end
+
+			ret.__total = count
+			data[from] = nil
+			data[to] = ret
+		end
+
+		awards.players[name] = data
+	end
+
+	print(dump(awards.players))
 end
 
 function awards.load()
-	local file = io.open(minetest.get_worldpath().."/awards.txt", "r")
+	local old_save_path = minetest.get_worldpath().."/awards.txt"
+	local file = io.open(old_save_path, "r")
 	if file then
 		local table = minetest.deserialize(file:read("*all"))
 		if type(table) == "table" then
-			return table
+			awards.players = table
+			convert_data()
+		else
+			awards.players = {}
 		end
-	end
-	return {}
-end
-
-function awards.register_trigger(name, tfunc)
-	awards.trigger_types[name] = tfunc
-	awards.on[name] = {}
-	awards['register_on_'..name] = function(func)
-		table.insert(awards.on[name], func)
+		file:close()
+		os.rename(old_save_path, minetest.get_worldpath().."/awards.bk.txt")
+		awards.save()
+	else
+		awards.players = minetest.parse_json(storage:get_string("player_data")) or {}
 	end
 end
 
-function awards.run_trigger_callbacks(player, data, trigger, table_func)
-	for i = 1, #awards.on[trigger] do
+function awards.player(name)
+	local data = awards.players[name] or {}
+	awards.players[name] = data
+	data.name = data.name or name
+	data.unlocked = data.unlocked or {}
+	return data
+end
+
+function awards.player_or_nil(name)
+	return awards.players[name]
+end
+
+local default_def = {}
+
+function default_def:run_callbacks(player, data, table_func)
+	for i = 1, #self.on do
 		local res = nil
-		local entry = awards.on[trigger][i]
+		local entry = self.on[i]
 		if type(entry) == "function" then
 			res = entry(player, data)
 		elseif type(entry) == "table" and entry.award then
@@ -70,67 +134,169 @@ function awards.run_trigger_callbacks(player, data, trigger, table_func)
 	end
 end
 
+function awards.register_trigger(tname, tdef)
+	assert(type(tdef) == "table",
+			"Passing a callback to register_trigger is not supported in 3.0")
+
+	tdef.name = tname
+	for key, value in pairs(default_def) do
+		tdef[key] = value
+	end
+
+	if tdef.type == "counted" then
+		local old_reg = tdef.on_register
+
+		function tdef:on_register(def)
+			local tmp = {
+				award  = def.name,
+				target = def.trigger.target,
+			}
+			tdef.register(tmp)
+
+			function def.getProgress(_, data)
+				local done = data[tname] or 0
+				return {
+					perc = done / tmp.target,
+					label = S(tdef.progress, done, tmp.target),
+				}
+			end
+
+			function def.getDefaultDescription(_)
+				local n = def.trigger.target
+				return NS(tdef.auto_description[1], tdef.auto_description[2], n, n)
+			end
+
+			if old_reg then
+				return old_reg(tdef, def)
+			end
+		end
+
+		function tdef.notify(player)
+			assert(player and player.is_player and player:is_player())
+			local name = player:get_player_name()
+			local data = awards.player(name)
+			print(dump(data))
+
+			-- Increment counter
+			local currentVal = (data[tname] or 0) + 1
+			data[tname] = currentVal
+
+			tdef:run_callbacks(player, data, function(entry)
+				if entry.target and entry.award and currentVal and
+						currentVal >= entry.target then
+					return entry.award
+				end
+			end)
+		end
+
+		awards["notify_" .. tname] = tdef.notify
+
+	elseif tdef.type == "counted_key" then
+		local old_reg = tdef.on_register
+		function tdef:on_register(def)
+			local tmp = {
+				award  = def.name,
+				key    = tdef:get_key(def),
+				target = def.trigger.target,
+			}
+			tdef.register(tmp)
+
+			function def.getProgress(_, data)
+				local done
+				data[tname] = data[tname] or {}
+				if tmp.key then
+					done = data[tname][tmp.key] or 0
+				else
+					done = data[tname].__total or 0
+				end
+				return {
+					perc = done / tmp.target,
+					label = S(tdef.progress, done, tmp.target),
+				}
+			end
+
+			function def.getDefaultDescription(_)
+				local n = def.trigger.target
+				if tmp.key then
+					local nname = tmp.key
+					return NS(tdef.auto_description[1],
+							tdef.auto_description[2], n, n, nname)
+				else
+					return NS(tdef.auto_description_total[1],
+							tdef.auto_description_total[2], n, n)
+				end
+			end
+
+			if old_reg then
+				return old_reg(tdef, def)
+			end
+		end
+
+		function tdef.notify(player, key, n)
+			n = n or 1
+
+			assert(player and player.is_player and player:is_player() and key)
+			local name = player:get_player_name()
+			local data = awards.player(name)
+			print(dump(data))
+
+			-- Increment counter
+			data[tname] = data[tname] or {}
+			local currentVal = (data[tname][key] or 0) + n
+			data[tname][key] = currentVal
+			data[tname].__total = (data[tname].__total or 0) + n
+
+			tdef:run_callbacks(player, data, function(entry)
+				local current
+				if entry.key == key then
+					current = currentVal
+				elseif entry.key == nil then
+					current = data[tname].__total
+				else
+					return
+				end
+
+				if current > entry.target then
+					return entry.award
+				end
+			end)
+		end
+
+		awards["notify_" .. tname] = tdef.notify
+
+	elseif tdef.type and tdef.type ~= "custom" then
+		error("Unrecognised trigger type " .. tdef.type)
+	end
+
+	awards.registered_triggers[tname] = tdef
+
+	tdef.on = {}
+	tdef.register = function(func)
+		table.insert(tdef.on, func)
+	end
+
+	-- Backwards compat
+	awards.on[tname] = tdef.on
+	awards['register_on_' .. tname] = tdef.register
+	return tdef
+end
+
 function awards.increment_item_counter(data, field, itemname, count)
-	local name_split = string.split(itemname, ":")
-	if #name_split ~= 2 then
-		return false
-	end
-	local mod = name_split[1]
-	local item = name_split[2]
-
-	if data and field and mod and item then
-		awards.assertPlayer(data)
-		awards.tbv(data, field)
-		awards.tbv(data[field], mod)
-		awards.tbv(data[field][mod], item, 0)
-
-		data[field][mod][item] = data[field][mod][item] + (count or 1)
-		return true
-	else
-		return false
-	end
+	itemname = minetest.registered_aliases[itemname] or itemname
+	data[field][itemname] = (data[field][itemname] or 0) + 1
 end
 
 function awards.get_item_count(data, field, itemname)
-	local name_split = string.split(itemname, ":")
-	if #name_split ~= 2 then
-		return false
-	end
-	local mod = name_split[1]
-	local item = name_split[2]
-
-	if data and field and mod and item then
-		awards.assertPlayer(data)
-		awards.tbv(data, field)
-		awards.tbv(data[field], mod)
-		awards.tbv(data[field][mod], item, 0)
-		return data[field][mod][item]
-	end
+	itemname = minetest.registered_aliases[itemname] or itemname
+	return data[field][itemname] or 0
 end
 
-function awards.get_total_item_count(data, field)
-	local i = 0
-	if data and field then
-		awards.assertPlayer(data)
-		awards.tbv(data, field)
-		for mod,_ in pairs(data[field]) do
-			awards.tbv(data[field], mod)
-			for item,_ in pairs(data[field][mod]) do
-				awards.tbv(data[field][mod], item, 0)
-				i = i + data[field][mod][item]
-			end
-		end
-	end
-	return i
+function awards.get_total_keyed_count(data, field)
+	return data[field].__total or 0
 end
 
 function awards.register_on_unlock(func)
 	table.insert(awards.on_unlock, func)
-end
-
--- API Functions
-function awards._additional_triggers(name, def)
-	-- Depreciated!
 end
 
 function awards.register_achievement(name, def)
@@ -138,19 +304,15 @@ function awards.register_achievement(name, def)
 
 	-- Add Triggers
 	if def.trigger and def.trigger.type then
-		local func = awards.trigger_types[def.trigger.type]
-
-		if func then
-			func(def)
-		else
-			awards._additional_triggers(name, def)
-		end
+		local tdef = awards.registered_triggers[def.trigger.type]
+		assert(tdef, "Trigger not found: " .. def.trigger.type)
+		tdef:on_register(def)
 	end
 
 	-- Add Award
-	awards.def[name] = def
+	awards.registered_awards[name] = def
 
-	local tdef = awards.def[name]
+	local tdef = awards.registered_awards[name]
 	if def.description == nil and tdef.getDefaultDescription then
 		def.description = tdef:getDefaultDescription()
 	end
@@ -183,23 +345,12 @@ end
 -- award - the name of the award to give
 function awards.unlock(name, award)
 	-- Access Player Data
-	local data  = awards.players[name]
-	local awdef = awards.def[award]
+	local data  = awards.player(name)
+	local awdef = awards.registered_awards[award]
+	assert(awdef, "Unable to unlock an award which doesn't exist!")
 
-	-- Perform checks
-	if not data then
-		return
-	end
-	if not awdef then
-		return
-	end
-	if data.disabled then
-		return
-	end
-	awards.tbv(data,"unlocked")
-
-	-- Don't give the achievement if it has already been given
-	if data.unlocked[award] and data.unlocked[award] == award then
+	if data.disabled or
+			(data.unlocked[award] and data.unlocked[award] == award) then
 		return
 	end
 
@@ -241,33 +392,18 @@ function awards.unlock(name, award)
 		-- Explicit check for nil because sound could be `false` to disable it
 		sound = {name="awards_got_generic", gain=0.25}
 	end
-	local custom_announce = awdef.custom_announce
-	if not custom_announce then
-		if awdef.secret then
-			custom_announce = S("Secret Achievement Unlocked:")
-		else
-			custom_announce = S("Achievement Unlocked:")
-		end
-	end
 
 	-- Do Notification
 	if sound then
 		-- Enforce sound delay to prevent sound spamming
-		local lastsound = awards.players[name].lastsound
+		local lastsound = data.lastsound
 		if lastsound == nil or os.difftime(os.time(), lastsound) >= 1 then
 			minetest.sound_play(sound, {to_player=name})
-			awards.players[name].lastsound = os.time()
+			data.lastsound = os.time()
 		end
 	end
 
-	if awards.show_mode == "formspec" then
-		-- use a formspec to send it
-		minetest.show_formspec(name, "achievements:unlocked", "size[6,2]"..
-				"image_button_exit[0,0;6,2;"..background..";close1; ]"..
-				"image_button_exit[0.2,0.8;1,1;"..icon..";close2; ]"..
-				"label[1.1,1;"..title.."]"..
-				"label[0.3,0.1;"..custom_announce.."]")
-	elseif awards.show_mode == "chat" then
+	if awards.show_mode == "chat" then
 		local chat_announce
 		if awdef.secret == true then
 			chat_announce = S("Secret Achievement Unlocked: %s")
@@ -334,158 +470,6 @@ function awards.unlock(name, award)
 	end
 end
 
--- Backwards compatibility
-awards.give_achievement = awards.unlock
-
---[[minetest.register_chatcommand("gawd", {
-	params = "award name",
-	description = "gawd: give award to self",
-	func = function(name, param)
-		awards.unlock(name,param)
-	end
-})]]--
-
-function awards.getFormspec(name, to, sid)
-	local formspec = ""
-	local listofawards = awards._order_awards(name)
-	local playerdata = awards.players[name]
-
-	if #listofawards == 0 then
-		formspec = formspec .. "label[3.9,1.5;"..minetest.formspec_escape(S("Error: No awards available.")).."]"
-		formspec = formspec .. "button_exit[4.2,2.3;3,1;close;"..minetest.formspec_escape(S("OK")).."]"
-		return formspec
-	end
-
-	-- Sidebar
-	if sid then
-		local item = listofawards[sid+0]
-		local def = awards.def[item.name]
-
-		if def and def.secret and not item.got then
-			formspec = formspec .. "label[1,2.75;"..minetest.formspec_escape(S("(Secret Award)")).."]"..
-								"image[1,0;3,3;awards_unknown.png]"
-			if def and def.description then
-				formspec = formspec	.. "textarea[0.25,3.25;4.8,1.7;;"..minetest.formspec_escape(S("Unlock this award to find out what it is."))..";]"
-			end
-		else
-			local title = item.name
-			if def and def.title then
-				title = def.title
-			end
-			local status = "%s"
-			if item.got then
-				status = S("%s (got)")
-			end
-
-      formspec = formspec .. "textarea[0.5,2.7;4.8,1.45;;" ..
-				string.format(status, minetest.formspec_escape(title)) ..
-				";]"
-
-			if def and def.icon then
-				formspec = formspec .. "image[1,0;3,3;" .. def.icon .. "]"
-			end
-			local barwidth = 4.6
-			local perc = nil
-			local label = nil
-			if def.getProgress and playerdata then
-				local res = def:getProgress(playerdata)
-				perc = res.perc
-				label = res.label
-			end
-			if perc then
-				if perc > 1 then
-					perc = 1
-				end
-				formspec = formspec .. "background[0,4.80;" .. barwidth ..",0.25;awards_progress_gray.png;false]"
-				formspec = formspec .. "background[0,4.80;" .. (barwidth * perc) ..",0.25;awards_progress_green.png;false]"
-				if label then
-					formspec = formspec .. "label[1.75,4.63;" .. minetest.formspec_escape(label) .. "]"
-				end
-			end
-			if def and def.description then
-				formspec = formspec	.. "textarea[0.25,3.75;4.8,1.7;;"..minetest.formspec_escape(def.description)..";]"
-			end
-		end
-	end
-
-	-- Create list box
-	formspec = formspec .. "textlist[4.75,0;6,5;awards;"
-	local first = true
-	for _,award in pairs(listofawards) do
-		local def = awards.def[award.name]
-		if def then
-			if not first then
-				formspec = formspec .. ","
-			end
-			first = false
-
-			if def.secret and not award.got then
-				formspec = formspec .. "#707070"..minetest.formspec_escape(S("(Secret Award)"))
-			else
-				local title = award.name
-				if def and def.title then
-					title = def.title
-				end
-				if award.got then
-					formspec = formspec .. minetest.formspec_escape(title)
-				else
-					formspec = formspec .. "#ACACAC".. minetest.formspec_escape(title)
-				end
-			end
-		end
-	end
-	return formspec .. ";"..sid.."]"
-end
-
-function awards.show_to(name, to, sid, text)
-	if name == "" or name == nil then
-		name = to
-	end
-	if name == to and awards.player(to).disabled then
-		minetest.chat_send_player(S("You've disabled awards. Type /awards enable to reenable."))
-		return
-	end
-	if text then
-		local listofawards = awards._order_awards(name)
-		if #listofawards == 0 then
-			minetest.chat_send_player(to, S("Error: No awards available."))
-			return
-		elseif not awards.players[name] or not awards.players[name].unlocked  then
-			minetest.chat_send_player(to, S("You have not unlocked any awards."))
-			return
-		end
-		minetest.chat_send_player(to, string.format(S("%s’s awards:"), name))
-
-		for _, str in pairs(awards.players[name].unlocked) do
-			local def = awards.def[str]
-			if def then
-				if def.title then
-					if def.description then
-						minetest.chat_send_player(to, string.format(S("%s: %s"), def.title, def.description))
-					else
-						minetest.chat_send_player(to, def.title)
-					end
-				else
-					minetest.chat_send_player(to, str)
-				end
-			end
-		end
-	else
-		if sid == nil or sid < 1 then
-			sid = 1
-		end
-		local deco = ""
-		if minetest.global_exists("default") then
-			deco = default.gui_bg .. default.gui_bg_img
-		end
-		-- Show formspec to user
-		minetest.show_formspec(to,"awards:awards",
-			"size[11,5]" .. deco ..
-			awards.getFormspec(name, to, sid))
-	end
-end
-awards.showto = awards.show_to
-
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if formname ~= "awards:awards" then
 		return false
@@ -504,12 +488,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	return true
 end)
 
-awards.init()
-
-minetest.register_on_newplayer(function(player)
-	local playern = player:get_player_name()
-	awards.assertPlayer(playern)
-end)
+awards.load()
 
 minetest.register_on_shutdown(function()
 	awards.save()
