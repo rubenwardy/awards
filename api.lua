@@ -52,7 +52,9 @@ function awards.player_or_nil(name)
 	return awards.players[name]
 end
 
-local function run_trigger_callbacks(self, player, data, table_func)
+local default_def = {}
+
+function default_def:run_callbacks(player, data, table_func)
 	for i = 1, #self.on do
 		local res = nil
 		local entry = self.on[i]
@@ -73,7 +75,9 @@ function awards.register_trigger(tname, tdef)
 			"Passing a callback to register_trigger is not supported in 3.0")
 
 	tdef.name = tname
-	tdef.run_callbacks = run_trigger_callbacks
+	for key, value in pairs(default_def) do
+		tdef[key] = value
+	end
 
 	if tdef.type == "counted" then
 		local old_reg = tdef.on_register
