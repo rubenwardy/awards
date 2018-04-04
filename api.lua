@@ -46,8 +46,8 @@ function awards.load()
 	return {}
 end
 
-function awards.register_trigger(name, func)
-	awards.trigger_types[name] = func
+function awards.register_trigger(name, tfunc)
+	awards.trigger_types[name] = tfunc
 	awards.on[name] = {}
 	awards['register_on_'..name] = function(func)
 		table.insert(awards.on[name], func)
@@ -380,7 +380,7 @@ function awards.getFormspec(name, to, sid)
       formspec = formspec .. "textarea[0.5,2.7;4.8,1.45;;" ..
 				string.format(status, minetest.formspec_escape(title)) ..
 				";]"
-			
+
 			if def and def.icon then
 				formspec = formspec .. "image[1,0;3,3;" .. def.icon .. "]"
 			end

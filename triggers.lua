@@ -233,9 +233,9 @@ minetest.register_on_dignode(function(pos, oldnode, digger)
 				local tnodedug = string.split(entry.node, ":")
 				local tmod = tnodedug[1]
 				local titem = tnodedug[2]
-				if not tmod or not titem or not data.count[tmod] or not data.count[tmod][titem] then
-					-- table running failed!
-				elseif data.count[tmod][titem] > entry.target-1 then
+				if not (not tmod or not titem or not data.count[tmod] or
+							not data.count[tmod][titem]) and
+						data.count[tmod][titem] > entry.target-1 then
 					return entry.award
 				end
 			elseif awards.get_total_item_count(data, "count") > entry.target-1 then
@@ -260,9 +260,9 @@ minetest.register_on_placenode(function(pos, node, digger)
 				local tnodedug = string.split(entry.node, ":")
 				local tmod = tnodedug[1]
 				local titem = tnodedug[2]
-				if not tmod or not titem or not data.place[tmod] or not data.place[tmod][titem] then
-					-- table running failed!
-				elseif data.place[tmod][titem] > entry.target-1 then
+				if not (not tmod or not titem or not data.place[tmod] or
+							not data.place[tmod][titem]) and
+						data.place[tmod][titem] > entry.target-1 then
 					return entry.award
 				end
 			elseif awards.get_total_item_count(data, "place") > entry.target-1 then
@@ -286,9 +286,9 @@ minetest.register_on_item_eat(function(hp_change, replace_with_item, itemstack, 
 				local titemstring = string.split(entry.item, ":")
 				local tmod = titemstring[1]
 				local titem = titemstring[2]
-				if not tmod or not titem or not data.eat[tmod] or not data.eat[tmod][titem] then
-					-- table running failed!
-				elseif data.eat[tmod][titem] > entry.target-1 then
+				if not (not tmod or not titem or not data.eat[tmod] or
+							not data.eat[tmod][titem]) and
+						data.eat[tmod][titem] > entry.target-1 then
 					return entry.award
 				end
 			elseif awards.get_total_item_count(data, "eat") > entry.target-1 then
@@ -314,9 +314,9 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 				local titemcrafted = string.split(entry.item, ":")
 				local tmod = titemcrafted[1]
 				local titem = titemcrafted[2]
-				if not tmod or not titem or not data.craft[tmod] or not data.craft[tmod][titem] then
-					-- table running failed!
-				elseif data.craft[tmod][titem] > entry.target-1 then
+				if not (not tmod or not titem or not data.craft[tmod] or
+							not data.craft[tmod][titem]) and
+						data.craft[tmod][titem] > entry.target-1 then
 					return entry.award
 				end
 			elseif awards.get_total_item_count(data, "craft") > entry.target-1 then
