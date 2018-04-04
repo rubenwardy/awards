@@ -39,10 +39,13 @@ function awards.get_formspec(name, to, sid)
 		local def = awards.registered_awards[item.name]
 
 		if def and def.secret and not item.got then
-			formspec = formspec .. "label[1,2.75;"..minetest.formspec_escape(S("(Secret Award)")).."]"..
-								"image[1,0;3,3;awards_unknown.png]"
+			formspec = formspec .. "label[1,2.75;"..
+					minetest.formspec_escape(S("(Secret Award)")).."]"..
+					"image[1,0;3,3;awards_unknown.png]"
 			if def and def.description then
-				formspec = formspec	.. "textarea[0.25,3.25;4.8,1.7;;"..minetest.formspec_escape(S("Unlock this award to find out what it is."))..";]"
+				formspec = formspec	.. "textarea[0.25,3.25;4.8,1.7;;"..
+						minetest.formspec_escape(
+								S("Unlock this award to find out what it is."))..";]"
 			end
 		else
 			local title = item.name

@@ -347,19 +347,6 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	-- Found a Nyan cat!
-	awards.register_achievement("award_nyanfind", {
-		secret = true,
-		title = S("A Cat in a Pop-Tart?!"),
-		description = S("Mine a nyan cat."),
-		icon = "nyancat_front.png",
-		trigger = {
-			type = "dig",
-			node = "default:nyancat",
-			target = 1
-		}
-	})
-
 	-- Mini Miner
 	awards.register_achievement("award_mine2", {
 		title = S("Mini Miner"),
@@ -907,3 +894,18 @@ minetest.after(0, function()
 		},
 	})
 end)
+
+if minetest.get_modpath("nyancat") then
+	-- Found a Nyan cat!
+	awards.register_achievement("award_nyanfind", {
+		secret = true,
+		title = S("A Cat in a Pop-Tart?!"),
+		description = S("Mine a nyan cat."),
+		icon = "nyancat_front.png",
+		trigger = {
+			type = "dig",
+			node = "nyancat:nyancat",
+			target = 1
+		}
+	})
+end
