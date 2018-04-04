@@ -52,45 +52,6 @@ function awards.player_or_nil(name)
 	return awards.players[name]
 end
 
---
--- local function make_on_reg_wrapper()
--- 	return function(def)
--- 		local tmp = {
--- 			award  = def.name,
--- 			key    = def.trigger.node,
--- 			target = def.trigger.target,
--- 		}
--- 		table.insert(awards.on.dig, tmp)
---
--- 		function def:getProgress(data)
--- 			local itemcount
--- 			if tmp.key then
--- 				itemcount = data["dig"][tmp.key] or 0
--- 			else
--- 				itemcount = awards.get_total_keyed_count(data, "dig")
--- 			end
--- 			return {
--- 				perc = itemcount / tmp.target,
--- 				label = S("@1/@2 dug", itemcount, tmp.target),
--- 			}
--- 		end
---
--- 		function def:getDefaultDescription()
--- 			local n = self.trigger.target
--- 			if self.trigger.node then
--- 				local nname = minetest.registered_nodes[self.trigger.node].description
--- 				if nname == nil then
--- 					nname = self.trigger.node
--- 				end
--- 				-- Translators: @1 is count, @2 is description.
--- 				return NS("Mine: @2", "Mine: @1×@2", n, n, nname)
--- 			else
--- 				return NS("Mine @1 block.", "Mine @1 blocks.", n, n)
--- 			end
--- 		end
--- 	end
--- end
-
 local function run_trigger_callbacks(self, player, data, table_func)
 	for i = 1, #self.on do
 		local res = nil
@@ -113,9 +74,10 @@ function awards.register_trigger(tname, tdef)
 
 	tdef.name = tname
 	tdef.run_callbacks = run_trigger_callbacks
+	local datakey = tname .. "s"
+	tdef.data_key = datakey
 
 	if tdef.type == "counted" then
-		local datakey = tname .. "s"
 		local old_reg = tdef.on_register
 
 		function tdef:on_register(def)
@@ -162,6 +124,82 @@ function awards.register_trigger(tname, tdef)
 		end
 
 		awards["notify_" .. tname] = tdef.notify
+
+	elseif tdef.type == "counted_key" then
+		local old_reg = tdef.on_register
+		function tdef:on_register(def)
+			local tmp = {
+				award  = def.name,
+				key    = tdef:get_key(def),
+				target = def.trigger.target,
+			}
+			tdef.register(tmp)
+
+			function def.getProgress(_, data)
+				local done
+				data[datakey] = data[datakey] or {}
+				if tmp.key then
+					done = data[datakey][tmp.key] or 0
+				else
+					done = data[datakey].__total or 0
+				end
+				return {
+					perc = done / tmp.target,
+					label = S(tdef.progress, done, tmp.target),
+				}
+			end
+
+			function def.getDefaultDescription(_)
+				local n = self.trigger.target
+				if tmp.key then
+					local nname = tmp.key
+					return NS(tdef.auto_description[1],
+							tdef.auto_description[2], n, n, nname)
+				else
+					return NS(tdef.auto_description_total[1],
+							tdef.auto_description_total[2], n, n)
+				end
+			end
+
+			if old_reg then
+				return old_reg(tdef, def)
+			end
+		end
+
+		function tdef.notify(player, key, n)
+			n = n or 1
+
+			assert(player and player.is_player and player:is_player() and key)
+			local name = player:get_player_name()
+			local data = awards.player(name)
+			print(dump(data))
+
+			-- Increment counter
+			data[datakey] = data[datakey] or {}
+			local currentVal = (data[datakey][key] or 0) + n
+			data[datakey][key] = currentVal
+			data[datakey].__total = (data[datakey].__total or 0) + n
+
+			tdef:run_callbacks(player, data, function(entry)
+				local current
+				if entry.key == key then
+					current = currentVal
+				elseif entry.key == nil then
+					current = data[datakey].__total
+				else
+					return
+				end
+
+				if current > entry.target then
+					return entry.award
+				end
+			end)
+		end
+
+		awards["notify_" .. tname] = tdef.notify
+
+	elseif tdef.type and tdef.type ~= "custom" then
+		error("Unrecognised trigger type " .. tdef.type)
 	end
 
 	awards.registered_triggers[tname] = tdef

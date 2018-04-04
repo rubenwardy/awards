@@ -42,26 +42,26 @@ awards.register_trigger("join", {
 })
 minetest.register_on_joinplayer(awards.notify_join)
 
---
--- awards.register_trigger("dig", {
--- 	type = "counted_key",
--- 	progress = "@1/@2 dug",
--- 	auto_description = { "Mine: @2", "Mine: @1×@2" },
--- 	auto_description_total = { "Mine @1 block.", "Mine @1 blocks." },
--- 	get_key = function(self, def)
--- 		return minetest.registered_aliases[def.trigger.node] or def.trigger.node
--- 	end
--- })
---
--- minetest.register_on_dignode(function(pos, oldnode, player)
--- 	if not player or not pos or not oldnode then
--- 		return
--- 	end
---
--- 	local node_name = oldnode.name
--- 	node_name = minetest.registered_aliases[node_name] or node_name
--- 	awards.notify_dig(player, node_name)
--- end)
+
+awards.register_trigger("dig", {
+	type = "counted_key",
+	progress = "@1/@2 dug",
+	auto_description = { "Mine: @2", "Mine: @1×@2" },
+	auto_description_total = { "Mine @1 block.", "Mine @1 blocks." },
+	get_key = function(self, def)
+		return minetest.registered_aliases[def.trigger.node] or def.trigger.node
+	end
+})
+
+minetest.register_on_dignode(function(pos, oldnode, player)
+	if not player or not pos or not oldnode then
+		return
+	end
+
+	local node_name = oldnode.name
+	node_name = minetest.registered_aliases[node_name] or node_name
+	awards.notify_dig(player, node_name)
+end)
 --
 -- awards.register_trigger("place", {
 -- 	type = "counted_key",

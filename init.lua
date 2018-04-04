@@ -47,7 +47,8 @@ awards.register_achievement("award_saint_maclou",{
 	description = "Place 20 coal checkers.",
 	icon = "awards_novicebuilder.png",
 	trigger = {
-		type = "chat",
+		type = "dig",
+		node = "default:stone",
 		target = 3,
 	},
 })
