@@ -25,10 +25,20 @@ awards.gettext, awards.ngettext = dofile(minetest.get_modpath("awards").."/intll
 dofile(minetest.get_modpath("awards").."/api_helpers.lua")
 dofile(minetest.get_modpath("awards").."/api.lua")
 dofile(minetest.get_modpath("awards").."/chat_commands.lua")
-dofile(minetest.get_modpath("awards").."/sfinv.lua")
-dofile(minetest.get_modpath("awards").."/unified_inventory.lua")
+dofile(minetest.get_modpath("awards").."/gui.lua")
 dofile(minetest.get_modpath("awards").."/triggers.lua")
 -- dofile(minetest.get_modpath("awards").."/awards.lua")
+
+-- Backwards compatibility
+awards.give_achievement = awards.unlock
+awards.getFormspec      = awards.get_formspec
+awards.showto           = awards.show_to
+awards.register_onDig   = awards.register_on_dig
+awards.register_onPlace = awards.register_on_place
+awards.register_onDeath = awards.register_on_death
+awards.register_onChat  = awards.register_on_chat
+awards.register_onJoin  = awards.register_on_join
+awards.register_onCraft = awards.register_on_craft
 
 awards.register_achievement("award_saint_maclou",{
 	title = "Saint-Maclou",

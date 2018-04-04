@@ -83,15 +83,6 @@ minetest.register_on_joinplayer(awards.notify_join)
 -- 	end
 -- })
 
-
--- Backwards compatibility
-awards.register_onDig   = awards.register_on_dig
-awards.register_onPlace = awards.register_on_place
-awards.register_onDeath = awards.register_on_death
-awards.register_onChat  = awards.register_on_chat
-awards.register_onJoin  = awards.register_on_join
-awards.register_onCraft = awards.register_on_craft
-
 -- Trigger Handles
 --
 -- minetest.register_on_placenode(function(pos, node, digger)
