@@ -54,6 +54,32 @@ function awards.register_trigger(name, tfunc)
 	end
 end
 
+-- Registers a trigger which replies on counting
+function awards.register_trigger_counted(tname, tfunc)
+	awards.register_trigger(tname, tfunc)
+
+	local key = tname .. "s"
+
+	awards["notify_" .. tname] = function(player)
+		assert(player and player.is_player and player:is_player())
+		local name = player:get_player_name()
+
+		awards.assertPlayer(name)
+		local data = awards.players[name]
+
+		-- Increment counter
+		data[key] = data[key] + 1
+		local currentVal = data[key]
+
+		awards.run_trigger_callbacks(player, data, tname, function(entry)
+			if entry.target and entry.award and currentVal and
+					currentVal >= entry.target then
+				return entry.award
+			end
+		end)
+	end
+end
+
 function awards.run_trigger_callbacks(player, data, trigger, table_func)
 	for i = 1, #awards.on[trigger] do
 		local res = nil

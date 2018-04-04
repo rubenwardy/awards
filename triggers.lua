@@ -118,63 +118,6 @@ awards.register_trigger("eat", function(def)
 	end
 end)
 
-awards.register_trigger("death", function(def)
-	local tmp = {
-		award  = def.name,
-		target = def.trigger.target,
-	}
-	table.insert(awards.on.death, tmp)
-	def.getProgress = function(self, data)
-		local itemcount = data.deaths or 0
-		return {
-			perc = itemcount / tmp.target,
-			label = S("@1/@2 deaths", itemcount, tmp.target),
-		}
-	end
-	def.getDefaultDescription = function(self)
-		local n = self.trigger.target
-		return NS("Die.", "Die @1 times.", n, n)
-	end
-end)
-
-awards.register_trigger("chat", function(def)
-	local tmp = {
-		award  = def.name,
-		target = def.trigger.target,
-	}
-	table.insert(awards.on.chat, tmp)
-	def.getProgress = function(self, data)
-		local itemcount = data.chats or 0
-		return {
-			perc = itemcount / tmp.target,
-			label = S("@1/@2 chat messages", itemcount, tmp.target),
-		}
-	end
-	def.getDefaultDescription = function(self)
-		local n = self.trigger.target
-		return NS("Write something in chat.", "Write @1 chat messages.", n, n)
-	end
-end)
-
-awards.register_trigger("join", function(def)
-	local tmp = {
-		award  = def.name,
-		target = def.trigger.target,
-	}
-	table.insert(awards.on.join, tmp)
-	def.getProgress = function(self, data)
-		local itemcount = data.joins or 0
-		return {
-			perc = itemcount / tmp.target,
-			label = S("@1/@2 game joins", itemcount, tmp.target),
-		}
-	end
-	def.getDefaultDescription = function(self)
-		local n = self.trigger.target
-		return NS("Join the game.", "Join the game @1 times.", n, n)
-	end
-end)
-
 awards.register_trigger("craft", function(def)
 	local tmp = {
 		award  = def.name,
@@ -326,69 +269,69 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 	end)
 end)
 
-minetest.register_on_dieplayer(function(player)
-	-- Run checks
-	local name = player:get_player_name()
-	if not player or not name or name=="" then
-		return
+awards.register_trigger_counted("death", function(def)
+	local tmp = {
+		award  = def.name,
+		target = def.trigger.target,
+	}
+	table.insert(awards.on.death, tmp)
+	def.getProgress = function(self, data)
+		local itemcount = data.deaths or 0
+		return {
+			perc = itemcount / tmp.target,
+			label = S("@1/@2 deaths", itemcount, tmp.target),
+		}
 	end
-
-	-- Get player
-	awards.assertPlayer(name)
-	local data = awards.players[name]
-
-	-- Increment counter
-	data.deaths = data.deaths + 1
-
-	awards.run_trigger_callbacks(player, data, "death", function(entry)
-		if entry.target and entry.award and data.deaths and
-				data.deaths >= entry.target then
-			return entry.award
-		end
-	end)
-end)
-
-minetest.register_on_joinplayer(function(player)
-	-- Run checks
-	local name = player:get_player_name()
-	if not player or not name or name=="" then
-		return
+	def.getDefaultDescription = function(self)
+		local n = self.trigger.target
+		return NS("Die.", "Die @1 times.", n, n)
 	end
-
-	-- Get player
-	awards.assertPlayer(name)
-	local data = awards.players[name]
-
-	-- Increment counter
-	data.joins = data.joins + 1
-
-	awards.run_trigger_callbacks(player, data, "join", function(entry)
-		if entry.target and entry.award and data.joins and
-				data.joins >= entry.target then
-			return entry.award
-		end
-	end)
 end)
+minetest.register_on_dieplayer(awards.notify_death)
 
+awards.register_trigger_counted("chat", function(def)
+	local tmp = {
+		award  = def.name,
+		target = def.trigger.target,
+	}
+	table.insert(awards.on.chat, tmp)
+	def.getProgress = function(self, data)
+		local itemcount = data.chats or 0
+		return {
+			perc = itemcount / tmp.target,
+			label = S("@1/@2 chat messages", itemcount, tmp.target),
+		}
+	end
+	def.getDefaultDescription = function(self)
+		local n = self.trigger.target
+		return NS("Write something in chat.", "Write @1 chat messages.", n, n)
+	end
+end)
 minetest.register_on_chat_message(function(name, message)
-	-- Run checks
-	local idx = string.find(message,"/")
-	if not name or (idx ~= nil and idx <= 1)  then
+	local player = minetest.get_player_by_name(name)
+	if not player or string.find(message, "/")  then
 		return
 	end
 
-	-- Get player
-	awards.assertPlayer(name)
-	local data = awards.players[name]
-	local player = minetest.get_player_by_name(name)
-
-	-- Increment counter
-	data.chats = data.chats + 1
-
-	awards.run_trigger_callbacks(player, data, "chat", function(entry)
-		if entry.target and entry.award and data.chats and
-				data.chats >= entry.target then
-			return entry.award
-		end
-	end)
+	awards.notify_chat(player)
 end)
+
+awards.register_trigger_counted("join", function(def)
+	local tmp = {
+		award  = def.name,
+		target = def.trigger.target,
+	}
+	table.insert(awards.on.join, tmp)
+	def.getProgress = function(self, data)
+		local itemcount = data.joins or 0
+		return {
+			perc = itemcount / tmp.target,
+			label = S("@1/@2 game joins", itemcount, tmp.target),
+		}
+	end
+	def.getDefaultDescription = function(self)
+		local n = self.trigger.target
+		return NS("Join the game.", "Join the game @1 times.", n, n)
+	end
+end)
+minetest.register_on_joinplayer(awards.notify_join)
