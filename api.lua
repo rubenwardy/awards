@@ -30,7 +30,9 @@ end
 local function convert_data()
 	minetest.log("warning", "Importing awards data from previous version")
 
-	for name, data in pairs(awards.players) do
+	local old_players = awards.players
+	awards.players = {}
+	for name, data in pairs(old_players) do
 		while name.name do
 			name = name.name
 		end
@@ -76,7 +78,11 @@ local function convert_data()
 			data[from] = nil
 			data[to] = ret
 		end
+
+		awards.players[name] = data
 	end
+
+	print(dump(awards.players))
 end
 
 function awards.load()
@@ -92,6 +98,7 @@ function awards.load()
 		end
 		file:close()
 		os.rename(old_save_path, minetest.get_worldpath().."/awards.bk.txt")
+		awards.save()
 	else
 		awards.players = minetest.parse_json(storage:get_string("player_data")) or {}
 	end
