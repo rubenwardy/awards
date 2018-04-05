@@ -107,7 +107,7 @@ awards.register_trigger("craft", {
 	end
 })
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
-	if not player or itemstack:empty() then
+	if not player or itemstack:is_empty() then
 		return
 	end
 
@@ -127,7 +127,7 @@ awards.register_trigger("eat", {
 	end
 })
 minetest.register_on_item_eat(function(_, _, itemstack, player, _)
-	if not player or itemstack:empty() then
+	if not player or itemstack:is_empty() then
 		return
 	end
 
