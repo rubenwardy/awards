@@ -12,14 +12,21 @@ minetest.register_chatcommand("awards", {
 			S("All your awards and statistics have been cleared. You can now start again."))
 		elseif param == "disable" then
 			awards.disable(name)
-			minetest.chat_send_player(name, S("You have disabled your achievements."))
+			minetest.chat_send_player(name, S("You have disabled achievements."))
 		elseif param == "enable" then
 			awards.enable(name)
-			minetest.chat_send_player(name, S("You have enabled your achievements."))
+			minetest.chat_send_player(name, S("You have enabled achievements."))
 		elseif param == "c" then
 			awards.show_to(name, name, nil, true)
 		else
 			awards.show_to(name, name, nil, false)
+		end
+
+		if (param == "disable" or param == "enable") and minetest.global_exists("sfinv") then
+			local player = minetest.get_player_by_name(name)
+			if player then
+				sfinv.set_player_inventory_formspec(player)
+			end
 		end
 	end
 })

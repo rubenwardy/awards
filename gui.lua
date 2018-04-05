@@ -166,7 +166,7 @@ function awards.show_to(name, to, sid, text)
 	end
 	local data = awards.player(to)
 	if name == to and data.disabled then
-		minetest.chat_send_player(S("You've disabled achievement. Type /awards enable to reenable."))
+		minetest.chat_send_player(name, S("You've disabled achievements. Type /awards enable to reenable."))
 		return
 	end
 	if text then
@@ -214,6 +214,10 @@ if minetest.get_modpath("sfinv") then
 		title = S("Achievements"),
 		on_enter = function(self, player, context)
 			context.awards_idx = 1
+		end,
+		is_in_nav = function(self, player, context)
+			local data = awards.player(player:get_player_name())
+			return not data.disabled
 		end,
 		get = function(self, player, context)
 			local name = player:get_player_name()
