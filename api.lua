@@ -243,7 +243,7 @@ function awards.register_trigger(tname, tdef)
 					return
 				end
 
-				if current > entry.target then
+				if current >= entry.target then
 					return entry.award
 				end
 			end)
