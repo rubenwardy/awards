@@ -286,7 +286,7 @@ function awards.register_on_unlock(func)
 	table.insert(awards.on_unlock, func)
 end
 
-function awards.register_achievement(name, def)
+function awards.register_award(name, def)
 	def.name = name
 
 	-- Add Triggers
@@ -337,7 +337,7 @@ function awards.clear_player(name)
 end
 
 -- This function is called whenever a target condition is met.
--- It checks if a player already has that achievement, and if they do not,
+-- It checks if a player already has that award, and if they do not,
 -- it gives it to them
 ----------------------------------------------
 --awards.unlock(name, award)
@@ -411,7 +411,7 @@ function awards.unlock(name, award)
 
 	if awards.show_mode == "chat" then
 		local chat_announce
-		if awdef.secret == true then
+		if awdef.secret then
 			chat_announce = S("Secret Achievement Unlocked: %s")
 		else
 			chat_announce = S("Achievement Unlocked: %s")
@@ -433,7 +433,7 @@ function awards.unlock(name, award)
 			alignment = {x = 0, y = -1}
 		})
 		local hud_announce
-		if awdef.secret == true then
+		if awdef.secret then
 			hud_announce = S("Secret Achievement Unlocked!")
 		else
 			hud_announce = S("Achievement Unlocked!")

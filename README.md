@@ -9,10 +9,10 @@ Majority of awards are back ported from Calinou's old fork in Carbone, under sam
 
 # API
 
-## Registering Achievements
+## Registering Awards
 
 ```lua
-awards.register_achievement("mymod:myaward", {
+awards.register_award("mymod:myaward", {
 	description = "The title of the award",
 
 	-- Optional:

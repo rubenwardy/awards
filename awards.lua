@@ -4,7 +4,7 @@ local S = awards.gettext
 
 -- Saint-Maclou
 if minetest.get_modpath("moreblocks") then
-	awards.register_achievement("award_saint_maclou",{
+	awards.register_award("award_saint_maclou",{
 		title = S("Saint-Maclou"),
 		description = S("Place 20 coal checkers."),
 		icon = "awards_novicebuilder.png",
@@ -16,7 +16,7 @@ if minetest.get_modpath("moreblocks") then
 	})
 
 	-- Castorama
-	awards.register_achievement("award_castorama",{
+	awards.register_award("award_castorama",{
 		title = S("Castorama"),
 		description = S("Place 20 iron checkers."),
 		icon = "awards_novicebuilder.png",
@@ -28,7 +28,7 @@ if minetest.get_modpath("moreblocks") then
 	})
 
 	-- Sam the Trapper
-	awards.register_achievement("award_sam_the_trapper",{
+	awards.register_award("award_sam_the_trapper",{
 		title = S("Sam the Trapper"),
 		description = S("Place 2 trap stones."),
 		icon = "awards_novicebuilder.png",
@@ -43,7 +43,7 @@ end
 -- This award can't be part of Unified Inventory, it would make a circular dependency
 if minetest.get_modpath("unified_inventory") then
 	if minetest.get_all_craft_recipes("unified_inventory:bag_large") ~= nil then
-		awards.register_achievement("awards_ui_bags", {
+		awards.register_award("awards_ui_bags", {
 			title = S("Backpacker"),
 			description = S("Craft 4 large bags."),
 			icon = "awards_ui_bags.png",
@@ -57,7 +57,7 @@ if minetest.get_modpath("unified_inventory") then
 end
 
 if minetest.get_modpath("fire") then
-	awards.register_achievement("awards_pyro", {
+	awards.register_award("awards_pyro", {
 		title = S("Pyromaniac"),
 		description = S("Craft 8 times flint and steel."),
 		icon = "fire_flint_steel.png",
@@ -68,7 +68,7 @@ if minetest.get_modpath("fire") then
 		}
 	})
 	if minetest.settings:get_bool("disable_fire") ~= true then
-		awards.register_achievement("awards_firefighter", {
+		awards.register_award("awards_firefighter", {
 			title = S("Firefighter"),
 			description = S("Put out 1000 fires."),
 			icon = "awards_firefighter.png",
@@ -83,7 +83,7 @@ end
 
 if minetest.get_modpath("default") then
 	-- Light it up
-	awards.register_achievement("award_lightitup",{
+	awards.register_award("award_lightitup",{
 		title = S("Light It Up"),
 		description = S("Place 100 torches."),
 		icon = "awards_novicebuilder.png^awards_level1.png",
@@ -95,7 +95,7 @@ if minetest.get_modpath("default") then
 	})
 
 	-- Light ALL the things!
-	awards.register_achievement("award_well_lit",{
+	awards.register_award("award_well_lit",{
 		title = S("Well Lit"),
 		description = S("Place 1,000 torches."),
 		icon = "awards_novicebuilder.png^awards_level2.png",
@@ -106,7 +106,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("award_meselamp",{
+	awards.register_award("award_meselamp",{
 		title = S("Really Well Lit"),
 		description = S("Craft 10 mese lamps."),
 		icon = "default_meselamp.png",
@@ -117,7 +117,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("awards_stonebrick", {
+	awards.register_award("awards_stonebrick", {
 		title = S("Outpost"),
 		description = S("Craft 200 stone bricks."),
 		icon = "default_stone_brick.png^awards_level1.png",
@@ -128,7 +128,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("awards_stonebrick2", {
+	awards.register_award("awards_stonebrick2", {
 		title = S("Watchtower"),
 		description = S("Craft 800 stone bricks."),
 		icon = "default_stone_brick.png^awards_level2.png",
@@ -139,7 +139,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("awards_stonebrick3", {
+	awards.register_award("awards_stonebrick3", {
 		title = S("Fortress"),
 		description = S("Craft 3,200 stone bricks."),
 		icon = "default_stone_brick.png^awards_level3.png",
@@ -150,7 +150,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("awards_desert_stonebrick", {
+	awards.register_award("awards_desert_stonebrick", {
 		title = S("Desert Dweller"),
 		description = S("Craft 400 desert stone bricks."),
 		icon = "default_desert_stone_brick.png",
@@ -161,7 +161,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("awards_desertstonebrick", {
+	awards.register_award("awards_desertstonebrick", {
 		title = S("Pharaoh"),
 		description = S("Craft 100 sandstone bricks."),
 		icon = "default_sandstone_brick.png",
@@ -172,7 +172,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("awards_bookshelf", {
+	awards.register_award("awards_bookshelf", {
 		title = S("Little Library"),
 		description = S("Craft 7 bookshelves."),
 		icon = "default_bookshelf.png",
@@ -183,7 +183,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("awards_obsidian", {
+	awards.register_award("awards_obsidian", {
 		title = S("Lava and Water"),
 		description = S("Mine your first obsidian."),
 		icon = "default_obsidian.png^awards_level1.png",
@@ -196,7 +196,7 @@ if minetest.get_modpath("default") then
 	})
 
 	-- Obsessed with Obsidian
-	awards.register_achievement("award_obsessed_with_obsidian",{
+	awards.register_award("award_obsessed_with_obsidian",{
 		title = S("Obsessed with Obsidian"),
 		description = S("Mine 50 obsidian."),
 		icon = "default_obsidian.png^awards_level2.png",
@@ -209,7 +209,7 @@ if minetest.get_modpath("default") then
 	})
 
 	-- Proof that player has found lava
-	awards.register_achievement("award_lavaminer",{
+	awards.register_award("award_lavaminer",{
 		title = S("Lava Miner"),
 		description = S("Mine any block while being very close to lava."),
 		background = "awards_bg_mining.png",
@@ -225,7 +225,7 @@ if minetest.get_modpath("default") then
 	end)
 
 	-- On the way
-	awards.register_achievement("award_on_the_way", {
+	awards.register_award("award_on_the_way", {
 		title = S("On The Way"),
 		description = S("Place 100 rails."),
 		icon = "carts_rail_straight.png",
@@ -236,7 +236,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("award_lumberjack_firstday", {
+	awards.register_award("award_lumberjack_firstday", {
 		title = S("First Day in the Woods"),
 		description = S("Dig 6 tree blocks."),
 		icon = "default_tree.png^awards_level1.png",
@@ -248,7 +248,7 @@ if minetest.get_modpath("default") then
 	})
 
 	-- Lumberjack
-	awards.register_achievement("award_lumberjack", {
+	awards.register_award("award_lumberjack", {
 		title = S("Lumberjack"),
 		description = S("Dig 36 tree blocks."),
 		icon = "default_tree.png^awards_level2.png",
@@ -260,7 +260,7 @@ if minetest.get_modpath("default") then
 	})
 
 	-- Semi-pro Lumberjack
-	awards.register_achievement("award_lumberjack_semipro", {
+	awards.register_award("award_lumberjack_semipro", {
 		title = S("Semi-pro Lumberjack"),
 		description = S("Dig 216 tree blocks."),
 		icon = "default_tree.png^awards_level3.png",
@@ -272,7 +272,7 @@ if minetest.get_modpath("default") then
 	})
 
 	-- Professional Lumberjack
-	awards.register_achievement("award_lumberjack_professional", {
+	awards.register_award("award_lumberjack_professional", {
 		title = S("Professional Lumberjack"),
 		description = S("Dig 1,296 tree blocks."),
 		icon = "default_tree.png^awards_level4.png",
@@ -284,7 +284,7 @@ if minetest.get_modpath("default") then
 	})
 
 	-- Junglebaby
-	awards.register_achievement("award_junglebaby", {
+	awards.register_award("award_junglebaby", {
 		title = S("Junglebaby"),
 		description = S("Dig 100 jungle tree blocks."),
 		icon = "default_jungletree.png^awards_level1.png",
@@ -296,7 +296,7 @@ if minetest.get_modpath("default") then
 	})
 
 	-- Jungleman
-	awards.register_achievement("award_jungleman", {
+	awards.register_award("award_jungleman", {
 		title = S("Jungleman"),
 		description = S("Dig 1,000 jungle tree blocks."),
 		icon = "default_jungletree.png^awards_level2.png",
@@ -308,7 +308,7 @@ if minetest.get_modpath("default") then
 	})
 
 	-- Found some Mese!
-	awards.register_achievement("award_mesefind", {
+	awards.register_award("award_mesefind", {
 		title = S("First Mese Find"),
 		description = S("Mine your first mese ore."),
 		icon = "default_stone.png^default_mineral_mese.png",
@@ -321,7 +321,7 @@ if minetest.get_modpath("default") then
 	})
 
 	-- Mese Block
-	awards.register_achievement("award_meseblock", {
+	awards.register_award("award_meseblock", {
 		secret = true,
 		title = S("Mese Mastery"),
 		description = S("Mine a mese block."),
@@ -335,7 +335,7 @@ if minetest.get_modpath("default") then
 	})
 
 	-- You're a copper
-	awards.register_achievement("award_youre_a_copper", {
+	awards.register_award("award_youre_a_copper", {
 		title = S("You’re a copper"),
 		description = S("Dig 1,000 copper ores."),
 		icon = "default_stone.png^default_mineral_copper.png",
@@ -348,7 +348,7 @@ if minetest.get_modpath("default") then
 	})
 
 	-- Mini Miner
-	awards.register_achievement("award_mine2", {
+	awards.register_award("award_mine2", {
 		title = S("Mini Miner"),
 		description = S("Dig 100 stone blocks."),
 		icon = "awards_miniminer.png^awards_level1.png",
@@ -361,7 +361,7 @@ if minetest.get_modpath("default") then
 	})
 
 	-- Hardened Miner
-	awards.register_achievement("award_mine3", {
+	awards.register_award("award_mine3", {
 		title = S("Hardened Miner"),
 		description = S("Dig 1,000 stone blocks."),
 		icon = "awards_miniminer.png^awards_level2.png",
@@ -374,7 +374,7 @@ if minetest.get_modpath("default") then
 	})
 
 	-- Master Miner
-	awards.register_achievement("award_mine4", {
+	awards.register_award("award_mine4", {
 		title = S("Master Miner"),
 		description = S("Dig 10,000 stone blocks."),
 		icon = "awards_miniminer.png^awards_level3.png",
@@ -387,7 +387,7 @@ if minetest.get_modpath("default") then
 	})
 
 	-- Marchand de sable
-	awards.register_achievement("award_marchand_de_sable", {
+	awards.register_award("award_marchand_de_sable", {
 		title = S("Marchand De Sable"),
 		description = S("Dig 1,000 sand."),
 		icon = "default_sand.png",
@@ -399,7 +399,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("awards_crafter_of_sticks", {
+	awards.register_award("awards_crafter_of_sticks", {
 		title = S("Crafter of Sticks"),
 		description = S("Craft 100 sticks."),
 		icon = "default_stick.png",
@@ -410,7 +410,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("awards_junglegrass", {
+	awards.register_award("awards_junglegrass", {
 		title = S("Jungle Discoverer"),
 		description = S("Mine your first jungle grass."),
 		icon = "default_junglegrass.png",
@@ -421,7 +421,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("awards_grass", {
+	awards.register_award("awards_grass", {
 		title = S("Grasslands Discoverer"),
 		description = S("Mine some grass."),
 		icon = "default_grass_3.png",
@@ -432,7 +432,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("awards_dry_grass", {
+	awards.register_award("awards_dry_grass", {
 		title = S("Savannah Discoverer"),
 		description = S("Mine some dry grass."),
 		icon = "default_dry_grass_3.png",
@@ -443,7 +443,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("awards_cactus", {
+	awards.register_award("awards_cactus", {
 		title = S("Desert Discoverer"),
 		description = S("Mine your first cactus."),
 		icon = "default_cactus_side.png",
@@ -454,7 +454,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("awards_dry_shrub", {
+	awards.register_award("awards_dry_shrub", {
 		title = S("Far Lands"),
 		description = S("Mine your first dry shrub."),
 		icon = "default_dry_shrub.png",
@@ -465,7 +465,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("awards_ice", {
+	awards.register_award("awards_ice", {
 		title = S("Glacier Discoverer"),
 		description = S("Mine your first ice."),
 		icon = "default_ice.png",
@@ -477,7 +477,7 @@ if minetest.get_modpath("default") then
 	})
 
 	-- Proof that player visited snowy lands
-	awards.register_achievement("awards_snowblock", {
+	awards.register_award("awards_snowblock", {
 		title = S("Very Simple Snow Man"),
 		description = S("Place two snow blocks."),
 		icon = "default_snow.png",
@@ -488,7 +488,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("awards_gold_ore", {
+	awards.register_award("awards_gold_ore", {
 		title = S("First Gold Find"),
 		description = S("Mine your first gold ore."),
 		icon = "default_stone.png^default_mineral_gold.png^awards_level1.png",
@@ -500,7 +500,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("awards_gold_rush", {
+	awards.register_award("awards_gold_rush", {
 		title = S("Gold Rush"),
 		description = S("Mine 45 gold ores."),
 		icon = "default_stone.png^default_mineral_gold.png^awards_level2.png",
@@ -512,7 +512,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("awards_diamond_ore", {
+	awards.register_award("awards_diamond_ore", {
 		title = S("Wow, I am Diamonds!"),
 		description = S("Mine your first diamond ore."),
 		icon = "default_stone.png^default_mineral_diamond.png^awards_level1.png",
@@ -523,7 +523,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("awards_diamond_rush", {
+	awards.register_award("awards_diamond_rush", {
 		title = S("Girl's Best Friend"),
 		description = S("Mine 18 diamond ores."),
 		icon = "default_stone.png^default_mineral_diamond.png^awards_level2.png",
@@ -535,7 +535,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("awards_diamondblock", {
+	awards.register_award("awards_diamondblock", {
 		title = S("Hardest Block on Earth"),
 		description = S("Craft a diamond block."),
 		icon = "default_diamond_block.png",
@@ -546,7 +546,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("awards_mossycobble", {
+	awards.register_award("awards_mossycobble", {
 		title = S("In the Dungeon"),
 		description = S("Mine a mossy cobblestone."),
 		icon = "default_mossycobble.png",
@@ -557,7 +557,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("award_furnace", {
+	awards.register_award("award_furnace", {
 		title = S("Smelter"),
 		description = S("Craft 10 furnaces."),
 		icon = "default_furnace_front.png",
@@ -568,7 +568,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("award_chest", {
+	awards.register_award("award_chest", {
 		title = S("Treasurer"),
 		description = S("Craft 15 chests."),
 		icon = "default_chest_front.png",
@@ -579,7 +579,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("award_chest2", {
+	awards.register_award("award_chest2", {
 		title = S("Bankier"),
 		description = S("Craft 30 locked chests."),
 		icon = "default_chest_lock.png",
@@ -590,7 +590,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("award_brick", {
+	awards.register_award("award_brick", {
 		title = S("Bricker"),
 		description = S("Craft 200 brick blocks."),
 		icon = "default_brick.png",
@@ -601,7 +601,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("award_obsidianbrick", {
+	awards.register_award("award_obsidianbrick", {
 		title = S("House of Obsidian"),
 		description = S("Craft 100 obsidian bricks."),
 		icon = "default_obsidian_brick.png",
@@ -612,7 +612,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("award_placestone", {
+	awards.register_award("award_placestone", {
 		title = S("Build a Cave"),
 		description = S("Place 100 stone."),
 		icon = "default_stone.png",
@@ -623,7 +623,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("award_woodladder", {
+	awards.register_award("award_woodladder", {
 		title = S("Long Ladder"),
 		description = S("Place 400 wooden ladders."),
 		icon = "default_ladder_wood.png",
@@ -634,7 +634,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("award_steelladder", {
+	awards.register_award("award_steelladder", {
 		title = S("Industrial Age"),
 		description = S("Place 40 steel ladders."),
 		icon = "default_ladder_steel.png",
@@ -645,7 +645,7 @@ if minetest.get_modpath("default") then
 		}
 	})
 
-	awards.register_achievement("award_apples", {
+	awards.register_award("award_apples", {
 		title = S("Yummy!"),
 		description = S("Eat 80 apples."),
 		icon = "default_apple.png",
@@ -658,7 +658,7 @@ if minetest.get_modpath("default") then
 end
 
 if minetest.get_modpath("vessels") then
-	awards.register_achievement("award_vessels_shelf", {
+	awards.register_award("award_vessels_shelf", {
 		title = S("Glasser"),
 		icon = "vessels_shelf.png",
 		description = S("Craft 14 vessels shelves."),
@@ -671,7 +671,7 @@ if minetest.get_modpath("vessels") then
 end
 
 if minetest.get_modpath("farming") then
-	awards.register_achievement("awards_farmer", {
+	awards.register_award("awards_farmer", {
 		title = S("Farming Skills Acquired"),
 		description = S("Harvest a fully grown wheat plant."),
 		icon = "farming_wheat_8.png^awards_level1.png",
@@ -681,7 +681,7 @@ if minetest.get_modpath("farming") then
 			target = 1
 		}
 	})
-	awards.register_achievement("awards_farmer2", {
+	awards.register_award("awards_farmer2", {
 		title = S("Field Worker"),
 		description = S("Harvest 25 fully grown wheat plants."),
 		icon = "farming_wheat_8.png^awards_level2.png",
@@ -692,7 +692,7 @@ if minetest.get_modpath("farming") then
 		}
 	})
 
-	awards.register_achievement("awards_farmer3", {
+	awards.register_award("awards_farmer3", {
 		title = S("Aspiring Farmer"),
 		description = S("Harvest 125 fully grown wheat plants."),
 		icon = "farming_wheat_8.png^awards_level3.png",
@@ -703,7 +703,7 @@ if minetest.get_modpath("farming") then
 		}
 	})
 
-	awards.register_achievement("awards_farmer4", {
+	awards.register_award("awards_farmer4", {
 		title = S("Wheat Magnate"),
 		description = S("Harvest 625 fully grown wheat plants."),
 		icon = "farming_wheat_8.png^awards_level4.png",
@@ -714,7 +714,7 @@ if minetest.get_modpath("farming") then
 		}
 	})
 
-	awards.register_achievement("award_bread", {
+	awards.register_award("award_bread", {
 		title = S("Baker"),
 		description = S("Eat 10 loaves of bread."),
 		icon = "farming_bread.png",
@@ -728,7 +728,7 @@ if minetest.get_modpath("farming") then
 end
 
 if minetest.get_modpath("wool") and minetest.get_modpath("farming") then
-	awards.register_achievement("awards_wool", {
+	awards.register_award("awards_wool", {
 		title = S("Wool Over Your Eyes"),
 		description = S("Craft 250 white wool."),
 		icon = "wool_white.png",
@@ -741,7 +741,7 @@ if minetest.get_modpath("wool") and minetest.get_modpath("farming") then
 end
 
 if minetest.get_modpath("beds") then
-	awards.register_achievement("award_bed", {
+	awards.register_award("award_bed", {
 		title = S("Hotelier"),
 		description = S("Craft 15 fancy beds."),
 		icon = "beds_bed_fancy.png",
@@ -754,7 +754,7 @@ if minetest.get_modpath("beds") then
 end
 
 if minetest.get_modpath("stairs") then
-	awards.register_achievement("award_stairs_goldblock", {
+	awards.register_award("award_stairs_goldblock", {
 		title = S("Filthy Rich"),
 		description = S("Craft 24 gold block stairs."),
 		icon = "default_gold_block.png",
@@ -767,7 +767,7 @@ if minetest.get_modpath("stairs") then
 end
 
 if minetest.get_modpath("dye") then
-	awards.register_achievement("awards_dye_red", {
+	awards.register_award("awards_dye_red", {
 		title = S("Roses Are Red"),
 		description = S("Craft 400 red dyes."),
 		icon = "dye_red.png",
@@ -778,7 +778,7 @@ if minetest.get_modpath("dye") then
 		}
 	})
 
-	awards.register_achievement("awards_dye_yellow", {
+	awards.register_award("awards_dye_yellow", {
 		title = S("Dandelions are Yellow"),
 		description = S("Craft 400 yellow dyes."),
 		icon = "dye_yellow.png",
@@ -789,7 +789,7 @@ if minetest.get_modpath("dye") then
 		}
 	})
 
-	awards.register_achievement("awards_dye_blue", {
+	awards.register_award("awards_dye_blue", {
 		title = S("Geraniums are Blue"),
 		description = S("Craft 400 blue dyes."),
 		icon = "dye_blue.png",
@@ -800,7 +800,7 @@ if minetest.get_modpath("dye") then
 		}
 	})
 
-	awards.register_achievement("awards_dye_white", {
+	awards.register_award("awards_dye_white", {
 		title = S("White Color Stock"),
 		description = S("Craft 100 white dyes."),
 		icon = "dye_white.png",
@@ -813,7 +813,7 @@ if minetest.get_modpath("dye") then
 end
 
 if minetest.get_modpath("flowers") then
-	awards.register_achievement("awards_brown_mushroom1", {
+	awards.register_award("awards_brown_mushroom1", {
 		title = S("Tasty Mushrooms"),
 		description = S("Eat 3 brown mushrooms."),
 		icon = "flowers_mushroom_brown.png^awards_level1.png",
@@ -823,7 +823,7 @@ if minetest.get_modpath("flowers") then
 			target = 3,
 		}
 	})
-	awards.register_achievement("awards_brown_mushroom2", {
+	awards.register_award("awards_brown_mushroom2", {
 		title = S("Mushroom Lover"),
 		description = S("Eat 33 brown mushrooms."),
 		icon = "flowers_mushroom_brown.png^awards_level2.png",
@@ -833,7 +833,7 @@ if minetest.get_modpath("flowers") then
 			target = 33,
 		}
 	})
-	awards.register_achievement("awards_brown_mushroom3", {
+	awards.register_award("awards_brown_mushroom3", {
 		title = S("Underground Mushroom Farmer"),
 		description = S("Eat 333 brown mushrooms."),
 		icon = "flowers_mushroom_brown.png^awards_level3.png",
@@ -861,7 +861,7 @@ minetest.after(0, function()
 		return
 	end
 
-	awards.register_achievement("awards_builder1", {
+	awards.register_award("awards_builder1", {
 		title = S("Builder"),
 		icon = "awards_house.png^awards_level1.png",
 		trigger = {
@@ -869,7 +869,7 @@ minetest.after(0, function()
 			target = 1000,
 		},
 	})
-	awards.register_achievement("awards_builder2", {
+	awards.register_award("awards_builder2", {
 		title = S("Constructor"),
 		icon = "awards_house.png^awards_level2.png",
 		trigger = {
@@ -877,7 +877,7 @@ minetest.after(0, function()
 			target = 5000,
 		},
 	})
-	awards.register_achievement("awards_builder3", {
+	awards.register_award("awards_builder3", {
 		title = S("Architect"),
 		icon = "awards_house.png^awards_level3.png",
 		trigger = {
@@ -885,7 +885,7 @@ minetest.after(0, function()
 			target = 10000,
 		},
 	})
-	awards.register_achievement("awards_builder4", {
+	awards.register_award("awards_builder4", {
 		title = S("Master Architect"),
 		icon = "awards_house.png^awards_level4.png",
 		trigger = {
@@ -897,7 +897,7 @@ end)
 
 if minetest.get_modpath("nyancat") then
 	-- Found a Nyan cat!
-	awards.register_achievement("award_nyanfind", {
+	awards.register_award("award_nyanfind", {
 		secret = true,
 		title = S("A Cat in a Pop-Tart?!"),
 		description = S("Mine a nyan cat."),
