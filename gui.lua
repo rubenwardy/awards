@@ -3,31 +3,70 @@
 local S = awards.gettext
 
 local function order_awards(name)
-	local done = {}
+	local hash_is_unlocked = {}
 	local retval = {}
-	local player = awards.player(name)
-	if player and player.unlocked then
-		for _,got in pairs(player.unlocked) do
-			if awards.registered_awards[got] then
-				done[got] = true
-				table.insert(retval,{name=got,got=true})
+
+	local data = awards.player(name)
+	if data and data.unlocked then
+		for awardname, _ in pairs(data.unlocked) do
+			local def = awards.registered_awards[awardname]
+			if def then
+				hash_is_unlocked[awardname] = true
+				local score = -100000
+				if def.trigger and def.trigger.target then
+					score = score + def.trigger.target
+				end
+				retval[#retval + 1] = {
+					name     = awardname,
+					def      = def,
+					unlocked = true,
+					started  = true,
+					score    = score,
+				}
 			end
 		end
 	end
-	for _,def in pairs(awards.registered_awards) do
-		if not done[def.name] then
-			table.insert(retval,{name=def.name,got=false})
+
+	for _, def in pairs(awards.registered_awards) do
+		if not hash_is_unlocked[def.name] then
+			local started = false
+			local score
+			if def.secret then
+				score = 1000000
+			elseif def.trigger and def.trigger.target and def.getProgress then
+				local progress = def:getProgress(data).perc
+				score = (1 - progress) * def.trigger.target
+				if progress < 0.001 then
+					score = score + 100
+				else
+					started = true
+				end
+			else
+				score = 100
+			end
+
+			retval[#retval + 1] = {
+				name     = def.name,
+				def      = def,
+				unlocked = false,
+				started  = started,
+				score    = score,
+			}
 		end
 	end
+
+	table.sort(retval, function(a, b)
+		return a.score < b.score
+	end)
 	return retval
 end
 
 function awards.get_formspec(name, to, sid)
 	local formspec = ""
-	local listofawards = order_awards(name)
-	local playerdata = awards.player(name)
+	local awards_list = order_awards(name)
+	local data  = awards.player(name)
 
-	if #listofawards == 0 then
+	if #awards_list == 0 then
 		formspec = formspec .. "label[3.9,1.5;"..minetest.formspec_escape(S("Error: No awards available.")).."]"
 		formspec = formspec .. "button_exit[4.2,2.3;3,1;close;"..minetest.formspec_escape(S("OK")).."]"
 		return formspec
@@ -35,10 +74,10 @@ function awards.get_formspec(name, to, sid)
 
 	-- Sidebar
 	if sid then
-		local item = listofawards[sid+0]
-		local def = awards.registered_awards[item.name]
+		local item = awards_list[sid+0]
+		local def  = item.def
 
-		if def and def.secret and not item.got then
+		if def and def.secret and not item.unlocked then
 			formspec = formspec .. "label[1,2.75;"..
 					minetest.formspec_escape(S("(Secret Award)")).."]"..
 					"image[1,0;3,3;awards_unknown.png]"
@@ -53,11 +92,11 @@ function awards.get_formspec(name, to, sid)
 				title = def.title
 			end
 			local status = "%s"
-			if item.got then
-				status = S("%s (got)")
+			if item.unlocked then
+				status = S("%s (unlocked)")
 			end
 
-      formspec = formspec .. "textarea[0.5,2.7;4.8,1.45;;" ..
+			formspec = formspec .. "textarea[0.5,2.7;4.8,1.45;;" ..
 				string.format(status, minetest.formspec_escape(title)) ..
 				";]"
 
@@ -67,8 +106,8 @@ function awards.get_formspec(name, to, sid)
 			local barwidth = 4.6
 			local perc = nil
 			local label = nil
-			if def.getProgress and playerdata then
-				local res = def:getProgress(playerdata)
+			if def.getProgress and data then
+				local res = def:getProgress(data)
 				perc = res.perc
 				label = res.label
 			end
@@ -91,23 +130,26 @@ function awards.get_formspec(name, to, sid)
 	-- Create list box
 	formspec = formspec .. "textlist[4.75,0;6,5;awards;"
 	local first = true
-	for _,award in pairs(listofawards) do
-		local def = awards.registered_awards[award.name]
+	for _, award in pairs(awards_list) do
+		local def = award.def
 		if def then
 			if not first then
 				formspec = formspec .. ","
 			end
 			first = false
 
-			if def.secret and not award.got then
+			if def.secret and not award.unlocked then
 				formspec = formspec .. "#707070"..minetest.formspec_escape(S("(Secret Award)"))
 			else
 				local title = award.name
 				if def and def.title then
 					title = def.title
 				end
-				if award.got then
+				-- title = title .. " [" .. award.score .. "]"
+				if award.unlocked then
 					formspec = formspec .. minetest.formspec_escape(title)
+				elseif awards.started then
+					formspec = formspec .. "#BEBEBE".. minetest.formspec_escape(title)
 				else
 					formspec = formspec .. "#ACACAC".. minetest.formspec_escape(title)
 				end
@@ -128,8 +170,8 @@ function awards.show_to(name, to, sid, text)
 		return
 	end
 	if text then
-		local listofawards = order_awards(name)
-		if #listofawards == 0 then
+		local awards_list = order_awards(name)
+		if #awards_list == 0 then
 			minetest.chat_send_player(to, S("Error: No awards available."))
 			return
 		elseif not data or not data.unlocked  then
@@ -138,7 +180,7 @@ function awards.show_to(name, to, sid, text)
 		end
 		minetest.chat_send_player(to, string.format(S("%s’s awards:"), name))
 
-		for _, str in pairs(data.unlocked) do
+		for str, _ in pairs(data.unlocked) do
 			local def = awards.registered_awards[str]
 			if def then
 				if def.title then
