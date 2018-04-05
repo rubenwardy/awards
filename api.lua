@@ -428,7 +428,7 @@ function awards.unlock(name, award)
 			name = "award_bg",
 			scale = {x = 2, y = 1},
 			text = background,
-			position = {x = 0.5, y = 0},
+			position = {x = 0.5, y = 0.05},
 			offset = {x = 0, y = 138},
 			alignment = {x = 0, y = -1}
 		})
@@ -444,8 +444,8 @@ function awards.unlock(name, award)
 			number = 0xFFFFFF,
 			scale = {x = 100, y = 20},
 			text = hud_announce,
-			position = {x = 0.5, y = 0},
-			offset = {x = 0, y = 40},
+			position = {x = 0.5, y = 0.05},
+			offset = {x = 0, y = 45},
 			alignment = {x = 0, y = -1}
 		})
 		local three = player:hud_add({
@@ -454,8 +454,8 @@ function awards.unlock(name, award)
 			number = 0xFFFFFF,
 			scale = {x = 100, y = 20},
 			text = title,
-			position = {x = 0.5, y = 0},
-			offset = {x = 30, y = 100},
+			position = {x = 0.5, y = 0.05},
+			offset = {x = 0, y = 100},
 			alignment = {x = 0, y = -1}
 		})
 		local four = player:hud_add({
@@ -463,15 +463,18 @@ function awards.unlock(name, award)
 			name = "award_icon",
 			scale = {x = 4, y = 4},
 			text = icon,
-			position = {x = 0.4, y = 0},
-			offset = {x = -81.5, y = 126},
+			position = {x = 0.5, y = 0.05},
+			offset = {x = -200.5, y = 126},
 			alignment = {x = 0, y = -1}
 		})
 		minetest.after(4, function()
-			player:hud_remove(one)
-			player:hud_remove(two)
-			player:hud_remove(three)
-			player:hud_remove(four)
+			local player2 = minetest.get_player_by_name(name)
+			if player2 then
+				player2:hud_remove(one)
+				player2:hud_remove(two)
+				player2:hud_remove(three)
+				player2:hud_remove(four)
+			end
 		end)
 	end
 end
