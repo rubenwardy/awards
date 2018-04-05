@@ -12,10 +12,13 @@ Majority of awards are back ported from Calinou's old fork in Carbone, under sam
 ## Registering Achievements
 
 ```lua
-awards.register_achievement(name, {
+awards.register_achievement("mymod:myaward", {
 	description = "The title of the award",
 
 	-- Optional:
+
+	requires = { "amod:an_award" }, -- don't show this award or allow it to be unlocked
+									-- until required awards are unlocked
 
 	sound = {}, -- SimpleSoundSpec or false to play no sound
 	            -- if not provided, uses default sound
@@ -25,7 +28,7 @@ awards.register_achievement(name, {
 	trigger = { -- is only unlocked by direct calls to awards.unlock() otherwise
 		type = "trigger_type",
 		-- see specific docs on the trigger to see what else goes here
-	}
+	},
 })
 ```
 
@@ -38,7 +41,7 @@ local trigger = awards.register_trigger(name, {
 	progress = "%2/%2"
 	auto_description = { "Mine: @2", "Mine: @1×@2" },
 
-	on_register = function(self, def) end
+	on_register = function(self, def) end,
 
 	-- "counted_key" only, when no key is given (ie: a total)
 	auto_description_total = { "Mine @1 block.", "Mine @1 blocks." },
@@ -46,7 +49,7 @@ local trigger = awards.register_trigger(name, {
 	-- "counted_key" only, get key for particular award - return nil for a total
 	get_key = function(self, def)
 		return minetest.registered_aliases[def.trigger.node] or def.trigger.node
-	end
+	end,
 })
 ```
 
@@ -107,46 +110,47 @@ Callbacks (register a function to be run)
 ### dig
 
 	trigger = {
-		type = "dig",
-		node = "default:dirt",
-		target = 50
+		type   = "dig",
+		node   = "default:dirt",
+		target = 50,
 	}
 
 ### place
 
 	trigger = {
-		type = "place",
-		node = "default:dirt",
-		target = 50
+		type   = "place",
+		node   = "default:dirt",
+		target = 50,
 	}
 
 ### death
 
 	trigger = {
-		type = "death",
-		target = 5
+		type   = "death",
+		reason = "fall",
+		target = 5,
 	}
 
 ### chat
 
 	trigger = {
-		type = "chat",
-		target = 100
+		type   = "chat",
+		target = 100,
 	}
 
 ### join
 
 	trigger = {
-		type = "join",
-		target = 100
+		type   = "join",
+		target = 100,
 	}
 
 ### eat
 
 	trigger = {
-		type = "eat",
-		item = "default:apple",
-		target = 100
+		type   = "eat",
+		item   = "default:apple",
+		target = 100,
 	}
 
 ## Callbacks relating to triggers

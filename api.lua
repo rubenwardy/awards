@@ -296,6 +296,19 @@ function awards.register_achievement(name, def)
 		tdef:on_register(def)
 	end
 
+	function def:can_unlock(data)
+		if not self.requires then
+			return true
+		end
+
+		for i=1, #self.requires do
+			if not data.unlocked[self.requires[i]] then
+				return false
+			end
+		end
+		return true
+	end
+
 	-- Add Award
 	awards.registered_awards[name] = def
 
@@ -338,6 +351,12 @@ function awards.unlock(name, award)
 
 	if data.disabled or
 			(data.unlocked[award] and data.unlocked[award] == award) then
+		return
+	end
+
+	if not awdef:can_unlock(data) then
+		minetest.log("warning", "can_unlock returned false in unlock of " ..
+				award .. " for " .. name)
 		return
 	end
 

@@ -28,7 +28,7 @@ local function order_awards(name)
 	end
 
 	for _, def in pairs(awards.registered_awards) do
-		if not hash_is_unlocked[def.name] then
+		if not hash_is_unlocked[def.name] and def:can_unlock(data) then
 			local started = false
 			local score
 			if def.secret then
