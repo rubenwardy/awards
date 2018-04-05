@@ -91,6 +91,7 @@ function awards.load()
 end
 
 function awards.player(name)
+	assert(type(name) == "string")
 	local data = awards.players[name] or {}
 	awards.players[name] = data
 	data.name = data.name or name
