@@ -1,6 +1,6 @@
 # Awards
 
-Adds achievements to Minetest (plus a very good API).
+Adds awards/achievements to Minetest (plus a very good API).
 
 by [rubenwardy](https://rubenwardy.com), licensed under MIT.
 With thanks to Wuzzy, kaeza, and MrIbby.

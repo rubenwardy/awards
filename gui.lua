@@ -79,12 +79,12 @@ function awards.get_formspec(name, to, sid)
 
 		if def and def.secret and not item.unlocked then
 			formspec = formspec .. "label[1,2.75;"..
-					minetest.formspec_escape(S("(Secret Achievement)")).."]"..
+					minetest.formspec_escape(S("(Secret Award)")).."]"..
 					"image[1,0;3,3;awards_unknown.png]"
 			if def and def.description then
 				formspec = formspec	.. "textarea[0.25,3.25;4.8,1.7;;"..
 						minetest.formspec_escape(
-								S("Unlock this achievement to find out what it is."))..";]"
+								S("Unlock this award to find out what it is."))..";]"
 			end
 		else
 			local title = item.name
@@ -139,7 +139,7 @@ function awards.get_formspec(name, to, sid)
 			first = false
 
 			if def.secret and not award.unlocked then
-				formspec = formspec .. "#707070"..minetest.formspec_escape(S("(Secret Achievement)"))
+				formspec = formspec .. "#707070"..minetest.formspec_escape(S("(Secret Award)"))
 			else
 				local title = award.name
 				if def and def.title then
@@ -166,19 +166,19 @@ function awards.show_to(name, to, sid, text)
 	end
 	local data = awards.player(to)
 	if name == to and data.disabled then
-		minetest.chat_send_player(name, S("You've disabled achievements. Type /awards enable to reenable."))
+		minetest.chat_send_player(name, S("You've disabled awards. Type /awards enable to reenable."))
 		return
 	end
 	if text then
 		local awards_list = order_awards(name)
 		if #awards_list == 0 then
-			minetest.chat_send_player(to, S("Error: No achievement available."))
+			minetest.chat_send_player(to, S("Error: No award available."))
 			return
 		elseif not data or not data.unlocked  then
-			minetest.chat_send_player(to, S("You have not unlocked any achievements."))
+			minetest.chat_send_player(to, S("You have not unlocked any awards."))
 			return
 		end
-		minetest.chat_send_player(to, string.format(S("%s’s achievements:"), name))
+		minetest.chat_send_player(to, string.format(S("%s’s awards:"), name))
 
 		for str, _ in pairs(data.unlocked) do
 			local def = awards.registered_awards[str]
@@ -211,7 +211,7 @@ end
 
 if minetest.get_modpath("sfinv") then
 	sfinv.register_page("awards:awards", {
-		title = S("Achievements"),
+		title = S("Awards"),
 		on_enter = function(self, player, context)
 			context.awards_idx = 1
 		end,
@@ -241,7 +241,7 @@ if minetest.get_modpath("unified_inventory") ~= nil then
 	unified_inventory.register_button("awards", {
 		type = "image",
 		image = "awards_ui_icon.png",
-		tooltip = S("Achievements"),
+		tooltip = S("Awards"),
 		action = function(player)
 			local name = player:get_player_name()
 			awards.show_to(name, name, nil, false)
