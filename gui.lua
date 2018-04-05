@@ -148,10 +148,10 @@ function awards.get_formspec(name, to, sid)
 				-- title = title .. " [" .. award.score .. "]"
 				if award.unlocked then
 					formspec = formspec .. minetest.formspec_escape(title)
-				elseif awards.started then
-					formspec = formspec .. "#BEBEBE".. minetest.formspec_escape(title)
+				elseif award.started then
+					formspec = formspec .. "#c0c0c0".. minetest.formspec_escape(title)
 				else
-					formspec = formspec .. "#ACACAC".. minetest.formspec_escape(title)
+					formspec = formspec .. "#a0a0a0".. minetest.formspec_escape(title)
 				end
 			end
 		end
