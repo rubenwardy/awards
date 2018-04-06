@@ -30,7 +30,8 @@ awards.register_award("mymod:myaward", {
 		-- see specific docs on the trigger to see what else goes here
 	},
 	
-	on_unlock = function(name, awards_def) end,
+	-- Callback. award_def is this table (plus some additional methods/members added by register_award)
+	on_unlock = function(name, award_def) end,
 })
 ```
 
