@@ -29,6 +29,8 @@ awards.register_award("mymod:myaward", {
 		type = "trigger_type",
 		-- see specific docs on the trigger to see what else goes here
 	},
+	
+	on_unlock = function(name, awards_def) end,
 })
 ```
 
