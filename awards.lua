@@ -87,6 +87,7 @@ if minetest.get_modpath("default") then
 		title = S("Light It Up"),
 		description = S("Place 100 torches."),
 		icon = "awards_novicebuilder.png^awards_level1.png",
+		difficulty = 0.01,
 		trigger = {
 			type = "place",
 			node = "default:torch",
@@ -97,8 +98,9 @@ if minetest.get_modpath("default") then
 	-- Light ALL the things!
 	awards.register_award("award_well_lit",{
 		title = S("Well Lit"),
-		description = S("Place 1,000 torches."),
 		icon = "awards_novicebuilder.png^awards_level2.png",
+		description = S("Place 1,000 torches."),
+		difficulty = 0.01,
 		trigger = {
 			type = "place",
 			node = "default:torch",
@@ -110,6 +112,7 @@ if minetest.get_modpath("default") then
 		title = S("Really Well Lit"),
 		description = S("Craft 10 mese lamps."),
 		icon = "default_meselamp.png",
+		difficulty = 0.2,
 		trigger = {
 			type = "craft",
 			item = "default:meselamp",
@@ -121,6 +124,7 @@ if minetest.get_modpath("default") then
 		title = S("Outpost"),
 		description = S("Craft 200 stone bricks."),
 		icon = "default_stone_brick.png^awards_level1.png",
+		difficulty = 0.08,
 		trigger = {
 			type = "craft",
 			item = "default:stonebrick",
@@ -132,6 +136,7 @@ if minetest.get_modpath("default") then
 		title = S("Watchtower"),
 		description = S("Craft 800 stone bricks."),
 		icon = "default_stone_brick.png^awards_level2.png",
+		difficulty = 0.08,
 		trigger = {
 			type = "craft",
 			item = "default:stonebrick",
@@ -143,6 +148,7 @@ if minetest.get_modpath("default") then
 		title = S("Fortress"),
 		description = S("Craft 3,200 stone bricks."),
 		icon = "default_stone_brick.png^awards_level3.png",
+		difficulty = 0.08,
 		trigger = {
 			type = "craft",
 			item = "default:stonebrick",
@@ -154,6 +160,7 @@ if minetest.get_modpath("default") then
 		title = S("Desert Dweller"),
 		description = S("Craft 400 desert stone bricks."),
 		icon = "default_desert_stone_brick.png",
+		difficulty = 0.09,
 		trigger = {
 			type = "craft",
 			item = "default:desert_stonebrick",
@@ -165,6 +172,7 @@ if minetest.get_modpath("default") then
 		title = S("Pharaoh"),
 		description = S("Craft 100 sandstone bricks."),
 		icon = "default_sandstone_brick.png",
+		difficulty = 0.09,
 		trigger = {
 			type = "craft",
 			item = "default:sandstonebrick",
@@ -176,6 +184,7 @@ if minetest.get_modpath("default") then
 		title = S("Little Library"),
 		description = S("Craft 7 bookshelves."),
 		icon = "default_bookshelf.png",
+		difficulty = 0.2,
 		trigger = {
 			type = "craft",
 			item = "default:bookshelf",
@@ -188,6 +197,7 @@ if minetest.get_modpath("default") then
 		description = S("Mine your first obsidian."),
 		icon = "default_obsidian.png^awards_level1.png",
 		background = "awards_bg_mining.png",
+		difficulty = 1.5,
 		trigger = {
 			type = "dig",
 			node = "default:obsidian",
@@ -201,6 +211,7 @@ if minetest.get_modpath("default") then
 		description = S("Mine 50 obsidian."),
 		icon = "default_obsidian.png^awards_level2.png",
 		background = "awards_bg_mining.png",
+		difficulty = 1.5,
 		trigger = {
 			type = "dig",
 			node = "default:obsidian",
@@ -214,6 +225,7 @@ if minetest.get_modpath("default") then
 		description = S("Mine any block while being very close to lava."),
 		background = "awards_bg_mining.png",
 		icon = "default_lava.png",
+		difficulty = 1,
 	})
 	awards.register_on_dig(function(player,data)
 		local pos = player:get_pos()
@@ -229,6 +241,7 @@ if minetest.get_modpath("default") then
 		title = S("On The Way"),
 		description = S("Place 100 rails."),
 		icon = "carts_rail_straight.png",
+		difficulty = 0.1,
 		trigger = {
 			type = "place",
 			node = "default:rail",
@@ -240,6 +253,7 @@ if minetest.get_modpath("default") then
 		title = S("First Day in the Woods"),
 		description = S("Dig 6 tree blocks."),
 		icon = "default_tree.png^awards_level1.png",
+		difficulty = 0.03,
 		trigger = {
 			type = "dig",
 			node = "default:tree",
@@ -252,6 +266,7 @@ if minetest.get_modpath("default") then
 		title = S("Lumberjack"),
 		description = S("Dig 36 tree blocks."),
 		icon = "default_tree.png^awards_level2.png",
+		difficulty = 0.03,
 		trigger = {
 			type = "dig",
 			node = "default:tree",
@@ -264,6 +279,7 @@ if minetest.get_modpath("default") then
 		title = S("Semi-pro Lumberjack"),
 		description = S("Dig 216 tree blocks."),
 		icon = "default_tree.png^awards_level3.png",
+		difficulty = 0.03,
 		trigger = {
 			type = "dig",
 			node = "default:tree",
@@ -276,6 +292,7 @@ if minetest.get_modpath("default") then
 		title = S("Professional Lumberjack"),
 		description = S("Dig 1,296 tree blocks."),
 		icon = "default_tree.png^awards_level4.png",
+		difficulty = 0.03,
 		trigger = {
 			type = "dig",
 			node = "default:tree",
@@ -288,6 +305,7 @@ if minetest.get_modpath("default") then
 		title = S("Junglebaby"),
 		description = S("Dig 100 jungle tree blocks."),
 		icon = "default_jungletree.png^awards_level1.png",
+		difficulty = 0.05,
 		trigger = {
 			type = "dig",
 			node = "default:jungletree",
@@ -300,6 +318,7 @@ if minetest.get_modpath("default") then
 		title = S("Jungleman"),
 		description = S("Dig 1,000 jungle tree blocks."),
 		icon = "default_jungletree.png^awards_level2.png",
+		difficulty = 0.05,
 		trigger = {
 			type = "dig",
 			node = "default:jungletree",
@@ -313,6 +332,7 @@ if minetest.get_modpath("default") then
 		description = S("Mine your first mese ore."),
 		icon = "default_stone.png^default_mineral_mese.png",
 		background = "awards_bg_mining.png",
+		difficulty = 1,
 		trigger = {
 			type = "dig",
 			node = "default:stone_with_mese",
@@ -327,6 +347,7 @@ if minetest.get_modpath("default") then
 		description = S("Mine a mese block."),
 		icon = "default_mese_block.png",
 		background = "awards_bg_mining.png",
+		difficulty = 1.1,
 		trigger = {
 			type = "dig",
 			node = "default:mese",
@@ -340,6 +361,7 @@ if minetest.get_modpath("default") then
 		description = S("Dig 1,000 copper ores."),
 		icon = "default_stone.png^default_mineral_copper.png",
 		background = "awards_bg_mining.png",
+		difficulty = 0.2,
 		trigger = {
 			type = "dig",
 			node = "default:stone_with_copper",
@@ -353,6 +375,7 @@ if minetest.get_modpath("default") then
 		description = S("Dig 100 stone blocks."),
 		icon = "awards_miniminer.png^awards_level1.png",
 		background = "awards_bg_mining.png",
+		difficulty = 0.02,
 		trigger = {
 			type = "dig",
 			node = "default:stone",
@@ -366,6 +389,7 @@ if minetest.get_modpath("default") then
 		description = S("Dig 1,000 stone blocks."),
 		icon = "awards_miniminer.png^awards_level2.png",
 		background = "awards_bg_mining.png",
+		difficulty = 0.02,
 		trigger = {
 			type = "dig",
 			node = "default:stone",
@@ -379,6 +403,7 @@ if minetest.get_modpath("default") then
 		description = S("Dig 10,000 stone blocks."),
 		icon = "awards_miniminer.png^awards_level3.png",
 		background = "awards_bg_mining.png",
+		difficulty = 0.02,
 		trigger = {
 			type = "dig",
 			node = "default:stone",
@@ -392,6 +417,7 @@ if minetest.get_modpath("default") then
 		description = S("Dig 1,000 sand."),
 		icon = "default_sand.png",
 		background = "awards_bg_mining.png",
+		difficulty = 0.05,
 		trigger = {
 			type = "dig",
 			node = "default:sand",
@@ -403,6 +429,7 @@ if minetest.get_modpath("default") then
 		title = S("Crafter of Sticks"),
 		description = S("Craft 100 sticks."),
 		icon = "default_stick.png",
+		difficulty = 0.01,
 		trigger = {
 			type = "craft",
 			item = "default:stick",
@@ -414,6 +441,7 @@ if minetest.get_modpath("default") then
 		title = S("Jungle Discoverer"),
 		description = S("Mine your first jungle grass."),
 		icon = "default_junglegrass.png",
+		difficulty = 0.009,
 		trigger = {
 			type = "dig",
 			node = "default:junglegrass",
@@ -425,6 +453,7 @@ if minetest.get_modpath("default") then
 		title = S("Grasslands Discoverer"),
 		description = S("Mine some grass."),
 		icon = "default_grass_3.png",
+		difficulty = 0.009,
 		trigger = {
 			type = "dig",
 			node = "default:grass_1",
@@ -436,6 +465,7 @@ if minetest.get_modpath("default") then
 		title = S("Savannah Discoverer"),
 		description = S("Mine some dry grass."),
 		icon = "default_dry_grass_3.png",
+		difficulty = 0.009,
 		trigger = {
 			type = "dig",
 			node = "default:dry_grass_3",
@@ -447,6 +477,7 @@ if minetest.get_modpath("default") then
 		title = S("Desert Discoverer"),
 		description = S("Mine your first cactus."),
 		icon = "default_cactus_side.png",
+		difficulty = 0.03,
 		trigger = {
 			type = "dig",
 			node = "default:cactus",
@@ -458,6 +489,7 @@ if minetest.get_modpath("default") then
 		title = S("Far Lands"),
 		description = S("Mine your first dry shrub."),
 		icon = "default_dry_shrub.png",
+		difficulty = 0.009,
 		trigger = {
 			type = "dig",
 			node = "default:dry_shrub",
@@ -469,6 +501,7 @@ if minetest.get_modpath("default") then
 		title = S("Glacier Discoverer"),
 		description = S("Mine your first ice."),
 		icon = "default_ice.png",
+		difficulty = 0.02,
 		trigger = {
 			type = "dig",
 			node = "default:ice",
@@ -481,6 +514,7 @@ if minetest.get_modpath("default") then
 		title = S("Very Simple Snow Man"),
 		description = S("Place two snow blocks."),
 		icon = "default_snow.png",
+		difficulty = 0.02,
 		trigger = {
 			type = "place",
 			node = "default:snowblock",
@@ -493,6 +527,7 @@ if minetest.get_modpath("default") then
 		description = S("Mine your first gold ore."),
 		icon = "default_stone.png^default_mineral_gold.png^awards_level1.png",
 		background = "awards_bg_mining.png",
+		difficulty = 0.9,
 		trigger = {
 			type = "dig",
 			node = "default:stone_with_gold",
@@ -505,6 +540,7 @@ if minetest.get_modpath("default") then
 		description = S("Mine 45 gold ores."),
 		icon = "default_stone.png^default_mineral_gold.png^awards_level2.png",
 		background = "awards_bg_mining.png",
+		difficulty = 0.9,
 		trigger = {
 			type = "dig",
 			node = "default:stone_with_gold",
@@ -516,6 +552,7 @@ if minetest.get_modpath("default") then
 		title = S("Wow, I am Diamonds!"),
 		description = S("Mine your first diamond ore."),
 		icon = "default_stone.png^default_mineral_diamond.png^awards_level1.png",
+		difficulty = 1,
 		trigger = {
 			type = "dig",
 			node = "default:stone_with_diamond",
@@ -528,6 +565,7 @@ if minetest.get_modpath("default") then
 		description = S("Mine 18 diamond ores."),
 		icon = "default_stone.png^default_mineral_diamond.png^awards_level2.png",
 		background = "awards_bg_mining.png",
+		difficulty = 1,
 		trigger = {
 			type = "dig",
 			node = "default:stone_with_diamond",
@@ -539,6 +577,7 @@ if minetest.get_modpath("default") then
 		title = S("Hardest Block on Earth"),
 		description = S("Craft a diamond block."),
 		icon = "default_diamond_block.png",
+		difficulty = 1.1,
 		trigger = {
 			type = "craft",
 			item = "default:diamondblock",
@@ -550,6 +589,7 @@ if minetest.get_modpath("default") then
 		title = S("In the Dungeon"),
 		description = S("Mine a mossy cobblestone."),
 		icon = "default_mossycobble.png",
+		difficulty = 0.9,
 		trigger = {
 			type = "dig",
 			node = "default:mossycobble",
@@ -561,6 +601,7 @@ if minetest.get_modpath("default") then
 		title = S("Smelter"),
 		description = S("Craft 10 furnaces."),
 		icon = "default_furnace_front.png",
+		difficulty = 0.08,
 		trigger = {
 			type = "craft",
 			item= "default:furnace",
@@ -572,6 +613,7 @@ if minetest.get_modpath("default") then
 		title = S("Treasurer"),
 		description = S("Craft 15 chests."),
 		icon = "default_chest_front.png",
+		difficulty = 0.08,
 		trigger = {
 			type = "craft",
 			item= "default:chest",
@@ -583,6 +625,7 @@ if minetest.get_modpath("default") then
 		title = S("Bankier"),
 		description = S("Craft 30 locked chests."),
 		icon = "default_chest_lock.png",
+		difficulty = 0.08,
 		trigger = {
 			type = "craft",
 			item= "default:chest_locked",
@@ -594,6 +637,7 @@ if minetest.get_modpath("default") then
 		title = S("Bricker"),
 		description = S("Craft 200 brick blocks."),
 		icon = "default_brick.png",
+		difficulty = 0.03,
 		trigger = {
 			type = "craft",
 			item= "default:brick",
@@ -605,6 +649,7 @@ if minetest.get_modpath("default") then
 		title = S("House of Obsidian"),
 		description = S("Craft 100 obsidian bricks."),
 		icon = "default_obsidian_brick.png",
+		difficulty = 0.4,
 		trigger = {
 			type = "craft",
 			item= "default:obsidianbrick",
@@ -616,6 +661,7 @@ if minetest.get_modpath("default") then
 		title = S("Build a Cave"),
 		description = S("Place 100 stone."),
 		icon = "default_stone.png",
+		difficulty = 0.1,
 		trigger = {
 			type = "place",
 			node = "default:stone",
@@ -627,6 +673,7 @@ if minetest.get_modpath("default") then
 		title = S("Long Ladder"),
 		description = S("Place 400 wooden ladders."),
 		icon = "default_ladder_wood.png",
+		difficulty = 0.1,
 		trigger = {
 			type = "place",
 			node = "default:ladder_wood",
@@ -638,6 +685,7 @@ if minetest.get_modpath("default") then
 		title = S("Industrial Age"),
 		description = S("Place 40 steel ladders."),
 		icon = "default_ladder_steel.png",
+		difficulty = 1,
 		trigger = {
 			type = "place",
 			node = "default:ladder_steel",
@@ -649,6 +697,7 @@ if minetest.get_modpath("default") then
 		title = S("Yummy!"),
 		description = S("Eat 80 apples."),
 		icon = "default_apple.png",
+		difficulty = 0.1,
 		trigger = {
 			type = "eat",
 			item = "default:apple",
