@@ -34,12 +34,12 @@ local function order_awards(name)
 	for _, def in pairs(awards.registered_awards) do
 		if not hash_is_unlocked[def.name] and def:can_unlock(data) then
 			local started = false
-			local score
+			local score = def.difficulty or 1
 			if def.secret then
 				score = 1000000
 			elseif def.trigger and def.trigger.target and def.getProgress then
 				local progress = def:getProgress(data).perc
-				score = (1 - progress) * def.trigger.target
+				score = score * (1 - progress) * def.trigger.target
 				if progress < 0.001 then
 					score = score + 100
 				else
