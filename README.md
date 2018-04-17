@@ -17,22 +17,42 @@ awards.register_award("mymod:myaward", {
 
 	-- Optional:
 
+	difficulty = 1.0, -- Difficulty multipler
+
 	requires = { "amod:an_award" }, -- don't show this award or allow it to be unlocked
 									-- until required awards are unlocked
 
 	sound = {}, -- SimpleSoundSpec or false to play no sound
 	            -- if not provided, uses default sound
+
 	image = "icon_image.png", -- uses default icon otherwise
+
 	background = "background_image.png", -- uses default background otherwise
+
 
 	trigger = { -- is only unlocked by direct calls to awards.unlock() otherwise
 		type = "trigger_type",
 		-- see specific docs on the trigger to see what else goes here
 	},
-	
+
 	-- Callback. award_def is this table (plus some additional methods/members added by register_award)
 	on_unlock = function(name, award_def) end,
 })
+```
+
+If the award is counted, ie: there's a trigger.target property, then the difficulty
+multipler is timesd by target to get the overal difficulty. If the award isn't a
+counted type then the difficulty multiplier is used as the overal difficulty.
+Award difficulty affects how awards are sorted in a list - more difficult awards
+are further down the list.
+
+Actual code used to calculate award difficulty:
+
+```lua
+local difficulty = def.difficulty or 1
+if def.trigger and def.trigger.target then
+	difficulty = difficulty * def.trigger.target
+end
 ```
 
 ## Registering Trigger Types

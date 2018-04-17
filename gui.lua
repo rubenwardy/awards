@@ -13,9 +13,13 @@ local function order_awards(name)
 			if def then
 				hash_is_unlocked[awardname] = true
 				local score = -100000
+
+				local difficulty = def.difficulty or 1
 				if def.trigger and def.trigger.target then
-					score = score + def.trigger.target
+					difficulty = difficulty * def.trigger.target
 				end
+				score = score + difficulty
+
 				retval[#retval + 1] = {
 					name     = awardname,
 					def      = def,
