@@ -67,8 +67,6 @@ local function convert_data()
 
 		awards.players[name] = data
 	end
-
-	print(dump(awards.players))
 end
 
 function awards.load()
@@ -162,7 +160,6 @@ function awards.register_trigger(tname, tdef)
 			assert(player and player.is_player and player:is_player())
 			local name = player:get_player_name()
 			local data = awards.player(name)
-			print(dump(data))
 
 			-- Increment counter
 			local currentVal = (data[tname] or 0) + 1
@@ -225,7 +222,6 @@ function awards.register_trigger(tname, tdef)
 			assert(player and player.is_player and player:is_player() and key)
 			local name = player:get_player_name()
 			local data = awards.player(name)
-			print(dump(data))
 
 			-- Increment counter
 			data[tname] = data[tname] or {}
