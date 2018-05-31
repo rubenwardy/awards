@@ -51,12 +51,14 @@ local function convert_data()
 			local ret = {}
 
 			local count = 0
-			for modname, items in pairs(data[from]) do
-				for itemname, value in pairs(items) do
-					itemname = modname .. ":" .. itemname
-					local key = minetest.registered_aliases[itemname] or itemname
-					ret[key] = value
-					count = count + value
+			if data[from] then
+				for modname, items in pairs(data[from]) do
+					for itemname, value in pairs(items) do
+						itemname = modname .. ":" .. itemname
+						local key = minetest.registered_aliases[itemname] or itemname
+						ret[key] = value
+						count = count + value
+					end
 				end
 			end
 
