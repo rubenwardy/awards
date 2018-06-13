@@ -7,44 +7,173 @@ With thanks to Wuzzy, kaeza, and MrIbby.
 
 Majority of awards are back ported from Calinou's old fork in Carbone, under same license.
 
-# API
 
-## Registering Awards
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Introduction
+
+## Awards and Triggers
+
+An award is a single unlockable unit, registered like so:
 
 ```lua
-awards.register_award("mymod:myaward", {
-	description = "The title of the award",
-
-	-- Optional:
-
-	difficulty = 1.0, -- Difficulty multipler
-
-	requires = { "amod:an_award" }, -- don't show this award or allow it to be unlocked
-									-- until required awards are unlocked
-
-	sound = {}, -- SimpleSoundSpec or false to play no sound
-	            -- if not provided, uses default sound
-
-	image = "icon_image.png", -- uses default icon otherwise
-
-	background = "background_image.png", -- uses default background otherwise
-
-
-	trigger = { -- is only unlocked by direct calls to awards.unlock() otherwise
-		type = "trigger_type",
-		-- see specific docs on the trigger to see what else goes here
-	},
-
-	-- Callback. award_def is this table (plus some additional methods/members added by register_award)
-	on_unlock = function(name, award_def) end,
+awards.register_award("mymod:award", {
+	description = "My Example Award",
 })
 ```
 
-If the award is counted, ie: there's a trigger.target property, then the difficulty
-multipler is timesd by target to get the overal difficulty. If the award isn't a
-counted type then the difficulty multiplier is used as the overal difficulty.
-Award difficulty affects how awards are sorted in a list - more difficult awards
-are further down the list.
+Awards are unlocked either using `awards.unlock()` or by a trigger being
+fullfilled. A trigger is a condition which unlocks an award. Triggers are
+registered at the same time as an award is registered:
+
+```lua
+awards.register_award("mymod:award", {
+	description = "My Example Award",
+	trigger = {
+		type   = "dig",
+		node   = "default:stone",
+		target = 10,
+	},
+})
+```
+
+The above trigger type is an example of a counted_key trigger:
+rather than a single counter there's a counter per key - in this
+case the key is the value of the `node` field. If you leave out
+the key in a `counted_key` trigger, then the total will be used
+instead. For example, here is an award which unlocks after you've
+placed 10 nodes of any type:
+
+```lua
+awards.register_award("mymod:award", {
+	description = "Place 10 nodes!",
+	trigger = {
+		type   = "place",
+		target = 10,
+	},
+})
+```
+
+You can also register an *Unlock Function*, which can return the name of an
+award to unlock it:
+
+```lua
+awards.register_award("mymod:award", {
+	title = "Lava Miner",
+	description = "Mine any block while being very close to lava.",
+})
+
+awards.register_on_dig(function(player, data)
+	local pos = player:get_pos()
+	if pos and (minetest.find_node_near(pos, 1, "default:lava_source") or
+			minetest.find_node_near(pos, 1, "default:lava_flowing")) then
+		return "mymod:award"
+	end
+	return nil
+end)
+```
+
+The above is a bad example as you don't actually need the stats data given.
+It would be better to register a `dignode` callback and call `awards.unlock()`
+if the condition is met.
+
+## Trigger Types
+
+The trigger type is used to determine which event will cause the trigger will be
+fulfilled. The awards mod comes with a number of predefined types, documented
+in [Builtin Trigger Types](#builtin-trigger-types).
+
+Trigger types are registered like so:
+
+```lua
+awards.register_trigger("chat", {
+	type = "counted",
+	progress = "@1/@2 chat messages",
+	auto_description = { "Send a chat message", "Chat @1 times" },
+})
+
+minetest.register_on_chat_message(function(name, message)
+	local player = minetest.get_player_by_name(name)
+	if not player or string.find(message, "/")  then
+		return
+	end
+	awards.notify_chat(player)
+end)
+```
+
+A trigger type has a type as well, which determines how the data is stored and
+also how the trigger is fulfilled.
+
+**Trigger Type Types:**
+
+* **custom** requires you handle the calling of awards.unlock() yourself. You also
+  need to implement on_register() yourself. You'll also probably want to implement
+  `on_register()` to catch awards registered with your trigger type.
+* **counted** stores a single counter for each player which is incremented by calling
+  `trigger:notify(player)`. Good for homogenous actions like number of chat messages,
+  joins, and the like.
+* **counted_key** stores a table of counters each indexed by a key. There is also
+  a total field (`__total`) which stores the sum of all counters. A counter is
+  incremented by calling `trigger:notify(player, key)`. This is good for things like
+  placing nodes or crafting items, where the key will be the item or node name.
+  If `key` is an item, then you should also add `key_is_item = true` to the
+  trigger type definition.
+
+As said, you could use a custom trigger if none of the other ones match your needs.
+Here's an example.
+
+```lua
+awards.register_trigger("foo", {
+	type             = "counted",
+	progress         = "@1/@2 foos",
+	auto_description = { "Do a foo", "Foo @1 times" },
+})
+
+minetest.register_on_foo(function()
+	for _, trigger in pairs(awards.on.foo) do
+		-- trigger is either a trigger tables or
+		--   or an unlock function.
+
+		-- some complex logic
+		if condition then
+			awards.unlock(trigger)
+		end
+	end
+end)
+
+```
+
+## Award Difficulty
+
+Difficulty is used to determine how awards are sorted in awards lists.
+
+If the award trigger is counted, ie: the trigger requires a `target` property,
+then the difficulty multipler is timesd by `target` to get the overall difficulty.
+If the award isn't a counted type then the difficulty multiplier is used as the
+overal difficulty. Award difficulty affects how awards are sorted in a list -
+more difficult awards are further down the list.
+
+In real terms, `difficulty` is a relative difficulty to do one unit of the trigger
+if its counted, otherwise it's the relative difficulty of completely doing the
+award (if not-counted). For the `dig` trigger type, 1 unit would be 1 node dug.
+
 
 Actual code used to calculate award difficulty:
 
@@ -55,75 +184,46 @@ if def.trigger and def.trigger.target then
 end
 ```
 
-## Registering Trigger Types
 
-```lua
-local trigger = awards.register_trigger(name, {
-	type = "", -- type of trigger, defaults to custom
+# API
 
-	progress = "%2/%2"
-	auto_description = { "Mine: @2", "Mine: @1×@2" },
-
-	on_register = function(self, def) end,
-
-	-- "counted_key" only, when no key is given (ie: a total)
-	auto_description_total = { "Mine @1 block.", "Mine @1 blocks." },
-
-	-- "counted_key" only, get key for particular award - return nil for a total
-	get_key = function(self, def)
-		return minetest.registered_aliases[def.trigger.node] or def.trigger.node
-	end,
-
-	-- "counted_key" only, true if the key is an item name. On notify(),
-	--   any watched groups will also be notified as `group:groupname` keys.
-	key_is_item = true,
-})
-```
-
-Types:
-
-* "custom" requires you handle the calling of awards.unlock() yourself. You also
-  need to implement on_register() yourself.
-* "counted" stores a single counter for each player which is incremented by calling
-  trigger:notify(player). Good for homogenous actions like number of chat messages,
-  joins, and the like.
-* "counted_key" stores a table of counters each indexed by a key. There is also
-  a total field (`__total`) which stores the sum of all counters. A counter is
-  incremented by calling trigger:notify(player, key). This is good for things like
-  placing nodes or crafting items, where the key will be the item or node name.
-
-
-## Helper Functions
-
+* awards.register_award(name, def), the def table has the following fields:
+	* `description` - the title of the award. Required.
+	* `difficulty` - see [Award Difficulty](#award-difficulty).
+	* `requires` - list of awards that need to be unlocked before this one
+		is visible.
+	* `sound` - `SimpleSoundSpec` table to play on unlock.
+		`false` to disable unlock sound.
+	* `image` - the icon image, use default otherwise.
+	* `background` - the background image, use default otherwise.
+	* `trigger` - trigger definition, see [Builtin Trigger Types](#builtin-trigger-types).
+	* `on_unlock(name, def)` - callback on unlock.
+* awards.register_trigger(name, def), the def table has the following fields:
+	* `type` - see [Trigger Types](#trigger-types).
+	* `progress` - used to format progress, defaults to "%1/%2".
+	* `auto_description` - a table of two elements. Each element is a format string. Element 1 is singular, element 2 is plural. Used for the award description (not title) if none is given.
+	* `on_register(award_def)` - called when an award registers with this type.
+	* "counted_key" only:
+		* `auto_description_total` - Used if the trigger is for the total.
+		* `get_key(self, def)` - get key for particular award, return nil for a total.
+		* `key_is_item` - true if the key is an item name. On notify(),
+			any watched groups will also be notified as `group:groupname` keys.
 * awards.register_on_unlock(func(name, def))
 	* name is the player name
 	* def is the award def.
 	* return true to cancel HUD
-
 * awards.unlock(name, award)
 	* gives an award to a player
 	* name is the player name
 
-# Included in the Mod
-
-The API, above, allows you to register awards
-and triggers (things that look for events and unlock awards, they need
-to be registered in order to get details from award_def.trigger).
-
-However, all awards and triggers are separate from the API.
-They can be found in init.lua and triggers.lua
-
-## Triggers
+## Builtin Trigger Types
 
 Callbacks (register a function to be run)
 
-"dig", "place", "craft", "death", "chat", "join" or "eat"
 * dig type: Dig a node.
 	* node: the dug node type. If nil, all dug nodes are counted
 * place type: Place a node.
 	* node: the placed node type. If nil, all placed nodes are counted
-* eat type: Eat an item.
-	* item: the eaten item type. If nil, all eaten items are counted
 * craft type: Craft something.
 	* item: the crafted item type. If nil, all crafted items are counted
 * death type: Die.
@@ -131,72 +231,81 @@ Callbacks (register a function to be run)
 				or nil for total deaths.
 * chat type: Write a chat message.
 * join type: Join the server.
-* (for all types) target - how many times to dig/place/craft/etc.
-* See Triggers
+* eat type: Eat an item.
+	* item: the eaten item type. If nil, all eaten items are counted
+
+(for all types) target - how many times to dig/place/craft/etc.
+
+Each type has a register function like so:
+
+* awards.register_on_TRIGGERTYPE(func(player, data))
+	* data is the player stats data
+	* return award name or null
 
 ### dig
 
-	trigger = {
-		type   = "dig",
-		node   = "default:dirt",
-		target = 50,
-	}
+```lua
+trigger = {
+	type   = "dig",
+	node   = "default:dirt", -- item, alias, or group
+	target = 50,
+}
+```
 
 ### place
 
-	trigger = {
-		type   = "place",
-		node   = "default:dirt",
-		target = 50,
-	}
+```lua
+trigger = {
+	type   = "place",
+	node   = "default:dirt", -- item, alias, or group
+	target = 50,
+}
+```
+
+### craft
+
+```lua
+trigger = {
+	type   = "craft",
+	node   = "default:dirt", -- item, alias, or group
+	target = 50,
+}
+```
 
 ### death
 
-	trigger = {
-		type   = "death",
-		reason = "fall",
-		target = 5,
-	}
+```lua
+trigger = {
+	type   = "death",
+	reason = "fall",
+	target = 5,
+}
+```
 
 ### chat
 
-	trigger = {
-		type   = "chat",
-		target = 100,
-	}
+```lua
+trigger = {
+	type   = "chat",
+	target = 100,
+}
+```
 
 ### join
 
-	trigger = {
-		type   = "join",
-		target = 100,
-	}
+```lua
+trigger = {
+	type   = "join",
+	target = 100,
+}
+```
 
 ### eat
 
-	trigger = {
-		type   = "eat",
-		item   = "default:apple",
-		target = 100,
-	}
-
-## Callbacks relating to triggers
-
-* awards.register_on_dig(func(player, data))
-	* data is player data (see below)
-	* return award name or null
-* awards.register_on_place(func(player, data))
-	* data is player data (see below)
-	* return award name or null
-* awards.register_on_eat(func(player, data))
-	* data is player data (see below)
-	* return award name or null
-* awards.register_on_death(func(player, data))
-	* data is player data (see below)
-	* return award name or null
-* awards.register_on_chat(func(player, data))
-	* data is player data (see below)
-	* return award name or null
-* awards.register_on_join(func(player, data)
-	* data is player data (see below)
-	* return award name or null
+```lua
+trigger = {
+	type   = "eat",
+	item   = "default:apple",
+	target = 100,
+}
+```
