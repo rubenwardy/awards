@@ -178,8 +178,14 @@ function awards.register_trigger(tname, tdef)
 		awards["notify_" .. tname] = tdef.notify
 
 	elseif tdef.type == "counted_key" then
+		if tdef.key_is_item then
+			tdef.watched_groups = {}
+		end
+
+		-- On award register
 		local old_reg = tdef.on_register
 		function tdef:on_register(def)
+			-- Register trigger
 			local tmp = {
 				award  = def.name,
 				key    = tdef:get_key(def),
@@ -187,6 +193,12 @@ function awards.register_trigger(tname, tdef)
 			}
 			tdef.register(tmp)
 
+			-- If group, add it to watch list
+			if tdef.key_is_item and tmp.key and tmp.key:sub(1, 6) == "group:" then
+				tdef.watched_groups[tmp.key:sub(7, #tmp.key)] = true
+			end
+
+			-- Called to get progress values and labels
 			function def.getProgress(_, data)
 				local done
 				data[tname] = data[tname] or {}
@@ -201,6 +213,7 @@ function awards.register_trigger(tname, tdef)
 				}
 			end
 
+			-- Build description if none is specificed by the award
 			function def.getDefaultDescription(_)
 				local n = def.trigger.target
 				if tmp.key then
@@ -213,6 +226,7 @@ function awards.register_trigger(tname, tdef)
 				end
 			end
 
+			-- Call on_register in trigger type definition
 			if old_reg then
 				return old_reg(tdef, def)
 			end
@@ -220,6 +234,17 @@ function awards.register_trigger(tname, tdef)
 
 		function tdef.notify(player, key, n)
 			n = n or 1
+
+			if tdef.key_is_item and key:sub(1, 6) ~= "group:" then
+				local itemdef = minetest.registered_items[key]
+				if itemdef then
+					for groupname, _ in pairs(itemdef.groups or {}) do
+						if tdef.watched_groups[groupname] then
+							tdef.notify(player, "group:" .. groupname, n)
+						end
+					end
+				end
+			end
 
 			assert(player and player.is_player and player:is_player() and key)
 			local name = player:get_player_name()
@@ -229,7 +254,9 @@ function awards.register_trigger(tname, tdef)
 			data[tname] = data[tname] or {}
 			local currentVal = (data[tname][key] or 0) + n
 			data[tname][key] = currentVal
-			data[tname].__total = (data[tname].__total or 0) + n
+			if key:sub(1, 6) ~= "group:" then
+				data[tname].__total = (data[tname].__total or 0) + n
+			end
 
 			tdef:run_callbacks(player, data, function(entry)
 				local current

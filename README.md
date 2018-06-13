@@ -73,6 +73,10 @@ local trigger = awards.register_trigger(name, {
 	get_key = function(self, def)
 		return minetest.registered_aliases[def.trigger.node] or def.trigger.node
 	end,
+
+	-- "counted_key" only, true if the key is an item name. On notify(),
+	--   any watched groups will also be notified as `group:groupname` keys.
+	key_is_item = true,
 })
 ```
 

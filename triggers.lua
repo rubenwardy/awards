@@ -64,7 +64,8 @@ awards.register_trigger("dig", {
 	auto_description_total = { "Mine @1 block.", "Mine @1 blocks." },
 	get_key = function(self, def)
 		return minetest.registered_aliases[def.trigger.node] or def.trigger.node
-	end
+	end,
+	key_is_item = true,
 })
 minetest.register_on_dignode(function(pos, node, player)
 	if not player or not pos or not node then
@@ -84,7 +85,8 @@ awards.register_trigger("place", {
 	auto_description_total = { "Place @1 block.", "Place @1 blocks." },
 	get_key = function(self, def)
 		return minetest.registered_aliases[def.trigger.node] or def.trigger.node
-	end
+	end,
+	key_is_item = true,
 })
 minetest.register_on_placenode(function(pos, node, player)
 	if not player or not pos or not node then
@@ -104,7 +106,8 @@ awards.register_trigger("craft", {
 	auto_description_total = { "Craft @1 item", "Craft @1 items." },
 	get_key = function(self, def)
 		return minetest.registered_aliases[def.trigger.item] or def.trigger.item
-	end
+	end,
+	key_is_item = true,
 })
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
 	if not player or itemstack:is_empty() then
@@ -124,7 +127,8 @@ awards.register_trigger("eat", {
 	auto_description_total = { "Eat @1 item", "Eat @1 items." },
 	get_key = function(self, def)
 		return minetest.registered_aliases[def.trigger.item] or def.trigger.item
-	end
+	end,
+	key_is_item = true,
 })
 minetest.register_on_item_eat(function(_, _, itemstack, player, _)
 	if not player or itemstack:is_empty() then
