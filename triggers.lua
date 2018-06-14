@@ -172,7 +172,7 @@ end)
 -- trigger for killing an entity
 awards.register_trigger("punch_entity", {
 	type = "counted_key",
-	progress = "@1/@2 killed",
+	progress = "@1/@2 punched",
 	auto_description = { "Punch @2", "Punch @1×@2" },
 	auto_description_total = { "Punch @1 entity", "Punch @1 entities." },
 	get_key = function(self, def)
