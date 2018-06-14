@@ -990,3 +990,13 @@ if minetest.get_modpath("mobs_animal") then
 		}
 	})
 end
+
+awards.register_award("pnch_entity_test", {
+	title = S("All"),
+	description = S("A test award for punching"),
+	difficulty = 0.001,
+	trigger = {
+		type = "punch_entity",
+		target = 5
+	}
+})
