@@ -135,3 +135,63 @@ minetest.register_on_item_eat(function(_, _, itemstack, player, _)
 	itemname = minetest.registered_aliases[itemname] or itemname
 	awards.notify_craft(player, itemname, itemstack:get_count())
 end)
+
+-- trigger for killing entities with more than 1 point of health
+awards.register_trigger("kill_mob", {
+	type = "counted_key",
+	progress = "@1/@2 killed",
+	auto_description = { "Kill @2", "Kill @1×@2" },
+	auto_description_total = { "Kill @1 mob", "Kill @1 mobs." },
+	get_key = function(self, def)
+		return minetest.registered_aliases[def.trigger.mob] or def.trigger.mob
+	end
+})
+
+-- wait for all mobs to be registered
+minetest.after(0, function()
+	local ents = minetest.registered_entities
+	local mobs = {}
+	for _, ent in pairs(ents) do
+		if ent.hp_max ~= nil and ent.hp_max > 0 then
+         		table.insert(mobs,ent)
+      		end
+	end
+	for _, mob in pairs(mobs) do
+		local old_func = mob.on_punch
+		mob.on_punch = function(self, player, a, b, c, d)
+			old_func(self, player, a, b, c, d)
+			if player and player:is_player() then
+				if self.health <= 0 then
+					awards.notify_kill_mob(player, self.name)
+				end
+			end
+		end
+	end
+end)
+
+-- trigger for killing an entity
+awards.register_trigger("punch_entity", {
+	type = "counted_key",
+	progress = "@1/@2 killed",
+	auto_description = { "Punch @2", "Punch @1×@2" },
+	auto_description_total = { "Punch @1 entity", "Punch @1 entities." },
+	get_key = function(self, def)
+		return minetest.registered_aliases[def.trigger.mob] or def.trigger.mob
+	end
+})
+
+-- wait for all entities to be registered
+minetest.after(0, function()
+	local ents = minetest.registered_entities
+	for _, ent in pairs(ents) do
+		if ent.hp_max == nil then
+			local old_func = ent.on_punch
+			ent.on_punch = function(self, player, a, b, c, d)
+				old_func(self, player, a, b, c, d)
+				if player and player:is_player() then
+					awards.notify_punch_entity(player, self.name)
+				end
+			end
+		end
+	end
+end)

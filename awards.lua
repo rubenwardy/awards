@@ -958,3 +958,35 @@ if minetest.get_modpath("nyancat") then
 		}
 	})
 end
+
+if minetest.get_modpath("mobs_animal") then
+	awards.register_award("mobs:kill_chicken", {
+		title = S("Chicken"),
+		description = S("A test award when mobs mod on"),
+		difficulty = 0.001,
+		trigger = {
+			type = "kill_mob",
+			mob = "mobs_animal:chicken",
+			target = 5
+		}
+	})
+	awards.register_award("mobs:kill_cow", {
+		title = S("Cows"),
+		description = S("A test award when mobs mod on"),
+		difficulty = 0.001,
+		trigger = {
+			type = "kill_mob",
+			mob = "mobs_animal:cow",
+			target = 5
+		}
+	})
+	awards.register_award("mobs:kill_all", {
+		title = S("All"),
+		description = S("A test award when mobs mod on"),
+		difficulty = 0.001,
+		trigger = {
+			type = "kill_mob",
+			target = 5
+		}
+	})
+end
