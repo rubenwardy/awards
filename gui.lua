@@ -79,20 +79,20 @@ function awards.get_formspec(name, to, sid)
 
 	-- Sidebar
 	local sitem = awards_list[sid]
-	local def = sitem.def
-	if def and def.secret and not sitem.unlocked then
+	local sdef = sitem.def
+	if sdef and sdef.secret and not sitem.unlocked then
 		formspec = formspec .. "label[1,2.75;"..
 				minetest.formspec_escape(S("(Secret Award)")).."]"..
 				"image[1,0;3,3;awards_unknown.png]"
-		if def and def.description then
+		if sdef and sdef.description then
 			formspec = formspec	.. "textarea[0.25,3.25;4.8,1.7;;"..
 					minetest.formspec_escape(
 							S("Unlock this award to find out what it is."))..";]"
 		end
 	else
 		local title = sitem.name
-		if def and def.title then
-			title = def.title
+		if sdef and sdef.title then
+			title = sdef.title
 		end
 		local status = "%s"
 		if sitem.unlocked then
@@ -103,14 +103,14 @@ function awards.get_formspec(name, to, sid)
 			string.format(status, minetest.formspec_escape(title)) ..
 			";]"
 
-		if def and def.icon then
-			formspec = formspec .. "image[1,0;3,3;" .. def.icon .. "]"
+		if sdef and sdef.icon then
+			formspec = formspec .. "image[1,0;3,3;" .. sdef.icon .. "]"
 		end
 		local barwidth = 4.6
 		local perc = nil
 		local label = nil
-		if def.getProgress and data then
-			local res = def:getProgress(data)
+		if sdef.getProgress and data then
+			local res = sdef:getProgress(data)
 			perc = res.perc
 			label = res.label
 		end
@@ -124,8 +124,8 @@ function awards.get_formspec(name, to, sid)
 				formspec = formspec .. "label[1.75,4.63;" .. minetest.formspec_escape(label) .. "]"
 			end
 		end
-		if def and def.description then
-			formspec = formspec	.. "textarea[0.25,3.75;4.8,1.7;;"..minetest.formspec_escape(def.description)..";]"
+		if sdef and sdef.description then
+			formspec = formspec	.. "textarea[0.25,3.75;4.8,1.7;;"..minetest.formspec_escape(sdef.description)..";]"
 		end
 	end
 
