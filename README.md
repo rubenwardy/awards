@@ -188,16 +188,20 @@ end
 # API
 
 * awards.register_award(name, def), the def table has the following fields:
+	* `title` - title of the award (defaults to name)
 	* `description` - the title of the award. Required.
 	* `difficulty` - see [Award Difficulty](#award-difficulty).
 	* `requires` - list of awards that need to be unlocked before this one
 		is visible.
+	* `prizes` - list of items to give when you earn the award
+	* `secret` - boolean if this award is secret (i.e. showed on awards list)
 	* `sound` - `SimpleSoundSpec` table to play on unlock.
 		`false` to disable unlock sound.
-	* `image` - the icon image, use default otherwise.
+	* `icon` - the icon image, use default otherwise.
 	* `background` - the background image, use default otherwise.
 	* `trigger` - trigger definition, see [Builtin Trigger Types](#builtin-trigger-types).
 	* `on_unlock(name, def)` - callback on unlock.
+	
 * awards.register_trigger(name, def), the def table has the following fields:
 	* `type` - see [Trigger Types](#trigger-types).
 	* `progress` - used to format progress, defaults to "%1/%2".
