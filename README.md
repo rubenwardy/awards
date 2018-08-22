@@ -122,7 +122,7 @@ Here's an example.
 
 ```lua
 awards.register_trigger("foo", {
-	type             = "counted",
+	type             = "custom",
 	progress         = "@1/@2 foos",
 	auto_description = { "Do a foo", "Foo @1 times" },
 })
