@@ -8,25 +8,6 @@ With thanks to Wuzzy, kaeza, and MrIbby.
 Majority of awards are back ported from Calinou's old fork in Carbone, under same license.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Introduction
 
 ## Awards and Triggers
@@ -189,7 +170,7 @@ end
 
 * awards.register_award(name, def), the def table has the following fields:
 	* `title` - title of the award (defaults to name)
-	* `description` - the title of the award. Required.
+	* `description` - longer description of the award, displayed in Awards tab
 	* `difficulty` - see [Award Difficulty](#award-difficulty).
 	* `requires` - list of awards that need to be unlocked before this one
 		is visible.
@@ -201,7 +182,6 @@ end
 	* `background` - the background image, use default otherwise.
 	* `trigger` - trigger definition, see [Builtin Trigger Types](#builtin-trigger-types).
 	* `on_unlock(name, def)` - callback on unlock.
-	
 * awards.register_trigger(name, def), the def table has the following fields:
 	* `type` - see [Trigger Types](#trigger-types).
 	* `progress` - used to format progress, defaults to "%1/%2".
