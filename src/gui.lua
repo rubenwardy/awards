@@ -254,6 +254,22 @@ if minetest.get_modpath("sfinv") then
 			end
 		end
 	})
+
+	local function check_and_reshow(name)
+		local player = minetest.get_player_by_name(name)
+		if not player then
+			return
+		end
+
+		local context = sfinv.get_or_create_context(player)
+		if context.page ~= "awards:awards" then
+			return
+		end
+
+		sfinv.set_player_inventory_formspec(player, context)
+	end
+
+	awards.register_on_unlock(check_and_reshow)
 end
 
 if minetest.get_modpath("unified_inventory") ~= nil then
