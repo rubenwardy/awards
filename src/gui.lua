@@ -99,14 +99,14 @@ function awards.get_formspec(name, to, sid)
 			status = S("%s (unlocked)")
 		end
 
-		formspec = formspec .. "textarea[0.5,2.7;4.8,1.45;;" ..
+		formspec = formspec .. "textarea[0.5,3.1;4.8,1.45;;" ..
 			string.format(status, minetest.formspec_escape(title)) ..
 			";]"
 
 		if sdef and sdef.icon then
-			formspec = formspec .. "image[1,0;3,3;" .. sdef.icon .. "]"
+			formspec = formspec .. "image[0.6,0;3,3;" .. sdef.icon .. "]"
 		end
-		local barwidth = 4.6
+		local barwidth = 3.95
 		local perc = nil
 		local label = nil
 		if sdef.getProgress and data then
@@ -118,19 +118,21 @@ function awards.get_formspec(name, to, sid)
 			if perc > 1 then
 				perc = 1
 			end
-			formspec = formspec .. "background[0,4.80;" .. barwidth ..",0.25;awards_progress_gray.png;false]"
-			formspec = formspec .. "background[0,4.80;" .. (barwidth * perc) ..",0.25;awards_progress_green.png;false]"
+			formspec = formspec .. "background[0,8.24;" .. barwidth ..",0.4;awards_progress_gray.png;false]"
+			formspec = formspec .. "background[0,8.24;" .. (barwidth * perc) ..",0.4;awards_progress_green.png;false]"
 			if label then
-				formspec = formspec .. "label[1.75,4.63;" .. minetest.formspec_escape(label) .. "]"
+				formspec = formspec .. "label[1.6,8.15;" .. minetest.formspec_escape(label) .. "]"
 			end
 		end
 		if sdef and sdef.description then
-			formspec = formspec	.. "textarea[0.25,3.75;4.8,1.7;;"..minetest.formspec_escape(sdef.description)..";]"
+			formspec = formspec .. "box[-0.05,3.75;3.9,4.2;#000]"
+			formspec = formspec	.. "textarea[0.25,3.75;3.9,4.2;;" ..
+					minetest.formspec_escape(sdef.description) .. ";]"
 		end
 	end
 
 	-- Create list box
-	formspec = formspec .. "textlist[4.75,0;6,5;awards;"
+	formspec = formspec .. "textlist[4,0;3.8,8.6;awards;"
 	local first = true
 	for _, award in pairs(awards_list) do
 		local def = award.def
@@ -203,10 +205,28 @@ function awards.show_to(name, to, sid, text)
 		end
 		-- Show formspec to user
 		minetest.show_formspec(to,"awards:awards",
-			"size[11,5]" .. deco ..
+			"size[8,8.6]" .. deco ..
 			awards.get_formspec(name, to, sid))
 	end
 end
+
+minetest.register_on_player_receive_fields(function(player, formname, fields)
+	if formname ~= "awards:awards" then
+		return false
+	end
+	if fields.quit then
+		return true
+	end
+	local name = player:get_player_name()
+	if fields.awards then
+		local event = minetest.explode_textlist_event(fields.awards)
+		if event.type == "CHG" then
+			awards.show_to(name, name, event.index, false)
+		end
+	end
+
+	return true
+end)
 
 if minetest.get_modpath("sfinv") then
 	sfinv.register_page("awards:awards", {
@@ -222,7 +242,7 @@ if minetest.get_modpath("sfinv") then
 			local name = player:get_player_name()
 			return sfinv.make_formspec(player, context,
 				awards.get_formspec(name, name, context.awards_idx),
-				false, "size[11,5]")
+				false)
 		end,
 		on_player_receive_fields = function(self, player, context, fields)
 			if fields.awards then

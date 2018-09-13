@@ -7,14 +7,20 @@ awards = {
 }
 
 -- Internationalization support.
-awards.gettext, awards.ngettext = dofile(minetest.get_modpath("awards").."/intllib.lua")
+awards.gettext, awards.ngettext = dofile(minetest.get_modpath("awards").."/src/intllib.lua")
 
 -- Load files
-dofile(minetest.get_modpath("awards").."/api.lua")
-dofile(minetest.get_modpath("awards").."/chat_commands.lua")
-dofile(minetest.get_modpath("awards").."/gui.lua")
-dofile(minetest.get_modpath("awards").."/triggers.lua")
-dofile(minetest.get_modpath("awards").."/awards.lua")
+dofile(minetest.get_modpath("awards").."/src/data.lua")
+dofile(minetest.get_modpath("awards").."/src/api_awards.lua")
+dofile(minetest.get_modpath("awards").."/src/api_triggers.lua")
+dofile(minetest.get_modpath("awards").."/src/chat_commands.lua")
+dofile(minetest.get_modpath("awards").."/src/gui.lua")
+dofile(minetest.get_modpath("awards").."/src/triggers.lua")
+dofile(minetest.get_modpath("awards").."/src/awards.lua")
+
+awards.load()
+minetest.register_on_shutdown(awards.save)
+
 
 -- Backwards compatibility
 awards.give_achievement     = awards.unlock
