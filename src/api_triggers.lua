@@ -44,7 +44,7 @@ function awards.register_trigger(tname, tdef)
 			tdef.register(tmp)
 
 			function def.getProgress(_, data)
-				local done = data[tname] or 0
+				local done = math.min(data[tname] or 0, tmp.target)
 				return {
 					perc = done / tmp.target,
 					label = S(tdef.progress, done, tmp.target),
@@ -103,13 +103,16 @@ function awards.register_trigger(tname, tdef)
 
 			-- Called to get progress values and labels
 			function def.getProgress(_, data)
-				local done
 				data[tname] = data[tname] or {}
+
+				local done
 				if tmp.key then
 					done = data[tname][tmp.key] or 0
 				else
 					done = data[tname].__total or 0
 				end
+				done = math.min(done, tmp.target)
+
 				return {
 					perc = done / tmp.target,
 					label = S(tdef.progress, done, tmp.target),
