@@ -251,7 +251,7 @@ trigger = {
 ```lua
 trigger = {
 	type   = "craft",
-	node   = "default:dirt", -- item, alias, or group
+	item   = "default:dirt", -- item, alias, or group
 	target = 50,
 }
 ```
