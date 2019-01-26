@@ -102,8 +102,8 @@ msgstr[1] "Bauen Sie Blöcke ab: @1×@2"
 #: triggers.lua
 msgid "Mine @1 block."
 msgid_plural "Mine @1 blocks."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Bauen Sie einen @1 Block ab."
+msgstr[1] "Bauen Sie @1 Blöcke ab."
 
 #: triggers.lua
 msgid "@1/@2 placed"
@@ -119,8 +119,8 @@ msgstr[1] "Platzieren Sie Blöcke: @1×@2"
 #: triggers.lua
 msgid "Place a block."
 msgid_plural "Place @1 blocks."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Platzieren Sie einen Block."
+msgstr[1] "Platzieren Sie @1 Blöcke."
 
 #: triggers.lua
 msgid "@1/@2 eaten"
@@ -151,13 +151,13 @@ msgstr[1] "Sterben Sie @1 mal."
 
 #: triggers.lua
 msgid "@1/@2 chat messages"
-msgstr ""
+msgstr "@1/@2 Chatnachrichten"
 
 #: triggers.lua
 msgid "Write something in chat."
 msgid_plural "Write @1 chat messages."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Schreiben Sie etwas im Chat."
+msgstr[1] "Schreiben Sie @1 Chatnachrichten."
 
 #: triggers.lua
 msgid "@1/@2 game joins"
