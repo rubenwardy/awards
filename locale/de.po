@@ -119,7 +119,7 @@ msgstr[1] "Platzieren Sie Blöcke: @1×@2"
 #: triggers.lua
 msgid "Place a block."
 msgid_plural "Place @1 blocks."
-msgstr[0] "Platzieren Sie einen Blick."
+msgstr[0] "Platzieren Sie einen Block."
 msgstr[1] "Platzieren Sie @1 Blöcke."
 
 #: triggers.lua
