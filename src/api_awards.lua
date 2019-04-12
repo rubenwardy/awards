@@ -162,7 +162,7 @@ function awards.unlock(name, award)
 			name = "award_icon",
 			scale = {x = 2, y = 2}, -- adjusted for 32x32 from x/y = 4
 			text = icon,
-			position = {x = .5, y = 0.05},
+			position = {x = 0.5, y = 0.05},
 			offset = {x = -200.5, y = 126},
 			alignment = {x = 0, y = -1}
 		})

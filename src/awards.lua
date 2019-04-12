@@ -948,7 +948,7 @@ end)
 if minetest.get_modpath("nyancat") then
 	-- Found a Nyan cat!
 	awards.register_award("award_nyanfind", {
-		secret = false,
+		secret = true,
 		title = S("A Cat in a Pop-Tart?!"),
 		description = S("Mine a nyan cat."),
 		icon = "awards_a_cat_in_a_pop_tart.png",
