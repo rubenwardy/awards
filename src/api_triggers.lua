@@ -152,7 +152,9 @@ function awards.register_trigger(tname, tdef)
 				end
 			end
 
-			assert(player and player.is_player and player:is_player() and key)
+			if not (player and player.is_player and player:is_player() and key) then
+				return
+			end
 			local name = player:get_player_name()
 			local data = awards.player(name)
 
