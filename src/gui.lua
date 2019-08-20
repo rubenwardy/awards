@@ -104,7 +104,7 @@ function awards.get_formspec(name, to, sid)
 			";]"
 
 		if sdef and sdef.icon then
-			formspec = formspec .. "image[0.6,0;3,3;" .. sdef.icon .. "]"
+			formspec = formspec .. "image[0.45,0;3.5,3.5;" .. sdef.icon .. "]"  -- adjusted values from 0.6,0;3,3
 		end
 		local barwidth = 3.95
 		local perc = nil

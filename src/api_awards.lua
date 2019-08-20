@@ -160,7 +160,7 @@ function awards.unlock(name, award)
 		local four = player:hud_add({
 			hud_elem_type = "image",
 			name = "award_icon",
-			scale = {x = 4, y = 4},
+			scale = {x = 2, y = 2}, -- adjusted for 32x32 from x/y = 4
 			text = icon,
 			position = {x = 0.5, y = 0.05},
 			offset = {x = -200.5, y = 126},

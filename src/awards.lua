@@ -2,12 +2,13 @@
 
 local S = awards.gettext
 
+
 -- Saint-Maclou
 if minetest.get_modpath("moreblocks") then
 	awards.register_award("award_saint_maclou",{
 		title = S("Saint-Maclou"),
 		description = S("Place 20 coal checkers."),
-		icon = "awards_novicebuilder.png",
+		icon = "awards_saint_maclou.png",
 		trigger = {
 			type = "place",
 			node = "moreblocks:coal_checker",
@@ -19,7 +20,7 @@ if minetest.get_modpath("moreblocks") then
 	awards.register_award("award_castorama",{
 		title = S("Castorama"),
 		description = S("Place 20 iron checkers."),
-		icon = "awards_novicebuilder.png",
+		icon = "awards_castorama.png",
 		trigger = {
 			type = "place",
 			node = "moreblocks:iron_checker",
@@ -31,7 +32,7 @@ if minetest.get_modpath("moreblocks") then
 	awards.register_award("award_sam_the_trapper",{
 		title = S("Sam the Trapper"),
 		description = S("Place 2 trap stones."),
-		icon = "awards_novicebuilder.png",
+		icon = "awards_sam_the_trapper.png",
 		trigger = {
 			type = "place",
 			node = "moreblocks:trap_stone",
@@ -46,7 +47,7 @@ if minetest.get_modpath("unified_inventory") then
 		awards.register_award("awards_ui_bags", {
 			title = S("Backpacker"),
 			description = S("Craft 4 large bags."),
-			icon = "awards_ui_bags.png",
+			icon = "awards_backpacker.png",
 			trigger = {
 				type = "craft",
 				item = "unified_inventory:bag_large",
@@ -60,7 +61,7 @@ if minetest.get_modpath("fire") then
 	awards.register_award("awards_pyro", {
 		title = S("Pyromaniac"),
 		description = S("Craft 8 times flint and steel."),
-		icon = "fire_flint_steel.png",
+		icon = "awards_pyromaniac.png",
 		trigger = {
 			type = "craft",
 			item = "fire:flint_and_steel",
@@ -86,7 +87,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("award_lightitup",{
 		title = S("Light It Up"),
 		description = S("Place 100 torches."),
-		icon = "awards_novicebuilder.png^awards_level1.png",
+		icon = "awards_light_it_up.png^awards_level1.png",
 		difficulty = 0.01,
 		trigger = {
 			type = "place",
@@ -98,7 +99,7 @@ if minetest.get_modpath("default") then
 	-- Light ALL the things!
 	awards.register_award("award_well_lit",{
 		title = S("Well Lit"),
-		icon = "awards_novicebuilder.png^awards_level2.png",
+		icon = "awards_well_lit.png^awards_level2.png",
 		description = S("Place 1,000 torches."),
 		difficulty = 0.01,
 		trigger = {
@@ -111,7 +112,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("award_meselamp",{
 		title = S("Really Well Lit"),
 		description = S("Craft 10 mese lamps."),
-		icon = "default_meselamp.png",
+		icon = "awards_really_well_lit.png",
 		difficulty = 0.2,
 		trigger = {
 			type = "craft",
@@ -123,7 +124,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("awards_stonebrick", {
 		title = S("Outpost"),
 		description = S("Craft 200 stone bricks."),
-		icon = "default_stone_brick.png^awards_level1.png",
+		icon = "awards_outpost.png^awards_level1.png",
 		difficulty = 0.08,
 		trigger = {
 			type = "craft",
@@ -135,7 +136,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("awards_stonebrick2", {
 		title = S("Watchtower"),
 		description = S("Craft 800 stone bricks."),
-		icon = "default_stone_brick.png^awards_level2.png",
+		icon = "awards_watchtower.png^awards_level2.png",
 		difficulty = 0.08,
 		trigger = {
 			type = "craft",
@@ -147,7 +148,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("awards_stonebrick3", {
 		title = S("Fortress"),
 		description = S("Craft 3,200 stone bricks."),
-		icon = "default_stone_brick.png^awards_level3.png",
+		icon = "awards_fortress.png^awards_level3.png",
 		difficulty = 0.08,
 		trigger = {
 			type = "craft",
@@ -159,7 +160,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("awards_desert_stonebrick", {
 		title = S("Desert Dweller"),
 		description = S("Craft 400 desert stone bricks."),
-		icon = "default_desert_stone_brick.png",
+		icon = "awards_desert_dweller.png",
 		difficulty = 0.09,
 		trigger = {
 			type = "craft",
@@ -171,7 +172,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("awards_desertstonebrick", {
 		title = S("Pharaoh"),
 		description = S("Craft 100 sandstone bricks."),
-		icon = "default_sandstone_brick.png",
+		icon = "awards_pharaoh.png",
 		difficulty = 0.09,
 		trigger = {
 			type = "craft",
@@ -183,7 +184,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("awards_bookshelf", {
 		title = S("Little Library"),
 		description = S("Craft 7 bookshelves."),
-		icon = "default_bookshelf.png",
+		icon = "awards_little_library.png",
 		difficulty = 0.2,
 		trigger = {
 			type = "craft",
@@ -195,7 +196,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("awards_obsidian", {
 		title = S("Lava and Water"),
 		description = S("Mine your first obsidian."),
-		icon = "default_obsidian.png^awards_level1.png",
+		icon = "awards_lava_and_water.png^awards_level1.png",
 		background = "awards_bg_mining.png",
 		difficulty = 1.5,
 		trigger = {
@@ -209,7 +210,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("award_obsessed_with_obsidian",{
 		title = S("Obsessed with Obsidian"),
 		description = S("Mine 50 obsidian."),
-		icon = "default_obsidian.png^awards_level2.png",
+		icon = "awards_obsessed_with_obsidian.png^awards_level2.png",
 		background = "awards_bg_mining.png",
 		difficulty = 1.5,
 		trigger = {
@@ -223,8 +224,8 @@ if minetest.get_modpath("default") then
 	awards.register_award("award_lavaminer",{
 		title = S("Lava Miner"),
 		description = S("Mine any block while being very close to lava."),
+		icon = "awards_lava_miner.png",
 		background = "awards_bg_mining.png",
-		icon = "default_lava.png",
 		difficulty = 1,
 	})
 	awards.register_on_dig(function(player,data)
@@ -240,7 +241,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("award_on_the_way", {
 		title = S("On The Way"),
 		description = S("Place 100 rails."),
-		icon = "carts_rail_straight.png",
+		icon = "awards_on_the_way.png",
 		difficulty = 0.1,
 		trigger = {
 			type = "place",
@@ -252,7 +253,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("award_lumberjack_firstday", {
 		title = S("First Day in the Woods"),
 		description = S("Dig 6 tree blocks."),
-		icon = "default_tree.png^awards_level1.png",
+		icon = "awards_first_day_in_the_woods.png^awards_level1.png",
 		difficulty = 0.03,
 		trigger = {
 			type = "dig",
@@ -265,7 +266,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("award_lumberjack", {
 		title = S("Lumberjack"),
 		description = S("Dig 36 tree blocks."),
-		icon = "default_tree.png^awards_level2.png",
+		icon = "awards_lumberjack.png^awards_level2.png",
 		difficulty = 0.03,
 		trigger = {
 			type = "dig",
@@ -278,7 +279,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("award_lumberjack_semipro", {
 		title = S("Semi-pro Lumberjack"),
 		description = S("Dig 216 tree blocks."),
-		icon = "default_tree.png^awards_level3.png",
+		icon = "awards_semi_pro_lumberjack.png^awards_level3.png",
 		difficulty = 0.03,
 		trigger = {
 			type = "dig",
@@ -291,7 +292,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("award_lumberjack_professional", {
 		title = S("Professional Lumberjack"),
 		description = S("Dig 1,296 tree blocks."),
-		icon = "default_tree.png^awards_level4.png",
+		icon = "awards_professional_lumberjack.png^awards_level4.png",
 		difficulty = 0.03,
 		trigger = {
 			type = "dig",
@@ -304,7 +305,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("award_junglebaby", {
 		title = S("Junglebaby"),
 		description = S("Dig 100 jungle tree blocks."),
-		icon = "default_jungletree.png^awards_level1.png",
+		icon = "awards_junglebaby.png^awards_level1.png",
 		difficulty = 0.05,
 		trigger = {
 			type = "dig",
@@ -317,7 +318,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("award_jungleman", {
 		title = S("Jungleman"),
 		description = S("Dig 1,000 jungle tree blocks."),
-		icon = "default_jungletree.png^awards_level2.png",
+		icon = "awards_jungleman.png^awards_level2.png",
 		difficulty = 0.05,
 		trigger = {
 			type = "dig",
@@ -330,7 +331,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("award_mesefind", {
 		title = S("First Mese Find"),
 		description = S("Mine your first mese ore."),
-		icon = "default_stone.png^default_mineral_mese.png",
+		icon = "awards_first_mese_find.png",
 		background = "awards_bg_mining.png",
 		difficulty = 1,
 		trigger = {
@@ -345,7 +346,7 @@ if minetest.get_modpath("default") then
 		secret = true,
 		title = S("Mese Mastery"),
 		description = S("Mine a mese block."),
-		icon = "default_mese_block.png",
+		icon = "awards_mese_mastery.png",
 		background = "awards_bg_mining.png",
 		difficulty = 1.1,
 		trigger = {
@@ -359,7 +360,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("award_youre_a_copper", {
 		title = S("You’re a copper"),
 		description = S("Dig 1,000 copper ores."),
-		icon = "default_stone.png^default_mineral_copper.png",
+		icon = "awards_youre_a_copper.png",
 		background = "awards_bg_mining.png",
 		difficulty = 0.2,
 		trigger = {
@@ -373,7 +374,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("award_mine2", {
 		title = S("Mini Miner"),
 		description = S("Dig 100 stone blocks."),
-		icon = "awards_miniminer.png^awards_level1.png",
+		icon = "awards_mini_miner.png^awards_level1.png",
 		background = "awards_bg_mining.png",
 		difficulty = 0.02,
 		trigger = {
@@ -387,7 +388,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("award_mine3", {
 		title = S("Hardened Miner"),
 		description = S("Dig 1,000 stone blocks."),
-		icon = "awards_miniminer.png^awards_level2.png",
+		icon = "awards_hardened_miner.png^awards_level2.png",
 		background = "awards_bg_mining.png",
 		difficulty = 0.02,
 		trigger = {
@@ -401,7 +402,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("award_mine4", {
 		title = S("Master Miner"),
 		description = S("Dig 10,000 stone blocks."),
-		icon = "awards_miniminer.png^awards_level3.png",
+		icon = "awards_master_miner.png^awards_level3.png",
 		background = "awards_bg_mining.png",
 		difficulty = 0.02,
 		trigger = {
@@ -415,7 +416,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("award_marchand_de_sable", {
 		title = S("Marchand De Sable"),
 		description = S("Dig 1,000 sand."),
-		icon = "default_sand.png",
+		icon = "awards_marchand_de_sable.png",
 		background = "awards_bg_mining.png",
 		difficulty = 0.05,
 		trigger = {
@@ -428,7 +429,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("awards_crafter_of_sticks", {
 		title = S("Crafter of Sticks"),
 		description = S("Craft 100 sticks."),
-		icon = "default_stick.png",
+		icon = "awards_crafter_of_sticks.png",
 		difficulty = 0.01,
 		trigger = {
 			type = "craft",
@@ -440,7 +441,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("awards_junglegrass", {
 		title = S("Jungle Discoverer"),
 		description = S("Mine your first jungle grass."),
-		icon = "default_junglegrass.png",
+		icon = "awards_jungle_discoverer.png",
 		difficulty = 0.009,
 		trigger = {
 			type = "dig",
@@ -452,7 +453,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("awards_grass", {
 		title = S("Grasslands Discoverer"),
 		description = S("Mine some grass."),
-		icon = "default_grass_3.png",
+		icon = "awards_grasslands_discoverer.png",
 		difficulty = 0.009,
 		trigger = {
 			type = "dig",
@@ -464,7 +465,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("awards_dry_grass", {
 		title = S("Savannah Discoverer"),
 		description = S("Mine some dry grass."),
-		icon = "default_dry_grass_3.png",
+		icon = "awards_savannah_discoverer.png",
 		difficulty = 0.009,
 		trigger = {
 			type = "dig",
@@ -476,7 +477,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("awards_cactus", {
 		title = S("Desert Discoverer"),
 		description = S("Mine your first cactus."),
-		icon = "default_cactus_side.png",
+		icon = "awards_desert_discoverer.png",
 		difficulty = 0.03,
 		trigger = {
 			type = "dig",
@@ -488,7 +489,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("awards_dry_shrub", {
 		title = S("Far Lands"),
 		description = S("Mine your first dry shrub."),
-		icon = "default_dry_shrub.png",
+		icon = "awards_far_lands.png",
 		difficulty = 0.009,
 		trigger = {
 			type = "dig",
@@ -500,7 +501,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("awards_ice", {
 		title = S("Glacier Discoverer"),
 		description = S("Mine your first ice."),
-		icon = "default_ice.png",
+		icon = "awards_glacier_discoverer.png",
 		difficulty = 0.02,
 		trigger = {
 			type = "dig",
@@ -513,7 +514,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("awards_snowblock", {
 		title = S("Very Simple Snow Man"),
 		description = S("Place two snow blocks."),
-		icon = "default_snow.png",
+		icon = "awards_very_simple_snow_man.png",
 		difficulty = 0.02,
 		trigger = {
 			type = "place",
@@ -525,7 +526,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("awards_gold_ore", {
 		title = S("First Gold Find"),
 		description = S("Mine your first gold ore."),
-		icon = "default_stone.png^default_mineral_gold.png^awards_level1.png",
+		icon = "awards_first_gold_find.png^awards_level1.png",
 		background = "awards_bg_mining.png",
 		difficulty = 0.9,
 		trigger = {
@@ -538,7 +539,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("awards_gold_rush", {
 		title = S("Gold Rush"),
 		description = S("Mine 45 gold ores."),
-		icon = "default_stone.png^default_mineral_gold.png^awards_level2.png",
+		icon = "awards_gold_rush.png^awards_level2.png",
 		background = "awards_bg_mining.png",
 		difficulty = 0.9,
 		trigger = {
@@ -551,7 +552,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("awards_diamond_ore", {
 		title = S("Wow, I am Diamonds!"),
 		description = S("Mine your first diamond ore."),
-		icon = "default_stone.png^default_mineral_diamond.png^awards_level1.png",
+		icon = "awards_wow_i_am_diamonds.png^awards_level1.png",
 		difficulty = 1,
 		trigger = {
 			type = "dig",
@@ -563,7 +564,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("awards_diamond_rush", {
 		title = S("Girl's Best Friend"),
 		description = S("Mine 18 diamond ores."),
-		icon = "default_stone.png^default_mineral_diamond.png^awards_level2.png",
+		icon = "awards_girls_best_friend.png^awards_level2.png",
 		background = "awards_bg_mining.png",
 		difficulty = 1,
 		trigger = {
@@ -576,7 +577,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("awards_diamondblock", {
 		title = S("Hardest Block on Earth"),
 		description = S("Craft a diamond block."),
-		icon = "default_diamond_block.png",
+		icon = "awards_hardest_block_on_earth.png",
 		difficulty = 1.1,
 		trigger = {
 			type = "craft",
@@ -588,7 +589,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("awards_mossycobble", {
 		title = S("In the Dungeon"),
 		description = S("Mine a mossy cobblestone."),
-		icon = "default_mossycobble.png",
+		icon = "awards_in_the_dungeon.png",
 		difficulty = 0.9,
 		trigger = {
 			type = "dig",
@@ -600,7 +601,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("award_furnace", {
 		title = S("Smelter"),
 		description = S("Craft 10 furnaces."),
-		icon = "default_furnace_front.png",
+		icon = "awards_smelter.png",
 		difficulty = 0.08,
 		trigger = {
 			type = "craft",
@@ -612,7 +613,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("award_chest", {
 		title = S("Treasurer"),
 		description = S("Craft 15 chests."),
-		icon = "default_chest_front.png",
+		icon = "awards_treasurer.png",
 		difficulty = 0.08,
 		trigger = {
 			type = "craft",
@@ -622,9 +623,9 @@ if minetest.get_modpath("default") then
 	})
 
 	awards.register_award("award_chest2", {
-		title = S("Bankier"),
+		title = S("Banker"),
 		description = S("Craft 30 locked chests."),
-		icon = "default_chest_lock.png",
+		icon = "awards_banker.png",
 		difficulty = 0.08,
 		trigger = {
 			type = "craft",
@@ -636,7 +637,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("award_brick", {
 		title = S("Bricker"),
 		description = S("Craft 200 brick blocks."),
-		icon = "default_brick.png",
+		icon = "awards_bricker.png",
 		difficulty = 0.03,
 		trigger = {
 			type = "craft",
@@ -648,7 +649,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("award_obsidianbrick", {
 		title = S("House of Obsidian"),
 		description = S("Craft 100 obsidian bricks."),
-		icon = "default_obsidian_brick.png",
+		icon = "awards_house_of_obsidian.png",
 		difficulty = 0.4,
 		trigger = {
 			type = "craft",
@@ -660,7 +661,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("award_placestone", {
 		title = S("Build a Cave"),
 		description = S("Place 100 stone."),
-		icon = "default_stone.png",
+		icon = "awards_build_a_cave.png",
 		difficulty = 0.1,
 		trigger = {
 			type = "place",
@@ -672,7 +673,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("award_woodladder", {
 		title = S("Long Ladder"),
 		description = S("Place 400 wooden ladders."),
-		icon = "default_ladder_wood.png",
+		icon = "awards_long_ladder.png",
 		difficulty = 0.1,
 		trigger = {
 			type = "place",
@@ -684,7 +685,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("award_steelladder", {
 		title = S("Industrial Age"),
 		description = S("Place 40 steel ladders."),
-		icon = "default_ladder_steel.png",
+		icon = "awards_industrial_age.png",
 		difficulty = 1,
 		trigger = {
 			type = "place",
@@ -696,7 +697,7 @@ if minetest.get_modpath("default") then
 	awards.register_award("award_apples", {
 		title = S("Yummy!"),
 		description = S("Eat 80 apples."),
-		icon = "default_apple.png",
+		icon = "awards_yummy.png",
 		difficulty = 0.1,
 		trigger = {
 			type = "eat",
@@ -709,7 +710,7 @@ end
 if minetest.get_modpath("vessels") then
 	awards.register_award("award_vessels_shelf", {
 		title = S("Glasser"),
-		icon = "vessels_shelf.png",
+		icon = "awards_glasser.png",
 		description = S("Craft 14 vessels shelves."),
 		trigger = {
 			type = "craft",
@@ -723,7 +724,7 @@ if minetest.get_modpath("farming") then
 	awards.register_award("awards_farmer", {
 		title = S("Farming Skills Acquired"),
 		description = S("Harvest a fully grown wheat plant."),
-		icon = "farming_wheat_8.png^awards_level1.png",
+		icon = "awards_farming_skills_acquired.png^awards_level1.png",
 		trigger = {
 			type = "dig",
 			node = "farming:wheat_8",
@@ -733,7 +734,7 @@ if minetest.get_modpath("farming") then
 	awards.register_award("awards_farmer2", {
 		title = S("Field Worker"),
 		description = S("Harvest 25 fully grown wheat plants."),
-		icon = "farming_wheat_8.png^awards_level2.png",
+		icon = "awards_field_worker.png^awards_level2.png",
 		trigger = {
 			type = "dig",
 			node = "farming:wheat_8",
@@ -744,7 +745,7 @@ if minetest.get_modpath("farming") then
 	awards.register_award("awards_farmer3", {
 		title = S("Aspiring Farmer"),
 		description = S("Harvest 125 fully grown wheat plants."),
-		icon = "farming_wheat_8.png^awards_level3.png",
+		icon = "awards_aspiring_farmer.png^awards_level3.png",
 		trigger = {
 			type = "dig",
 			node = "farming:wheat_8",
@@ -755,7 +756,7 @@ if minetest.get_modpath("farming") then
 	awards.register_award("awards_farmer4", {
 		title = S("Wheat Magnate"),
 		description = S("Harvest 625 fully grown wheat plants."),
-		icon = "farming_wheat_8.png^awards_level4.png",
+		icon = "awards_wheat_magnate.png^awards_level4.png",
 		trigger = {
 			type = "dig",
 			node = "farming:wheat_8",
@@ -766,7 +767,7 @@ if minetest.get_modpath("farming") then
 	awards.register_award("award_bread", {
 		title = S("Baker"),
 		description = S("Eat 10 loaves of bread."),
-		icon = "farming_bread.png",
+		icon = "awards_baker.png",
 		trigger = {
 			type = "eat",
 			item = "farming:bread",
@@ -780,7 +781,7 @@ if minetest.get_modpath("wool") and minetest.get_modpath("farming") then
 	awards.register_award("awards_wool", {
 		title = S("Wool Over Your Eyes"),
 		description = S("Craft 250 white wool."),
-		icon = "wool_white.png",
+		icon = "awards_wool_over_your_eyes.png",
 		trigger = {
 			type = "craft",
 			item = "wool:white",
@@ -793,7 +794,7 @@ if minetest.get_modpath("beds") then
 	awards.register_award("award_bed", {
 		title = S("Hotelier"),
 		description = S("Craft 15 fancy beds."),
-		icon = "beds_bed_fancy.png",
+		icon = "awards_hotelier.png",
 		trigger = {
 			type = "craft",
 			item= "beds:fancy_bed_bottom",
@@ -806,7 +807,7 @@ if minetest.get_modpath("stairs") then
 	awards.register_award("award_stairs_goldblock", {
 		title = S("Filthy Rich"),
 		description = S("Craft 24 gold block stairs."),
-		icon = "default_gold_block.png",
+		icon = "awards_filthy_rich.png",
 		trigger = {
 			type = "craft",
 			item= "stairs:stair_goldblock",
@@ -819,7 +820,7 @@ if minetest.get_modpath("dye") then
 	awards.register_award("awards_dye_red", {
 		title = S("Roses Are Red"),
 		description = S("Craft 400 red dyes."),
-		icon = "dye_red.png",
+		icon = "awards_roses_are_red.png",
 		trigger = {
 			type = "craft",
 			item = "dye:red",
@@ -830,7 +831,7 @@ if minetest.get_modpath("dye") then
 	awards.register_award("awards_dye_yellow", {
 		title = S("Dandelions are Yellow"),
 		description = S("Craft 400 yellow dyes."),
-		icon = "dye_yellow.png",
+		icon = "awards_dandelions_are_yellow.png",
 		trigger = {
 			type = "craft",
 			item = "dye:yellow",
@@ -841,7 +842,7 @@ if minetest.get_modpath("dye") then
 	awards.register_award("awards_dye_blue", {
 		title = S("Geraniums are Blue"),
 		description = S("Craft 400 blue dyes."),
-		icon = "dye_blue.png",
+		icon = "awards_geraniums_are_blue.png",
 		trigger = {
 			type = "craft",
 			item= "dye:blue",
@@ -852,7 +853,7 @@ if minetest.get_modpath("dye") then
 	awards.register_award("awards_dye_white", {
 		title = S("White Color Stock"),
 		description = S("Craft 100 white dyes."),
-		icon = "dye_white.png",
+		icon = "awards_white_color_stock.png",
 		trigger = {
 			type = "craft",
 			item= "dye:white",
@@ -865,7 +866,7 @@ if minetest.get_modpath("flowers") then
 	awards.register_award("awards_brown_mushroom1", {
 		title = S("Tasty Mushrooms"),
 		description = S("Eat 3 brown mushrooms."),
-		icon = "flowers_mushroom_brown.png^awards_level1.png",
+		icon = "awards_tasty_mushrooms.png^awards_level1.png",
 		trigger = {
 			type = "eat",
 			item= "flowers:mushroom_brown",
@@ -875,7 +876,7 @@ if minetest.get_modpath("flowers") then
 	awards.register_award("awards_brown_mushroom2", {
 		title = S("Mushroom Lover"),
 		description = S("Eat 33 brown mushrooms."),
-		icon = "flowers_mushroom_brown.png^awards_level2.png",
+		icon = "awards_mushroom_lover.png^awards_level2.png",
 		trigger = {
 			type = "eat",
 			item= "flowers:mushroom_brown",
@@ -885,7 +886,7 @@ if minetest.get_modpath("flowers") then
 	awards.register_award("awards_brown_mushroom3", {
 		title = S("Underground Mushroom Farmer"),
 		description = S("Eat 333 brown mushrooms."),
-		icon = "flowers_mushroom_brown.png^awards_level3.png",
+		icon = "awards_underground_mushroom_farmer.png^awards_level3.png",
 		trigger = {
 			type = "eat",
 			item= "flowers:mushroom_brown",
@@ -912,15 +913,15 @@ minetest.after(0, function()
 
 	awards.register_award("awards_builder1", {
 		title = S("Builder"),
-		icon = "awards_house.png^awards_level1.png",
+		icon = "awards_builder.png^awards_level1.png",
 		trigger = {
 			type = "place",
 			target = 1000,
 		},
 	})
 	awards.register_award("awards_builder2", {
-		title = S("Constructor"),
-		icon = "awards_house.png^awards_level2.png",
+		title = S("Engineer"),
+		icon = "awards_engineer.png^awards_level2.png",
 		trigger = {
 			type = "place",
 			target = 5000,
@@ -928,7 +929,7 @@ minetest.after(0, function()
 	})
 	awards.register_award("awards_builder3", {
 		title = S("Architect"),
-		icon = "awards_house.png^awards_level3.png",
+		icon = "awards_architect.png^awards_level3.png",
 		trigger = {
 			type = "place",
 			target = 10000,
@@ -936,7 +937,7 @@ minetest.after(0, function()
 	})
 	awards.register_award("awards_builder4", {
 		title = S("Master Architect"),
-		icon = "awards_house.png^awards_level4.png",
+		icon = "awards_master_architect.png^awards_level4.png",
 		trigger = {
 			type = "place",
 			target = 25000,
@@ -950,7 +951,7 @@ if minetest.get_modpath("nyancat") then
 		secret = true,
 		title = S("A Cat in a Pop-Tart?!"),
 		description = S("Mine a nyan cat."),
-		icon = "nyancat_front.png",
+		icon = "awards_a_cat_in_a_pop_tart.png",
 		trigger = {
 			type = "dig",
 			node = "nyancat:nyancat",
