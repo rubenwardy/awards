@@ -80,7 +80,61 @@ if minetest.get_modpath("fire") then
 			}
 		})
 	end
+
+
+	-- Burned to death
+	awards.register_award("award_burn", {
+		title = S("You're a witch!"),
+		description = S("Burn to death in a fire."),
+		secret = true,
+	})
+	awards.register_on_death(function(player,data)
+		local pos = player:getpos()
+		if pos and minetest.find_node_near(pos, 2, "fire:basic_flame") ~= nil then
+			return "award_burn"
+		end
+		return nil
+	end)
 end
+
+-- You Suck!
+awards.register_award("award_you_suck", {
+	title = S("You Suck!"),
+	description = S("Die 100 times."),
+	trigger = {
+		type = "death",
+		target = 100
+	},
+	secret = true,
+})
+
+-- Die hi
+awards.register_award("award_deep_down", {
+	title = S("Death in the Deeps"),
+	description = S("Die below -10000"),
+	secret = true,
+})
+awards.register_on_death(function(player,data)
+	local pos = player:getpos()
+	if pos and pos.y < -10000 then
+		return "award_deep_down"
+	end
+	return nil
+end)
+
+-- Die near diamond ore
+awards.register_award("award_no_screen", {
+	title = S("In space, no one can hear you scream"),
+	description = S("Die above 10000"),
+	secret = true,
+})
+awards.register_on_death(function(player,data)
+	local pos = player:getpos()
+	if pos and pos.y > 10000 then
+		return "award_no_screen"
+	end
+	return nil
+end)
 
 if minetest.get_modpath("default") then
 	-- Light it up
@@ -705,6 +759,51 @@ if minetest.get_modpath("default") then
 			target = 80
 		}
 	})
+
+	-- Died in flowing lava
+	awards.register_award("award_in_the_flow", {
+		title = S("In the Flow"),
+		description = S("Die in flowing lava."),
+		secret = true,
+	})
+	awards.register_on_death(function(player,data)
+		local pos = player:getpos()
+		if pos and (minetest.find_node_near(pos, 2, "default:lava_flowing") ~= nil or
+				minetest.find_node_near(pos, 2, "default:lava_source") ~= nil) then
+			return "award_in_the_flow"
+		end
+		return nil
+	end)
+
+	-- Die near diamond ore
+	awards.register_award("award_this_is_sad", {
+		title = S("This is Sad"),
+		description = S("Die near diamond ore."),
+		secret = true,
+	})
+	awards.register_on_death(function(player,data)
+		local pos = player:getpos()
+		if pos and minetest.find_node_near(pos, 5, "default:stone_with_diamond") ~= nil then
+			return "award_this_is_sad"
+		end
+		return nil
+	end)
+end
+
+if minetest.get_modpath("bones") then
+	-- Die near bones
+	awards.register_award("award_the_stack", {
+		title = S("Graveyard"),
+		description = S("Die near bones."),
+		secret = true,
+	})
+	awards.register_on_death(function(player,data)
+		local pos = player:getpos()
+		if pos and minetest.find_node_near(pos, 5, "bones:bones") ~= nil then
+			return "award_the_stack"
+		end
+		return nil
+	end)
 end
 
 if minetest.get_modpath("vessels") then
@@ -956,6 +1055,56 @@ if minetest.get_modpath("nyancat") then
 			type = "dig",
 			node = "nyancat:nyancat",
 			target = 1
+		}
+	})
+end
+
+if minetest.get_modpath("pipeworks") then
+	awards.register_award("award_pipeworks_transporter", {
+		title = S("Item transporter"),
+		description = S("Place 10000 tubes."),
+		difficulty = 0.05,
+		trigger = {
+			type = "place",
+			node = "pipeworks:tube_1",
+			target = 2000,
+		}
+	})
+
+	awards.register_award("award_pipeworks_automator", {
+		title = S("Factory"),
+		description = S("Place 5 autocrafters."),
+		difficulty = 3,
+		trigger = {
+			type = "place",
+			node = "pipeworks:autocrafter",
+			target = 5,
+		}
+	})
+end
+
+if minetest.get_modpath("mesecons") then
+	awards.register_award("awards_mesecons", {
+		title = S("Electical Engineer"),
+		description = S("Place 500 mesecon wires."),
+		difficulty = 0.2,
+		trigger = {
+			type = "place",
+			node = "pipeworks:tube_1",
+			target = 500,
+		}
+	})
+end
+
+if minetest.get_modpath("basic_materials") then
+	awards.register_award("awards_oil", {
+		title = S("Oil Typhoon"),
+		description = S("Craft 100 times flint and steel."),
+
+		trigger = {
+			type = "craft",
+			item = "basic_materials:oil_extract",
+			target = 500,
 		}
 	})
 end
