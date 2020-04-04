@@ -144,8 +144,8 @@ function awards.register_trigger(tname, tdef)
 			if tdef.key_is_item and key:sub(1, 6) ~= "group:" then
 				local itemdef = minetest.registered_items[key]
 				if itemdef then
-					for groupname, _ in pairs(itemdef.groups or {}) do
-						if tdef.watched_groups[groupname] then
+					for groupname,rating in pairs(itemdef.groups or {}) do
+						if rating ~= 0 and tdef.watched_groups[groupname] then
 							tdef.notify(player, "group:" .. groupname, n)
 						end
 					end
