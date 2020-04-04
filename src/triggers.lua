@@ -137,5 +137,5 @@ minetest.register_on_item_eat(function(_, _, itemstack, player, _)
 
 	local itemname = itemstack:get_name()
 	itemname = minetest.registered_aliases[itemname] or itemname
-	awards.notify_craft(player, itemname, itemstack:get_count())
+	awards.notify_eat(player, itemname, itemstack:get_count())
 end)
