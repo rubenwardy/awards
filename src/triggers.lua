@@ -14,6 +14,10 @@
 -- 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 --
 
+-- Check if a player object is valid for awards.
+local function player_ok(player)
+	return player and player.is_player and player:is_player() and not player.is_fake_player
+end
 
 awards.register_trigger("chat", {
 	type = "counted",
@@ -22,7 +26,7 @@ awards.register_trigger("chat", {
 })
 minetest.register_on_chat_message(function(name, message)
 	local player = minetest.get_player_by_name(name)
-	if not player or string.find(message, "/")  then
+	if not player_ok(player) or string.find(message, "/")  then
 		return
 	end
 
@@ -68,7 +72,7 @@ awards.register_trigger("dig", {
 	key_is_item = true,
 })
 minetest.register_on_dignode(function(pos, node, player)
-	if not player or not pos or not node then
+	if not player_ok(player) or not pos or not node then
 		return
 	end
 
@@ -89,7 +93,7 @@ awards.register_trigger("place", {
 	key_is_item = true,
 })
 minetest.register_on_placenode(function(pos, node, player)
-	if not player or not pos or not node then
+	if not player_ok(player) or not pos or not node then
 		return
 	end
 
@@ -110,7 +114,7 @@ awards.register_trigger("craft", {
 	key_is_item = true,
 })
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
-	if not player or itemstack:is_empty() then
+	if not player_ok(player) or itemstack:is_empty() then
 		return
 	end
 
@@ -131,7 +135,7 @@ awards.register_trigger("eat", {
 	key_is_item = true,
 })
 minetest.register_on_item_eat(function(_, _, itemstack, player, _)
-	if not player or itemstack:is_empty() then
+	if not player_ok(player) or itemstack:is_empty() then
 		return
 	end
 
