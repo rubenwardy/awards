@@ -43,6 +43,11 @@ end
 -- name - the name of the player
 -- award - the name of the award to give
 function awards.unlock(name, award)
+	-- Ensure the player is online.
+	if not minetest.get_player_by_name(name) then
+		return
+	end
+
 	-- Access Player Data
 	local data  = awards.player(name)
 	local awdef = awards.registered_awards[award]
@@ -60,7 +65,7 @@ function awards.unlock(name, award)
 	end
 
 	-- Unlock Award
-	minetest.log("action", name.." has unlocked award "..name)
+	minetest.log("action", name.." has unlocked award "..award)
 	data.unlocked[award] = award
 	awards.save()
 
@@ -91,7 +96,7 @@ function awards.unlock(name, award)
 	local title = awdef.title or award
 	local desc = awdef.description or ""
 	local background = awdef.background or "awards_bg_default.png"
-	local icon = awdef.icon or "awards_unknown.png"
+	local icon = (awdef.icon or "awards_unknown.png") .. "^[resize:32x32"
 	local sound = awdef.sound
 	if sound == nil then
 		-- Explicit check for nil because sound could be `false` to disable it
