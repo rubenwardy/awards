@@ -89,7 +89,7 @@ if minetest.get_modpath("fire") then
 		secret = true,
 	})
 	awards.register_on_death(function(player,data)
-		local pos = player:getpos()
+		local pos = player:get_pos()
 		if pos and minetest.find_node_near(pos, 2, "fire:basic_flame") ~= nil then
 			return "award_burn"
 		end
@@ -115,7 +115,7 @@ awards.register_award("award_deep_down", {
 	secret = true,
 })
 awards.register_on_death(function(player,data)
-	local pos = player:getpos()
+	local pos = player:get_pos()
 	if pos and pos.y < -10000 then
 		return "award_deep_down"
 	end
@@ -129,7 +129,7 @@ awards.register_award("award_no_screen", {
 	secret = true,
 })
 awards.register_on_death(function(player,data)
-	local pos = player:getpos()
+	local pos = player:get_pos()
 	if pos and pos.y > 10000 then
 		return "award_no_screen"
 	end
@@ -767,7 +767,7 @@ if minetest.get_modpath("default") then
 		secret = true,
 	})
 	awards.register_on_death(function(player,data)
-		local pos = player:getpos()
+		local pos = player:get_pos()
 		if pos and (minetest.find_node_near(pos, 2, "default:lava_flowing") ~= nil or
 				minetest.find_node_near(pos, 2, "default:lava_source") ~= nil) then
 			return "award_in_the_flow"
@@ -782,7 +782,7 @@ if minetest.get_modpath("default") then
 		secret = true,
 	})
 	awards.register_on_death(function(player,data)
-		local pos = player:getpos()
+		local pos = player:get_pos()
 		if pos and minetest.find_node_near(pos, 5, "default:stone_with_diamond") ~= nil then
 			return "award_this_is_sad"
 		end
@@ -798,7 +798,7 @@ if minetest.get_modpath("bones") then
 		secret = true,
 	})
 	awards.register_on_death(function(player,data)
-		local pos = player:getpos()
+		local pos = player:get_pos()
 		if pos and minetest.find_node_near(pos, 5, "bones:bones") ~= nil then
 			return "award_the_stack"
 		end
