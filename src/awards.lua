@@ -1090,7 +1090,7 @@ if minetest.get_modpath("mesecons") then
 		difficulty = 0.2,
 		trigger = {
 			type = "place",
-			node = "pipeworks:tube_1",
+			node = "mesecons:wire_00000000_off",
 			target = 500,
 		}
 	})
@@ -1099,7 +1099,7 @@ end
 if minetest.get_modpath("basic_materials") then
 	awards.register_award("awards_oil", {
 		title = S("Oil Typhoon"),
-		description = S("Craft 100 times flint and steel."),
+		description = S("Craft 500 times oil extract."),
 
 		trigger = {
 			type = "craft",
