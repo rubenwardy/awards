@@ -2,9 +2,7 @@
 
 local S, NS = awards.gettext, awards.ngettext
 
-awards.registered_awards = {}
 awards.on = {}
-awards.on_unlock = {}
 
 local default_def = {}
 
@@ -43,11 +41,12 @@ function awards.register_trigger(tname, tdef)
 			}
 			tdef.register(tmp)
 
-			function def.getProgress(_, data)
-				local done = math.min(data[tname] or 0, tmp.target)
+			function def.get_progress(_, data)
+				local current = math.min(data[tname] or 0, tmp.target)
 				return {
-					perc = done / tmp.target,
-					label = S(tdef.progress, done, tmp.target),
+					current = current,
+					target = tmp.target,
+					label = S(tdef.progress, current, tmp.target),
 				}
 			end
 
@@ -102,7 +101,7 @@ function awards.register_trigger(tname, tdef)
 			end
 
 			-- Called to get progress values and labels
-			function def.getProgress(_, data)
+			function def.get_progress(_, data)
 				data[tname] = data[tname] or {}
 
 				local done
@@ -114,7 +113,8 @@ function awards.register_trigger(tname, tdef)
 				done = math.min(done, tmp.target)
 
 				return {
-					perc = done / tmp.target,
+					current = done,
+					target = tmp.target,
 					label = S(tdef.progress, done, tmp.target),
 				}
 			end

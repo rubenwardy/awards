@@ -182,3 +182,71 @@ function awards.unlock(name, award)
 		end)
 	end
 end
+
+function awards.get_award_states(name)
+	local hash_is_unlocked = {}
+	local retval = {}
+
+	-- Add all unlocked awards
+	local data = awards.player(name)
+	if data and data.unlocked then
+		for awardname, _ in pairs(data.unlocked) do
+			local def = awards.registered_awards[awardname]
+			if def then
+				hash_is_unlocked[awardname] = true
+				local score = -100000
+
+				local difficulty = def.difficulty or 1
+				if def.trigger and def.trigger.target then
+					difficulty = difficulty * def.trigger.target
+				end
+				score = score + difficulty
+
+				retval[#retval + 1] = {
+					name     = awardname,
+					def      = def,
+					unlocked = true,
+					started  = true,
+					score    = score,
+					progress = nil,
+				}
+			end
+		end
+	end
+
+	-- Add all locked awards
+	for _, def in pairs(awards.registered_awards) do
+		if not hash_is_unlocked[def.name] and def:can_unlock(data) then
+			local progress = def.get_progress and def:get_progress(data)
+			local started = false
+			local score = def.difficulty or 1
+			if def.secret then
+				score = 1000000
+			elseif def.trigger and def.trigger.target and progress then
+				local perc = progress.current / progress.target
+				score = score * (1 - perc) * def.trigger.target
+				if perc < 0.001 then
+					score = score + 100
+				else
+					started = true
+				end
+			else
+				score = 100
+			end
+
+			retval[#retval + 1] = {
+				name     = def.name,
+				def      = def,
+				unlocked = false,
+				started  = started,
+				score    = score,
+				progress = progress,
+			}
+		end
+	end
+
+	table.sort(retval, function(a, b)
+		return a.score < b.score
+	end)
+	return retval
+end

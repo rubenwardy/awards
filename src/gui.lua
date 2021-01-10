@@ -2,73 +2,9 @@
 
 local S = awards.gettext
 
-local function order_awards(name)
-	local hash_is_unlocked = {}
-	local retval = {}
-
-	local data = awards.player(name)
-	if data and data.unlocked then
-		for awardname, _ in pairs(data.unlocked) do
-			local def = awards.registered_awards[awardname]
-			if def then
-				hash_is_unlocked[awardname] = true
-				local score = -100000
-
-				local difficulty = def.difficulty or 1
-				if def.trigger and def.trigger.target then
-					difficulty = difficulty * def.trigger.target
-				end
-				score = score + difficulty
-
-				retval[#retval + 1] = {
-					name     = awardname,
-					def      = def,
-					unlocked = true,
-					started  = true,
-					score    = score,
-				}
-			end
-		end
-	end
-
-	for _, def in pairs(awards.registered_awards) do
-		if not hash_is_unlocked[def.name] and def:can_unlock(data) then
-			local started = false
-			local score = def.difficulty or 1
-			if def.secret then
-				score = 1000000
-			elseif def.trigger and def.trigger.target and def.getProgress then
-				local progress = def:getProgress(data).perc
-				score = score * (1 - progress) * def.trigger.target
-				if progress < 0.001 then
-					score = score + 100
-				else
-					started = true
-				end
-			else
-				score = 100
-			end
-
-			retval[#retval + 1] = {
-				name     = def.name,
-				def      = def,
-				unlocked = false,
-				started  = started,
-				score    = score,
-			}
-		end
-	end
-
-	table.sort(retval, function(a, b)
-		return a.score < b.score
-	end)
-	return retval
-end
-
 function awards.get_formspec(name, to, sid)
 	local formspec = ""
-	local awards_list = order_awards(name)
-	local data  = awards.player(name)
+	local awards_list = awards.get_award_states(name)
 
 	if #awards_list == 0 then
 		formspec = formspec .. "label[3.9,1.5;"..minetest.formspec_escape(S("Error: No achivements available.")).."]"
@@ -106,15 +42,11 @@ function awards.get_formspec(name, to, sid)
 		if sdef and sdef.icon then
 			formspec = formspec .. "image[0.45,0;3.5,3.5;" .. sdef.icon .. "]"  -- adjusted values from 0.6,0;3,3
 		end
-		local barwidth = 3.95
-		local perc = nil
-		local label = nil
-		if sdef.getProgress and data then
-			local res = sdef:getProgress(data)
-			perc = res.perc
-			label = res.label
-		end
-		if perc then
+
+		if sitem.progress then
+			local barwidth = 3.95
+			local perc = sitem.progress.current / sitem.progress.target
+			local label = sitem.progress.label
 			if perc > 1 then
 				perc = 1
 			end
@@ -124,6 +56,7 @@ function awards.get_formspec(name, to, sid)
 				formspec = formspec .. "label[1.6,8.15;" .. minetest.formspec_escape(label) .. "]"
 			end
 		end
+
 		if sdef and sdef.description then
 			formspec = formspec .. "box[-0.05,3.75;3.9,4.2;#000]"
 			formspec = formspec	.. "textarea[0.25,3.75;3.9,4.2;;" ..
@@ -174,7 +107,7 @@ function awards.show_to(name, to, sid, text)
 		return
 	end
 	if text then
-		local awards_list = order_awards(name)
+		local awards_list = awards.get_award_states(name)
 		if #awards_list == 0 then
 			minetest.chat_send_player(to, S("Error: No award available."))
 			return

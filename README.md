@@ -37,10 +37,11 @@ awards.register_award("mymod:award", {
 
 The above trigger type is an example of a counted_key trigger:
 rather than a single counter there's a counter per key - in this
-case the key is the value of the `node` field. If you leave out
-the key in a `counted_key` trigger, then the total will be used
-instead. For example, here is an award which unlocks after you've
-placed 10 nodes of any type:
+case the key is the value of the `node` field.
+
+If you leave out the key in a `counted_key` trigger, then the total will be used
+instead. For example, here is an award which unlocks after you've placed 10
+nodes of any type:
 
 ```lua
 awards.register_award("mymod:award", {
@@ -125,6 +126,10 @@ awards.register_trigger("foo", {
 	type             = "custom",
 	progress         = "@1/@2 foos",
 	auto_description = { "Do a foo", "Foo @1 times" },
+
+	on_register = function(self, award)
+		print(award.name .. " was registered with foo trigger type")
+	end,
 })
 
 minetest.register_on_foo(function()
@@ -168,7 +173,9 @@ end
 
 # API
 
-* awards.register_award(name, def), the def table has the following fields:
+## Awards
+
+* `awards.register_award(name, def)`, the def table has the following fields:
 	* `title` - title of the award (defaults to name)
 	* `description` - longer description of the award, displayed in Awards tab
 	* `difficulty` - see [Award Difficulty](#award-difficulty).
@@ -182,23 +189,44 @@ end
 	* `background` - the background image, use default otherwise.
 	* `trigger` - trigger definition, see [Builtin Trigger Types](#builtin-trigger-types).
 	* `on_unlock(name, def)` - callback on unlock.
-* awards.register_trigger(name, def), the def table has the following fields:
-	* `type` - see [Trigger Types](#trigger-types).
+* `awards.registered_awards` - table of award name to definition.
+* `awards.register_on_unlock(func(name, def))`
+	* `name` is the player name
+	* `def` is the award def.
+	* return true to cancel HUD
+* `awards.unlock(player_name, award)`
+	* gives an award to a player
+* `awards.get_award_states(player_name)`
+	* Returns list of tables, sorted by `score`, each having the fields:
+
+			{
+				name     = "mymod:awardname",
+				def      = {}, -- Award definition
+				unlocked = true, -- Whether award has been unlocked
+				started  = true, -- Whether any progress has been made
+				score    = 0, -- Score used in sorting
+
+				-- Either a table or nil
+				progress = {
+					current = 5,
+					target  = 10,
+					label   = "label", -- Label to show over progress bar
+				}
+			}
+
+## Triggers
+
+* `awards.register_trigger(name, def)`, the def table has the following fields:
+	* `type` - see trigger type types in [Trigger Types](#trigger-types).
 	* `progress` - used to format progress, defaults to "%1/%2".
 	* `auto_description` - a table of two elements. Each element is a format string. Element 1 is singular, element 2 is plural. Used for the award description (not title) if none is given.
-	* `on_register(award_def)` - called when an award registers with this type.
+	* `on_register(self, award_def)` - called when an award registers with this type.
 	* "counted_key" only:
 		* `auto_description_total` - Used if the trigger is for the total.
 		* `get_key(self, def)` - get key for particular award, return nil for a total.
 		* `key_is_item` - true if the key is an item name. On notify(),
 			any watched groups will also be notified as `group:groupname` keys.
-* awards.register_on_unlock(func(name, def))
-	* name is the player name
-	* def is the award def.
-	* return true to cancel HUD
-* awards.unlock(name, award)
-	* gives an award to a player
-	* name is the player name
+* `awards.registered_triggers` - table of trigger name to definition.
 
 ## Builtin Trigger Types
 

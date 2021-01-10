@@ -3,7 +3,9 @@
 -- The global award namespace
 awards = {
 	show_mode = "hud",
+	registered_awards = {},
 	registered_triggers = {},
+	on_unlock = {},
 }
 
 -- Internationalization support.
