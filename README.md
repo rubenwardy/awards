@@ -194,25 +194,29 @@ end
 	* `name` is the player name
 	* `def` is the award def.
 	* return true to cancel HUD
-* `awards.unlock(player_name, award)`
+* `awards.unlock(player_name, award_name)`
 	* gives an award to a player
 * `awards.get_award_states(player_name)`
 	* Returns list of tables, sorted by `score`, each having the fields:
 
-			{
-				name     = "mymod:awardname",
-				def      = {}, -- Award definition
-				unlocked = true, -- Whether award has been unlocked
-				started  = true, -- Whether any progress has been made
-				score    = 0, -- Score used in sorting
+		```lua
+		{
+			name     = "mymod:awardname",
+			def      = {}, -- Award definition
+			unlocked = true, -- Whether award has been unlocked
+			started  = true, -- Whether any progress has been made
+			score    = 0, -- Score used in sorting
 
-				-- Either a table or nil
-				progress = {
-					current = 5,
-					target  = 10,
-					label   = "label", -- Label to show over progress bar
-				}
+			-- Either a table or nil
+			-- Will be nil if progress is indeterminable or
+			-- if the award is unlocked
+			progress = {
+				current = 5,
+				target  = 10,
+				label   = "label", -- Label to show over progress bar
 			}
+		}
+		```
 
 ## Triggers
 
