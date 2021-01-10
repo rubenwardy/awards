@@ -251,7 +251,7 @@ if minetest.get_modpath("default") then
 		title = S("Lava and Water"),
 		description = S("Mine your first obsidian."),
 		icon = "awards_lava_and_water.png^awards_level1.png",
-		background = "awards_bg_mining.png",
+		hud_background = "awards_bg_mining.png",
 		difficulty = 1.5,
 		trigger = {
 			type = "dig",
@@ -265,7 +265,7 @@ if minetest.get_modpath("default") then
 		title = S("Obsessed with Obsidian"),
 		description = S("Mine 50 obsidian."),
 		icon = "awards_obsessed_with_obsidian.png^awards_level2.png",
-		background = "awards_bg_mining.png",
+		hud_background = "awards_bg_mining.png",
 		difficulty = 1.5,
 		trigger = {
 			type = "dig",
@@ -279,7 +279,7 @@ if minetest.get_modpath("default") then
 		title = S("Lava Miner"),
 		description = S("Mine any block while being very close to lava."),
 		icon = "awards_lava_miner.png",
-		background = "awards_bg_mining.png",
+		hud_background = "awards_bg_mining.png",
 		difficulty = 1,
 	})
 	awards.register_on_dig(function(player,data)
@@ -386,7 +386,7 @@ if minetest.get_modpath("default") then
 		title = S("First Mese Find"),
 		description = S("Mine your first mese ore."),
 		icon = "awards_first_mese_find.png",
-		background = "awards_bg_mining.png",
+		hud_background = "awards_bg_mining.png",
 		difficulty = 1,
 		trigger = {
 			type = "dig",
@@ -401,7 +401,7 @@ if minetest.get_modpath("default") then
 		title = S("Mese Mastery"),
 		description = S("Mine a mese block."),
 		icon = "awards_mese_mastery.png",
-		background = "awards_bg_mining.png",
+		hud_background = "awards_bg_mining.png",
 		difficulty = 1.1,
 		trigger = {
 			type = "dig",
@@ -415,7 +415,7 @@ if minetest.get_modpath("default") then
 		title = S("You’re a copper"),
 		description = S("Dig 1,000 copper ores."),
 		icon = "awards_youre_a_copper.png",
-		background = "awards_bg_mining.png",
+		hud_background = "awards_bg_mining.png",
 		difficulty = 0.2,
 		trigger = {
 			type = "dig",
@@ -429,7 +429,7 @@ if minetest.get_modpath("default") then
 		title = S("Mini Miner"),
 		description = S("Dig 100 stone blocks."),
 		icon = "awards_mini_miner.png^awards_level1.png",
-		background = "awards_bg_mining.png",
+		hud_background = "awards_bg_mining.png",
 		difficulty = 0.02,
 		trigger = {
 			type = "dig",
@@ -443,7 +443,7 @@ if minetest.get_modpath("default") then
 		title = S("Hardened Miner"),
 		description = S("Dig 1,000 stone blocks."),
 		icon = "awards_hardened_miner.png^awards_level2.png",
-		background = "awards_bg_mining.png",
+		hud_background = "awards_bg_mining.png",
 		difficulty = 0.02,
 		trigger = {
 			type = "dig",
@@ -457,7 +457,7 @@ if minetest.get_modpath("default") then
 		title = S("Master Miner"),
 		description = S("Dig 10,000 stone blocks."),
 		icon = "awards_master_miner.png^awards_level3.png",
-		background = "awards_bg_mining.png",
+		hud_background = "awards_bg_mining.png",
 		difficulty = 0.02,
 		trigger = {
 			type = "dig",
@@ -471,7 +471,7 @@ if minetest.get_modpath("default") then
 		title = S("Marchand De Sable"),
 		description = S("Dig 1,000 sand."),
 		icon = "awards_marchand_de_sable.png",
-		background = "awards_bg_mining.png",
+		hud_background = "awards_bg_mining.png",
 		difficulty = 0.05,
 		trigger = {
 			type = "dig",
@@ -581,7 +581,7 @@ if minetest.get_modpath("default") then
 		title = S("First Gold Find"),
 		description = S("Mine your first gold ore."),
 		icon = "awards_first_gold_find.png^awards_level1.png",
-		background = "awards_bg_mining.png",
+		hud_background = "awards_bg_mining.png",
 		difficulty = 0.9,
 		trigger = {
 			type = "dig",
@@ -594,7 +594,7 @@ if minetest.get_modpath("default") then
 		title = S("Gold Rush"),
 		description = S("Mine 45 gold ores."),
 		icon = "awards_gold_rush.png^awards_level2.png",
-		background = "awards_bg_mining.png",
+		hud_background = "awards_bg_mining.png",
 		difficulty = 0.9,
 		trigger = {
 			type = "dig",
@@ -619,7 +619,7 @@ if minetest.get_modpath("default") then
 		title = S("Girl's Best Friend"),
 		description = S("Mine 18 diamond ores."),
 		icon = "awards_girls_best_friend.png^awards_level2.png",
-		background = "awards_bg_mining.png",
+		hud_background = "awards_bg_mining.png",
 		difficulty = 1,
 		trigger = {
 			type = "dig",

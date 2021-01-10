@@ -185,15 +185,16 @@ end
 	* `secret` - boolean if this award is secret (i.e. showed on awards list)
 	* `sound` - `SimpleSoundSpec` table to play on unlock.
 		`false` to disable unlock sound.
-	* `icon` - the icon image, use default otherwise.
-	* `background` - the background image, use default otherwise.
+	* `icon` - the icon image. Defaults to `awards_unknown.png`.
+	* `hud_background` - the background image used in the HUD to contain the text and icon.
+	                 Defaults to `awards_bg_default.png`.
 	* `trigger` - trigger definition, see [Builtin Trigger Types](#builtin-trigger-types).
 	* `on_unlock(name, def)` - callback on unlock.
 * `awards.registered_awards` - table of award name to definition.
 * `awards.register_on_unlock(func(name, def))`
 	* `name` is the player name
 	* `def` is the award def.
-	* return true to cancel HUD
+	* return true to cancel HUD from appearing.
 * `awards.unlock(player_name, award_name)`
 	* gives an award to a player
 * `awards.get_award_states(player_name)`

@@ -95,7 +95,7 @@ function awards.unlock(name, award)
 	-- Get Notification Settings
 	local title = awdef.title or award
 	local desc = awdef.description or ""
-	local background = awdef.background or "awards_bg_default.png"
+	local background = awdef.hud_background or awdef.background or "awards_bg_default.png"
 	local icon = (awdef.icon or "awards_unknown.png") .. "^[resize:32x32"
 	local sound = awdef.sound
 	if sound == nil then
