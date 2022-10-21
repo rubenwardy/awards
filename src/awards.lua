@@ -311,7 +311,7 @@ if minetest.get_modpath("default") then
 		difficulty = 0.03,
 		trigger = {
 			type = "dig",
-			node = "default:tree",
+			node = "group:tree",
 			target = 6
 		}
 	})
@@ -324,7 +324,7 @@ if minetest.get_modpath("default") then
 		difficulty = 0.03,
 		trigger = {
 			type = "dig",
-			node = "default:tree",
+			node = "group:tree",
 			target = 36
 		}
 	})
@@ -337,7 +337,7 @@ if minetest.get_modpath("default") then
 		difficulty = 0.03,
 		trigger = {
 			type = "dig",
-			node = "default:tree",
+			node = "group:tree",
 			target = 216
 		}
 	})
@@ -350,7 +350,7 @@ if minetest.get_modpath("default") then
 		difficulty = 0.03,
 		trigger = {
 			type = "dig",
-			node = "default:tree",
+			node = "group:tree",
 			target = 1296
 		}
 	})
