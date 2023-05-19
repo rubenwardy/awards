@@ -1,6 +1,6 @@
 -- Copyright (c) 2013-18 rubenwardy and Wuzzy. MIT.
 
-local S = awards.gettext
+local S = awards.translator
 
 
 -- Saint-Maclou
@@ -1100,7 +1100,7 @@ end
 
 if minetest.get_modpath("basic_materials") then
 	awards.register_award("awards_oil", {
-		title = S("Oil Typhoon"),
+		title = S("Oil Tycoon"),
 		description = S("Craft 500 times oil extract."),
 
 		trigger = {

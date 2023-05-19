@@ -1,6 +1,6 @@
 -- Copyright (c) 2013-18 rubenwardy. MIT.
 
-local S = awards.gettext
+local S = awards.translator
 
 function awards.get_formspec(name, to, sid)
 	local formspec = ""
@@ -30,13 +30,18 @@ function awards.get_formspec(name, to, sid)
 		if sdef and sdef.title then
 			title = sdef.title
 		end
-		local status = "%s"
+		local status = "@1"
 		if sitem.unlocked then
-			status = S("%s (unlocked)")
+			-- Don't actually use translator here. We define empty S() to fool the update_translations script
+			-- into extracting that string for the templates.
+			local function S(str)
+				return str
+			end
+			status = S("@1 (unlocked)")
 		end
 
 		formspec = formspec .. "textarea[0.5,3.1;4.8,1.45;;" ..
-			string.format(status, minetest.formspec_escape(title)) ..
+			S(status, minetest.formspec_escape(title)) ..
 			";]"
 
 		if sdef and sdef.icon then
@@ -122,7 +127,7 @@ function awards.show_to(name, to, sid, text)
 			if def then
 				if def.title then
 					if def.description then
-						minetest.chat_send_player(to, string.format(S("%s: %s"), def.title, def.description))
+						minetest.chat_send_player(to, string.format("%s: %s", def.title, def.description))
 					else
 						minetest.chat_send_player(to, def.title)
 					end

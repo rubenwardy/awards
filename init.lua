@@ -1,27 +1,29 @@
 -- Copyright (c) 2013-18 rubenwardy. MIT.
 
+-- Internationalization support.
+local S = minetest.get_translator(minetest.get_current_modname())
+
 -- The global award namespace
 awards = {
 	show_mode = "hud",
 	registered_awards = {},
 	registered_triggers = {},
 	on_unlock = {},
+	translator = S,
 }
 
--- Internationalization support.
-awards.gettext, awards.ngettext = dofile(minetest.get_modpath("awards").."/src/intllib.lua")
-
 -- Load files
-dofile(minetest.get_modpath("awards").."/src/data.lua")
-dofile(minetest.get_modpath("awards").."/src/api_awards.lua")
-dofile(minetest.get_modpath("awards").."/src/api_triggers.lua")
-dofile(minetest.get_modpath("awards").."/src/chat_commands.lua")
-dofile(minetest.get_modpath("awards").."/src/gui.lua")
-dofile(minetest.get_modpath("awards").."/src/triggers.lua")
+local modpath = minetest.get_modpath(minetest.get_current_modname()).."/src"
+dofile(modpath.."/data.lua")
+dofile(modpath.."/api_awards.lua")
+dofile(modpath.."/api_triggers.lua")
+dofile(modpath.."/chat_commands.lua")
+dofile(modpath.."/gui.lua")
+dofile(modpath.."/triggers.lua")
 
 -- Optionally add default awards.
 if minetest.settings:get_bool("awards.add_defaults", true) then
-	dofile(minetest.get_modpath("awards").."/src/awards.lua")
+	dofile(modpath.."/awards.lua")
 end
 
 awards.load()

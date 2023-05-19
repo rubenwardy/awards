@@ -1,6 +1,6 @@
 -- Copyright (c) 2013-18 rubenwardy. MIT.
 
-local S = awards.gettext
+local S = awards.translator
 
 function awards.register_award(name, def)
 	def.name = name

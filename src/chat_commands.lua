@@ -1,6 +1,6 @@
 -- Copyright (c) 2013-18 rubenwardy. MIT.
 
-local S = awards.gettext
+local S = awards.translator
 
 minetest.register_chatcommand("awards", {
 	params = S("[c|clear|disable|enable]"),
@@ -37,7 +37,7 @@ minetest.register_chatcommand("awd", {
 	func = function(name, param)
 		local def = awards.registered_awards[param]
 		if def then
-			minetest.chat_send_player(name, string.format(S("%s: %s"), def.title, def.description))
+			minetest.chat_send_player(name, string.format("%s: %s", def.title, def.description))
 		else
 			minetest.chat_send_player(name, S("Award not found."))
 		end
