@@ -29,6 +29,12 @@ end
 awards.load()
 minetest.register_on_shutdown(awards.save)
 
+local function check_save()
+	awards.save()
+	minetest.after(18, check_save)
+end
+minetest.after(8 * math.random() + 10, check_save)
+
 
 -- Backwards compatibility
 awards.give_achievement     = awards.unlock
